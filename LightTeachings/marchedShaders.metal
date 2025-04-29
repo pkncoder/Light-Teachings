@@ -22,8 +22,8 @@ struct VertexPayload {              //Mesh Vertex Type
 constant float4 positions[] = {
     float4(-1.0, -1.0, 0.0, 1.0), //bottom left: red
     float4( 1.0, -1.0, 0.0, 1.0), //bottom right: green
-    float4(  1.0, 1.0, 0.0, 1.0), //center top: blue
-    float4( -1.0, 1.0, 0.0, 1.0)
+    float4(-1.0, 1.0 , 0.0, 1.0), //center top: blue
+    float4( 1.0, 1.0 , 0.0, 1.0)
 };
 
 /*
@@ -55,13 +55,15 @@ private:
     
     // MARK: -Object SDFs-
     
+    // Thanks iq: https://iquilezles.org/articles/distfunctions/
+    
     // Sphere
-    float sphereSDF(Ray ray, Object sphere) {
+    float sphereSDF( Ray ray, Object sphere ) {
         return length(sphere.origin.xyz - ray.origin) - sphere.bounds.x;
     }
     
     // Box
-    float boxSDF(Ray ray, Object box)
+    float boxSDF( Ray ray, Object box )
     {
         float3 d = abs(box.origin.xyz - ray.origin) - box.bounds.xyz;
         return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));
@@ -77,13 +79,28 @@ private:
     // Outlined Box
     float outlinedBoxSDF( Ray ray, Object box)
     {
-        float3 p = abs(ray.origin)-box.bounds.xyz;
+        float3 p = abs(box.origin.xyz - ray.origin)-box.bounds.xyz;
         float3 q = abs(p+box.bounds.w)-box.bounds.w;
         return min(min(
           length(max(float3(p.x,q.y,q.z),0.0))+min(max(p.x,max(q.y,q.z)),0.0),
           length(max(float3(q.x,p.y,q.z),0.0))+min(max(q.x,max(p.y,q.z)),0.0)),
           length(max(float3(q.x,q.y,p.z),0.0))+min(max(q.x,max(q.y,p.z)),0.0));
     }
+    
+    // Plane
+    float planeSDF( Ray ray, Object plane )
+    {
+        return ray.origin.y - plane.origin.w;
+    }
+    
+    // Cylinder
+    float cylinderSDF( Ray ray, Object cylinder )
+    {
+      ray.origin = cylinder.origin.xyz - ray.origin;
+      float2 d = abs(float2(length(ray.origin.xz),ray.origin.y)) - float2(cylinder.bounds.w,cylinder.bounds.x);
+      return min(max(d.x,d.y),0.0) + length(max(d,0.0));
+    }
+    
     
     // MARK: -Object Functions-
     
@@ -123,46 +140,52 @@ private:
     
     // MARK: -Scene mapping-
     
-    float getDistance(Ray ray) {
+    HitInfo getObjectHit(Ray ray) {
         
         // differenceSDFs(boxSDF(ray, scene.objects[0]), roundedBoxSDF(ray, scene.objects[1]));
         
         // Declare variables
         float finalDistance = -1.0; // Initialized to -1.0 for the start
         float objectDistance;
-        float operationNumber = 0;
+        float operationNumber;
+        Object finalObject = scene.objects[0];
         
         // Loop every object
         for (int objectNum = 0; objectNum < scene.lengths[0]; objectNum++) {
             
             // Get said object
-            Object object = scene.objects[objectNum];
+            Object currentObject = scene.objects[objectNum];
             
             
             // Get this object distance
-            if (object.data[0] == 1) {          // Sphere
-                objectDistance = sphereSDF(ray, object);
-            } else if (object.data[0] == 2) {   // Box
-                objectDistance = boxSDF(ray, object);
-            } else if (object.data[0] == 3) {   // Rounded Box
-                objectDistance = roundedBoxSDF(ray, object);
-            } else if (object.data[0] == 4) {   // Outlined Box
-                objectDistance = outlinedBoxSDF(ray, object);
+            if (currentObject.objectData[0] == 1) {          // Sphere
+                objectDistance = sphereSDF(ray, currentObject);
+            } else if (currentObject.objectData[0] == 2) {   // Box
+                objectDistance = boxSDF(ray, currentObject);
+            } else if (currentObject.objectData[0] == 3) {   // Rounded Box
+                objectDistance = roundedBoxSDF(ray, currentObject);
+            } else if (currentObject.objectData[0] == 4) {   // Outlined Box
+                objectDistance = outlinedBoxSDF(ray, currentObject);
+            } else if (currentObject.objectData[0] == 5) {   // Plane
+                objectDistance = planeSDF(ray, currentObject);
+            } else if (currentObject.objectData[0] == 6) {   // Cylinder
+                objectDistance = cylinderSDF(ray, currentObject);
             } else {                            // Default
-                objectDistance = sphereSDF(ray, object);
+                objectDistance = sphereSDF(ray, currentObject);
             }
             
             
             // Perform any opperations
             
-            // If there is no previous distance held
+//             If there is no previous distance held
             if (finalDistance == -1.0) {
                 
                 // Set the object distance to the final one
                 finalDistance = objectDistance;
+                finalObject = currentObject;
                 
                 // Set the operation number
-                operationNumber = object.data[1];
+                operationNumber = currentObject.objectData[1];
                 
                 // Skip to the next spot
                 continue;
@@ -179,11 +202,20 @@ private:
                 finalDistance = unionSDFs(finalDistance, objectDistance);
             }
             
+            if (finalDistance == objectDistance) {
+                finalObject = currentObject;
+            }
+            
             // Set the operation number
-            operationNumber = object.data[1];
+            operationNumber = currentObject.objectData[1];
         }
         
-        return finalDistance;
+        return {
+            false,
+            finalDistance,
+            float3(-1),
+            finalObject.objectData[3]
+        };
     }
     
     // Scene
@@ -193,12 +225,14 @@ private:
         float distTravelled = 0;
         float dist = 0;
         int itterations = 0;
+        HitInfo objectInfo;
         
         // Continue looping until condition met or returned out
         do {
             
             // Calculate the next distance
-            dist = getDistance(ray);
+            objectInfo = getObjectHit(ray);
+            dist = objectInfo.dist;
             
             // Add to the distance travled
             distTravelled += dist;
@@ -211,7 +245,9 @@ private:
                     false,
                     distTravelled,
                     
-                    ray.origin
+                    ray.origin,
+                    
+                    0.0
                 };
             }
             
@@ -221,14 +257,16 @@ private:
             // Increase itterations
             itterations+=1;
             
-        } while (dist > 0.01); // End the do-while loop if the distance is less than epsilon
+        } while (dist > 0.001); // End the do-while loop if the distance is less than epsilon
         
         // Return a true hit
         return {
             true,
             distTravelled,
             
-            ray.origin
+            ray.origin,
+            
+            objectInfo.materialIndex
         };
     }
     
@@ -243,8 +281,8 @@ private:
     // Coloring
     float3 sceneColoring() {
         
-        // HitInfo { float dist, bool hit, float3 hitPos }
-        // Ray { float3 origin, float3 direction }
+//         HitInfo { float dist, bool hit, float3 hitPos }
+//         Ray { float3 origin, float3 direction }
         
         // Light position
         float3 lightPos = float3(0, 3, 0);
@@ -260,19 +298,21 @@ private:
         // Estimate the normal and calculate the shading
         float3 normal = estimateNormal(ray);
         
-        HitInfo shadowRay = sceneSDF({
-            hit.hitPos + normal * 0.1,
-            normalize(lightPos - (hit.hitPos + normal * 0.001))
+        HitInfo shadowRayHit = sceneSDF({
+            lightPos,
+            normalize(hit.hitPos - lightPos)
         });
         
-        if (shadowRay.dist < (length(lightPos - (hit.hitPos + normal * 0.01)))) {
+        if (length(shadowRayHit.hitPos - hit.hitPos) > 0.01) {
             return float3(0);
         }
         
         float shading = max(dot(normal, normalize(lightPos - (hit.hitPos + normal * epsilon))), 0.0);
+        float3 objectColor = scene.materials[(int)hit.materialIndex - 1].color.xyz;
         
         // Return the final value with using the inverse square law
-        return (float3(1) * shading * 50.0) * (1 / pow(length(lightPos - hit.hitPos), 2.0));
+        return (objectColor * shading * 3.0) * (1 / pow(shadowRayHit.dist, 1.0));
+        return objectColor;
     }
 
 // MARK: -Public-
@@ -280,7 +320,7 @@ public:
     RayMarcher(Ray ray, constant RayTracedScene &scene) {
         this->ray = ray;
         this->scene = scene;
-        this->epsilon = 0.001;
+        this->epsilon = 0.005;
         this->maxSteps = 100;
         this->maxDist = 100;
     }
@@ -299,7 +339,10 @@ public:
     }
 };
 
-half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant ScreenSize &screenSize [[buffer(1)]], constant RayTracedScene &scene [[buffer(2)]]) {
+half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedScene &scene [[buffer(1)]], constant Uniforms &uniforms [[buffer(2)]]) {
+    
+    ScreenSize screenSize = uniforms.screenSize;
+    float frameNum = uniforms.frameNum;
     
     // Init important constant values
     float2 resolution = float2(screenSize.width, screenSize.height);
@@ -318,7 +361,7 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant ScreenSize
     
     // Create a ray using the uv and camera distance to get the ray directions
     Ray ray = {
-        float3(0, 0, -8),
+        float3(0, 2, -6),
         normalize(float3(uv, cameraDistance))
     };
     

@@ -1,0 +1,104 @@
+{
+    "objects": [
+        
+        
+        
+        {
+            "origin": [-5, 0, 0, 0],
+            "bounds": [0.1, 5, 5, 0],
+            "objectData": [1, 0, 0, 1],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 5, 0, 0],
+            "bounds": [5, 0.1, 5, 0],
+            "objectData": [1, 0, 0, 2],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [5, 0, 0, 0],
+            "bounds": [0.1, 5, 5, 0],
+            "objectData": [1, 0, 0, 3],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, -5, 0, 0],
+            "bounds": [5, 0.1, 5, 0],
+            "objectData": [1, 0, 0, 4],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 0, 5, 0],
+            "bounds": [5, 5, 0.1, 0],
+            "objectData": [1, 0, 0, 5],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 0, -5, 0],
+            "bounds": [5, 5, 0.1, 0],
+            "objectData": [1, 0, 0, 6],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 4.8, 0, 0],
+            "bounds": [1.5, 0.1, 1.5, 0],
+            "objectData": [1, 0, 0, 0],
+            "tempData": [0, 0, 0, 0]
+        },
+        
+        
+        
+        {
+            "origin": [0, 0, 0, 0],
+            "bounds": [0, 0, 0, 1],
+            "objectData": [0, 0, 0, 2],
+            "tempData": [0, 0, 0, 0]
+        }
+    ],
+    "materials": [
+        {
+            "color": [1, 1, 1, 0],
+            "emmisive": [1, 1, 1, 10],
+            "specularColor": [0, 0, 0, 0],
+            "materialSettings": [0, 1, 0, 0]
+        },
+        {
+            "color": [0.7, 0.1, 0.1, 0],
+            "emmisive": [1, 0, 0, 0],
+            "specularColor": [0, 0, 0, 0],
+            "materialSettings": [0, 1, 0, 0]
+        },
+        {
+            "color": [0.7, 0.7, 0.7, 0],
+            "emmisive": [1, 0, 0, 0],
+            "specularColor": [0, 0, 0, 0],
+            "materialSettings": [1, 0, 0, 0]
+        },
+        {
+            "color": [0.1, 0.7, 0.1, 0],
+            "emmisive": [1, 0, 0, 0],
+            "specularColor": [0, 0, 0, 0],
+            "materialSettings": [0, 1, 0, 0]
+        },
+        {
+            "color": [0.1, 0.1, 0.1, 0],
+            "emmisive": [1, 0, 0, 0],
+            "specularColor": [0, 0, 0, 0],
+            "materialSettings": [0, 1, 0, 0]
+        },
+        {
+            "color": [0.1, 0.1, 0.7, 0],
+            "emmisive": [1, 0, 0, 0],
+            "specularColor": [0, 0, 0, 0],
+            "materialSettings": [0, 1, 0, 0]
+        },
+        {
+            "color": [0.1, 0.7, 0.7, 0],
+            "emmisive": [1, 0, 0, 0],
+            "specularColor": [0, 0, 0, 0],
+            "materialSettings": [0, 1, 0, 0]
+        }
+        
+    ],
+    "lengths": [8, 0, 0, 0]
+}

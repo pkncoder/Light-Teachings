@@ -1,27 +1,23 @@
 //
-//  ContentView.swift
-//  HelloTriangle
+//  RendererView.swift
+//  SimpleRayTracer
 //
-//  Created by Andrew Mengede on 27/2/2022.
+//  Created by Kia Preston on 4/29/25.
 //
 
 import SwiftUI
 import MetalKit
 
-// Main content view using the ui view so updating the ui view can be loaded
-struct RendererView: UIViewRepresentable {
+struct RendererView: NSViewRepresentable {
     
-    // Get a renderer
-    func makeCoordinator() -> Coordinator {
-        return Coordinator(parent: self)
-    }
+    @State private var renderer: Renderer = Renderer()
+    
     
     // Create the view for mtkview
-    func makeUIView(context: UIViewRepresentableContext<RendererView>) -> MTKView {
-        
+    func makeNSView(context: NSViewRepresentableContext<RendererView>) -> MTKView {
         // Create the view
         let mtkView = MTKView()
-        mtkView.delegate = context.coordinator.renderer // Get the delegate
+        mtkView.delegate = renderer // Get the delegate
         mtkView.preferredFramesPerSecond = 60 // Set perfered fps
         mtkView.enableSetNeedsDisplay = true // Set that we do indeed need a displace
         
@@ -36,20 +32,13 @@ struct RendererView: UIViewRepresentable {
         // Set the drawable size
         mtkView.drawableSize = mtkView.frame.size
         
+        mtkView.isPaused = false
+        
         // Return our full mtkview
         return mtkView
     }
     
-    func updateUIView(_ uiView: MTKView, context: UIViewRepresentableContext<RendererView>) {
+    func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<RendererView>) {
         
-    }
-}
-
-struct ContentView: View {
-    
-    var body: some View {
-        VStack {
-            RendererView()
-        }
     }
 }
