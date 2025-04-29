@@ -5,7 +5,7 @@
 ////  Created by Kia Preston on 4/27/25.
 ////
 //
-//#include "SimpleRayTracer-Bridging-Header.h"
+//#include "LightTeachings-Bridging-Header.h"
 //#include <metal_stdlib>
 //using namespace metal;
 //

@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct Editor: View {
+    
+    
+    
+    
     var body: some View {
         Text("Editor")
     }

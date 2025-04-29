@@ -23,15 +23,16 @@ struct ContentView: View {
 
         NavigationSplitView {
             SceneTree()
-                .ignoresSafeArea()
+                
         } detail: {
             HSplitView {
                 
                 RendererView()
+                    .aspectRatio(1, contentMode: .fill)
                 
                 if inspectorVisible {
                     VStack {
-                        EditorView()
+                        Editor()
                             .ignoresSafeArea()
                             .frame(maxWidth: 300)
                         Spacer()

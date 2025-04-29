@@ -5,7 +5,7 @@
 //  Created by Andrew Mengede on 18/4/2024.
 //
 
-#include "SimpleRayTracer-Bridging-Header.h"
+#include "LightTeachings-Bridging-Header.h"
 #include <metal_stdlib>
 using namespace metal;
 
