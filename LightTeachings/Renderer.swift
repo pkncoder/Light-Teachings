@@ -1,10 +1,3 @@
-//
-//  Renderer.swift
-//  HelloTriangle
-//
-//  Created by Andrew Mengede on 27/2/2022.
-//
-
 import MetalKit
 import SwiftUI
 
@@ -29,7 +22,7 @@ class Renderer: NSObject, MTKViewDelegate {
             fatalError("Device could not be created")
         }
         self.commandQueue = device.makeCommandQueue() // Create the command que from the device
-        self.pipeline = build_pipeline(device: device) // Build the render pipeline and save it
+        self.pipeline = createPipeline(device: device) // Build the render pipeline and save it
         
         // Make the scene builder and pass in the file name
         let sceneBuilder: SceneBuilder = SceneBuilder("lifeScene")

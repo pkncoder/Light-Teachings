@@ -1,27 +1,28 @@
-//
-//  PipelineBuilder.swift
-//  HelloTriangle
-//
-//  Created by Andrew Mengede on 18/4/2024.
-//
-
 import Metal
 
-func build_pipeline(device: MTLDevice) -> MTLRenderPipelineState {
-    let pipeline: MTLRenderPipelineState // Create a pipeline
+
+func createPipeline(device: MTLDevice) -> MTLRenderPipelineState {
     
-    let pipelineDescriptor = MTLRenderPipelineDescriptor() // Get a descriptor for it
-    let library = device.makeDefaultLibrary()! // Save a a library
+    // Final pipeline variable
+    let pipeline: MTLRenderPipelineState
+    
+    // Create the descriptor and library that is used for settings and metal functions
+    let pipelineDescriptor = MTLRenderPipelineDescriptor()
+    let library = device.makeDefaultLibrary()!
+    
+    // Link or 'create' the vert and frag functins
     pipelineDescriptor.vertexFunction = library.makeFunction(name: "vertexMain") // Add a vertex shader with the name
     pipelineDescriptor.fragmentFunction = library.makeFunction(name: "fragmentMain") // Add a fragment shader
-    pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm // Set the pixel format
     
-    // Try to make and return the pipeline with the descripter
+    // Set the pixel color format
+    pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+    
+    // Try to make the pipeline
     do {
         try pipeline = device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-        return pipeline
-    } catch { // If failed print and fatal error
-        print("failed")
-        fatalError()
+        return pipeline // If success, return the pipeline
+    } catch {
+        // If failed send a fatal error to stop the code
+        fatalError("Pipeline Creation Failed")
     }
 }

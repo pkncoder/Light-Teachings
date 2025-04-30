@@ -1,3 +1,12 @@
+/*
+ 
+ This is an old shader that uses path tracing, was brought from an older project that I decided to scrap and start over.
+ The code here is all over the place as the last project was much different in how the CPU && GPU used eachother
+ 
+ */
+
+
+
 ////
 ////  tracedShaders.metal
 ////  SimpleRayTracer

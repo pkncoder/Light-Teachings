@@ -16,6 +16,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F6370EB72DC2662C0012581B /* Archived Ideas */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Archived Ideas";
+			sourceTree = "<group>";
+		};
 		F68D3E2E2D7D61BD00B3CD7E /* LightTeachings */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = LightTeachings;
@@ -40,6 +45,7 @@
 				F68D3E2E2D7D61BD00B3CD7E /* LightTeachings */,
 				F68D3E2D2D7D61BD00B3CD7E /* Products */,
 				F67FA3682DC0762000D8723D /* scenes */,
+				F6370EB72DC2662C0012581B /* Archived Ideas */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +73,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F6370EB72DC2662C0012581B /* Archived Ideas */,
 				F68D3E2E2D7D61BD00B3CD7E /* LightTeachings */,
 			);
 			name = LightTeachings;

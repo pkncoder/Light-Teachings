@@ -1,10 +1,3 @@
-//
-//  shaders.metal
-//  HelloTriangle
-//
-//  Created by Andrew Mengede on 18/4/2024.
-//
-
 #include "LightTeachings-Bridging-Header.h"
 #include <metal_stdlib>
 using namespace metal;
@@ -342,7 +335,7 @@ public:
 half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedScene &scene [[buffer(1)]], constant Uniforms &uniforms [[buffer(2)]]) {
     
     ScreenSize screenSize = uniforms.screenSize;
-    float frameNum = uniforms.frameNum;
+    float _frameNum = uniforms.frameNum; // MARK: Underline is here to stop warning
     
     // Init important constant values
     float2 resolution = float2(screenSize.width, screenSize.height);

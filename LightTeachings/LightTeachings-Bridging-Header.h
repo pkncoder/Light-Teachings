@@ -14,14 +14,6 @@ struct RayTracingMaterial {
     simd_float4 color;
 };
 
-// Material - but patheir
-struct PathTracingMaterial {
-    simd_float4 color;
-    simd_float4 emmisive;
-    simd_float4 specularColor;
-    simd_float4 materialSettings;
-};
-
 // Scene info
 struct RayTracedScene {
     struct Object objects[10];
