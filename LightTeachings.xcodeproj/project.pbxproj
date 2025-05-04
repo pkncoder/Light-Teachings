@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		F67FA36D2DC0772E00D8723D /* scenes in Resources */ = {isa = PBXBuildFile; fileRef = F67FA3682DC0762000D8723D /* scenes */; };
+		F6EBEC242DC733F000BA6077 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = F6EBEC232DC733F000BA6077 /* TODO.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F67FA3682DC0762000D8723D /* scenes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scenes; sourceTree = "<group>"; };
 		F68D3E2C2D7D61BD00B3CD7E /* LightTeachings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LightTeachings.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6EBEC232DC733F000BA6077 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -42,6 +44,7 @@
 		F68D3E232D7D61BD00B3CD7E = {
 			isa = PBXGroup;
 			children = (
+				F6EBEC232DC733F000BA6077 /* TODO.md */,
 				F68D3E2E2D7D61BD00B3CD7E /* LightTeachings */,
 				F68D3E2D2D7D61BD00B3CD7E /* Products */,
 				F67FA3682DC0762000D8723D /* scenes */,
@@ -126,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F67FA36D2DC0772E00D8723D /* scenes in Resources */,
+				F6EBEC242DC733F000BA6077 /* TODO.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
