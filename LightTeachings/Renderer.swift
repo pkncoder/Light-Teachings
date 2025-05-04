@@ -24,7 +24,7 @@ class Renderer: NSObject, MTKViewDelegate {
         self.commandQueue = device.makeCommandQueue() // Create the command que from the device
         self.pipeline = createPipeline(device: device) // Build the render pipeline and save it
         
-        // Make the scene builder and pass in the file name
+//         Make the scene builder and pass in the file name
         let sceneBuilder: SceneBuilder = SceneBuilder("lifeScene")
         
         // Get the scene from the builder
@@ -36,11 +36,11 @@ class Renderer: NSObject, MTKViewDelegate {
         
         
         /* Create Buffers */
-        self.sceneBuffer = createSceneBuffer()!
+        self.sceneBuffer = buildSceneBuffer()!
         self.uniformBuffer = createUniformBuffer()!
     }
     
-    func createSceneBuffer() -> MTLBuffer? {
+    func buildSceneBuffer() -> MTLBuffer? {
         
         // Split the portions of the scene
         var objectArray: [SceneBuilder.ObjectWrapper] = sceneWrapper.objects
@@ -62,6 +62,10 @@ class Renderer: NSObject, MTKViewDelegate {
         )
         
         return sceneBuffer
+    }
+    
+    func rebuildSceneBuffer() {
+        self.sceneBuffer = buildSceneBuffer()
     }
     
     func createUniformBuffer() -> MTLBuffer? {

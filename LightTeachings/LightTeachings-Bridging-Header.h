@@ -11,7 +11,14 @@ struct Object {
 
 // Material
 struct RayTracingMaterial {
-    simd_float4 color;
+    simd_float4 albedo;
+    simd_float4 materialSettings;
+};
+
+// Point light
+struct PointLight {
+    simd_float4 origin;
+    simd_float4 data;
 };
 
 // Scene info
@@ -40,25 +47,7 @@ struct HitInfo {
     
     simd_float3 hitPos;
     
-    float materialIndex;
-};
-
-// Hit data
-struct RayTracedHitInfo {
-    float dist; // Distance the ray traveled
-
-    boolean hit; // If the ray hit anything
-
-    simd_float4 hitPos; // Hit position of the object
-    simd_float4 normal; // Normal of the hit pos
-
-    float materialIndex; // Material of the object the ray hit
-};
-
-// Point light
-struct PointLight {
-    simd_float4 origin;
-    simd_float4 data;
+    int materialIndex;
 };
 
 // Uniforms

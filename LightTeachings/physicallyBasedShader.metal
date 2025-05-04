@@ -2,39 +2,117 @@
 #include <metal_stdlib>
 using namespace metal;
 
-struct VertexPayload {              //Mesh Vertex Type
-    float4 position [[position]];   //Qualified attribute
-    half3 color;                    //Half precision, faster
-    
-    /*
-     See the metal spec, page 68, table 2.11: Mesh Vertex Attributes
-     For more builtin variables we can set besides position.
-    */
+struct VertexPayload {
+    float4 position [[position]];
+    half3 color;
+
 };
 
 constant float4 positions[] = {
-    float4(-1.0, -1.0, 0.0, 1.0), //bottom left: red
-    float4( 1.0, -1.0, 0.0, 1.0), //bottom right: green
-    float4(-1.0, 1.0 , 0.0, 1.0), //center top: blue
+    float4(-1.0, -1.0, 0.0, 1.0),
+    float4( 1.0, -1.0, 0.0, 1.0),
+    float4(-1.0, 1.0 , 0.0, 1.0),
     float4( 1.0, 1.0 , 0.0, 1.0)
 };
 
-/*
-    The vertex qualifier registers this function in the vertex stage of the Metal API.
-    
-    Currently we're just taking the Vertex ID, it'll be reset at the start of the draw call
-    and increment for each successive invocation.
-    
-    See page 99 of the metal spec,
-    table 5.2: Attributes for vertex function input arguments,
-    for more info.
-*/
 VertexPayload vertex vertexMain(uint vertexID [[vertex_id]]) {
     VertexPayload payload;
     payload.position = positions[vertexID];
     return payload;
 }
 
+
+
+
+
+
+class Random {
+    
+    uint rng_state;
+    
+    uint PCGHash()
+    {
+        rng_state = rng_state * 747796405u + 2891336453u;
+        uint state = rng_state;
+        uint word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+        return (word >> 22u) ^ word;
+    }
+    
+public:
+    // FragCoord and Time To Hash Uint
+    // Seed must take a different value for each pixel every frame
+    void  SetSeed( float2 fragCoord, int frame )
+    {
+        rng_state = uint(frame * 30.2345);
+        rng_state = PCGHash();
+        rng_state += uint(fragCoord.x);
+        rng_state = PCGHash();
+        rng_state += uint(fragCoord.y);
+    }
+    
+    float rnd1(){
+        return float(PCGHash()) / float(-1u);
+    }
+    
+    float2 rnd2(){
+        return float2(rnd1(),rnd1());
+    }
+    
+    float3 rnd3() {
+        return float3(rnd1(), rnd1(), rnd1());
+    }
+};
+
+
+
+
+float3 SphereicalCapVNDFSampling(float2 u, float3 wi, float alpha_x, float alpha_y)
+{
+    wi = wi.xzy;
+    wi = normalize(float3(alpha_x * wi.x, alpha_y * wi.y, wi.z));
+
+    float phi = 2.0f * M_PI_F * u.x;
+    float z = fma((1.0f - u.y), (1.0f + wi.z), -wi.z);
+    float sinTheta = sqrt(clamp(1.0f - z * z, 0.0f, 1.0f));
+    float x = sinTheta * cos(phi);
+    float y = sinTheta * sin(phi);
+    float3 c = float3(x, y, z);
+
+    float3 h = c + wi;
+    
+    float3 wo = normalize(float3(alpha_x * h.x, alpha_y * h.y, h.z));
+    wo = wo.xzy;
+    
+    return wo;
+}
+
+
+
+
+class BDRF {
+    public:
+        float distributionGGX (float3 N, float3 H, float roughness){
+            float a2    = roughness * roughness * roughness * roughness;
+            float NdotH = max (dot (N, H), 0.0);
+            float denom = (NdotH * NdotH * (a2 - 1.0) + 1.0);
+            return a2 / (M_PI_F * denom * denom);
+        }
+
+        float geometrySchlickGGX (float NdotV, float roughness){
+            float r = (roughness + 1.0);
+            float k = (r * r) / 8.0;
+            return NdotV / (NdotV * (1.0 - k) + k);
+        }
+
+        float geometrySmith (float3 N, float3 V, float3 L, float roughness){
+            return geometrySchlickGGX (max (dot (N, L), 0.0), roughness) *
+                   geometrySchlickGGX (max (dot (N, V), 0.0), roughness);
+        }
+
+        float3 fresnelSchlick (float cosTheta, float3 F0){
+            return F0 + (1.0 - F0) * pow (1.0 - cosTheta, 5.0);
+        }
+};
 
 class RayMarcher {
 // MARK: -Private-
@@ -52,7 +130,7 @@ private:
     
     // Sphere
     float sphereSDF( Ray ray, Object sphere ) {
-        return length(sphere.origin.xyz - ray.origin) - sphere.bounds.x;
+        return length(sphere.origin.xyz - ray.origin) - sphere.bounds.w;
     }
     
     // Box
@@ -83,14 +161,14 @@ private:
     // Plane
     float planeSDF( Ray ray, Object plane )
     {
-        return ray.origin.y - plane.origin.w;
+        return dot(ray.origin.xyz - plane.origin.xyz, normalize(plane.bounds.xyz)) - plane.origin.w;
     }
     
     // Cylinder
     float cylinderSDF( Ray ray, Object cylinder )
     {
       ray.origin = cylinder.origin.xyz - ray.origin;
-      float2 d = abs(float2(length(ray.origin.xz),ray.origin.y)) - float2(cylinder.bounds.w,cylinder.bounds.x);
+      float2 d = abs(float2(length(ray.origin.xz),ray.origin.y)) - float2(cylinder.bounds.w,cylinder.bounds.y);
       return min(max(d.x,d.y),0.0) + length(max(d,0.0));
     }
     
@@ -207,7 +285,7 @@ private:
             false,
             finalDistance,
             float3(-1),
-            finalObject.objectData[3]
+            (int)finalObject.objectData[3]
         };
     }
     
@@ -240,7 +318,7 @@ private:
                     
                     ray.origin,
                     
-                    0.0
+                    0
                 };
             }
             
@@ -272,14 +350,11 @@ private:
     }
     
     // Coloring
-    float3 sceneColoring() {
-        
-//         HitInfo { float dist, bool hit, float3 hitPos }
-//         Ray { float3 origin, float3 direction }
+    float3 sceneColoring(float2 uv, float time) {
         
         // Light position
-        float3 lightPos = float3(0, 3, 0);
-        
+        float3 lightPos = float3(0, 0.7, 1.6);
+    
         // Get the hit
         HitInfo hit = sceneSDF(ray);
         
@@ -300,12 +375,42 @@ private:
             return float3(0);
         }
         
-        float shading = max(dot(normal, normalize(lightPos - (hit.hitPos + normal * epsilon))), 0.0);
-        float3 objectColor = scene.materials[(int)hit.materialIndex - 1].color.xyz;
         
-        // Return the final value with using the inverse square law
-        return (objectColor * shading * 3.0) * (1 / pow(shadowRayHit.dist, 1.0));
-        return objectColor;
+        // Thank you: https://learnopengl.com/PBR/Lighting for the help with the bdrf lighting equations & just teaching me how it works
+        BDRF bdrf = BDRF();
+        
+        float3 worldPos = hit.hitPos.xyz;
+        float3 N = normal;
+        float3 V = -ray.direction;
+        float3 L = normalize(lightPos - worldPos);
+        float3 H = normalize (V + L);
+        
+        RayTracingMaterial material = scene.materials[hit.materialIndex - 1];
+        
+        float3 lightColor = float3(50);
+        
+        // Cook-Torrance BRDF
+        float3  F0 = mix (float3 (0.04), pow(material.albedo.xyz, float3(2.2)), material.materialSettings[1]);
+        float NDF = bdrf.distributionGGX(N, H, material.materialSettings[0]);
+        float G   = bdrf.geometrySmith(N, V, L, material.materialSettings[0]);
+        float3  F   = bdrf.fresnelSchlick(max(dot(H, V), 0.0), F0);
+        float3  kD  = float3(1.0) - F;
+        kD *= 1.0 - material.materialSettings[1];
+        
+        float3  numerator   = NDF * G * F;
+        float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
+        float3  specular    = numerator / max(denominator, 0.001);
+        
+        float NdotL = max(dot(N, L), 0.0);
+        
+        float3 color = lightColor * (kD * pow(material.albedo.xyz, float3(2.2)) / M_PI_F + specular) *
+        (NdotL / dot(lightPos - worldPos, lightPos - worldPos));
+        
+        
+        ray.origin = hit.hitPos + normal * epsilon;
+        ray.direction = reflect(ray.direction, normal);
+        
+        return color;
     }
 
 // MARK: -Public-
@@ -314,7 +419,7 @@ public:
         this->ray = ray;
         this->scene = scene;
         this->epsilon = 0.005;
-        this->maxSteps = 100;
+        this->maxSteps = 150;
         this->maxDist = 100;
     }
     
@@ -326,16 +431,15 @@ public:
         this->maxDist = maxDist;
     }
     
-    float3 getColor() {
-//        float dist = sceneSDF(this->ray);
-        return sceneColoring();
+    float3 getColor(float2 uv, float time) {
+        return sceneColoring(uv, time);
     }
 };
 
 half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedScene &scene [[buffer(1)]], constant Uniforms &uniforms [[buffer(2)]]) {
     
     ScreenSize screenSize = uniforms.screenSize;
-    float _frameNum = uniforms.frameNum; // MARK: Underline is here to stop warning
+    float frameNum = uniforms.frameNum;
     
     // Init important constant values
     float2 resolution = float2(screenSize.width, screenSize.height);
@@ -360,7 +464,7 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
     
     // Create our ray marcher
     RayMarcher rayMarcher = RayMarcher(ray, scene);
-    float3 color = rayMarcher.getColor();
+    float3 color = rayMarcher.getColor(uv, frameNum);
     
     
     // Output the final ray's color

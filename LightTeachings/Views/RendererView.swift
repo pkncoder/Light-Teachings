@@ -5,7 +5,7 @@ import MetalKit
 struct RendererView: NSViewRepresentable {
     
     // Renderer
-    @State private var renderer: Renderer = Renderer()
+    @State var renderer: Renderer = Renderer()
     
     // Create the view for the renderer
     func makeNSView(context: NSViewRepresentableContext<RendererView>) -> MTKView {
@@ -36,4 +36,9 @@ struct RendererView: NSViewRepresentable {
     
     // Update the Renderer View, currently unused
     func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<RendererView>) {}
+    
+    func updateSceneWrapper(_ sceneWrapper: SceneBuilder.SceneWrapper) {
+        renderer.sceneWrapper = sceneWrapper
+        renderer.rebuildSceneBuffer()
+    }
 }

@@ -11,16 +11,26 @@ class SceneBuilder {
         
         var id: Self { self }
         
-        let origin: SIMD4<Float>
-        let bounds: SIMD4<Float>
-        let objectData: SIMD4<Float>
-        let tempData: SIMD4<Float>
+        var origin: SIMD4<Float>
+        var bounds: SIMD4<Float>
+        var objectData: SIMD4<Float>
+        var tempData: SIMD4<Float>
         
         enum CodingKeys: CodingKey {
             case origin
             case bounds
             case objectData
             case tempData
+        }
+        
+        var description: String {
+            return
+                """
+                Origin: \(origin.description)
+                Bounds: \(bounds.description)
+                Object Data: \(objectData.description)
+                Temp Data: \(tempData.description)
+                """
         }
     }
     
@@ -29,10 +39,22 @@ class SceneBuilder {
         
         var id: Self { self }
         
-        let color: SIMD4<Float>
+        var albedo: SIMD4<Float>
+        var materialSettings: SIMD4<Float>
+        
         
         enum CodingKeys: CodingKey {
-            case color
+            case albedo
+            case materialSettings
+        }
+        
+        var description: String {
+            return
+                """
+                Color: \(albedo.description)
+                Roughness: \(materialSettings[0].description)
+                Metalic: \(materialSettings[1].description)
+                """
         }
     }
     
@@ -41,9 +63,9 @@ class SceneBuilder {
         
         var id: Self { self }
         
-        let objects: [ObjectWrapper]
-        let materials: [MaterialWrapper]
-        let lengths: SIMD4<Float>
+        var objects: [ObjectWrapper]
+        var materials: [MaterialWrapper]
+        var lengths: SIMD4<Float>
         
         enum CodingKeys: CodingKey {
             case objects
@@ -58,9 +80,15 @@ class SceneBuilder {
         var id: Self { self }
         
         var name: String
-        var heldObject: AnyHashable? = nil
+        var heldObjectIndex: Int? = nil
         
         var children: [SceneNode]? = nil
+        
+        init(name: String, heldObjectIndex: Int? = nil, children: [SceneNode]? = nil) {
+            self.name = name
+            self.heldObjectIndex = heldObjectIndex
+            self.children = children
+        }
     }
     
     // Initializer
@@ -93,30 +121,8 @@ class SceneBuilder {
         fatalError("Failed to build the Scene Wrapper.")
     }
     
-    // Returns the type / name of an object wrapper
-    func getObjectType(object: ObjectWrapper) -> String {
-        
-        // Switch over every object
-        switch object.objectData[0] {
-            case 1:
-                return "Sphere"
-            case 2:
-                return "Box"
-            case 3:
-                return "Rounded Box"
-            case 4:
-                return "Bordered Box"
-            case 5:
-                return "Plane"
-            case 6:
-                return "Cylinder"
-            default:
-                return "Sphere"
-        }
-    }
-    
     // Returns the scene node tree for the SceneTree view
-    func getNodeTree(sceneWrapper: SceneWrapper) -> SceneNode {
+    static func getNodeTree(sceneWrapper: SceneWrapper) -> SceneNode {
         
         /*
          'Title' nodes, used as headers to define what they contain. Could contain structs for settings
@@ -136,10 +142,11 @@ class SceneBuilder {
         /* MARK: -Filling in data- */
         
         // Object data
-        for object in sceneWrapper.objects {
+        for i in 0...sceneWrapper.objects.count - 1 {
             
             // Create a new node && append it
-            let newNode: SceneNode = SceneNode(name: "\(getObjectType(object: object))", heldObject: object)
+            let object = sceneWrapper.objects[i]
+            let newNode: SceneNode = SceneNode(name: "\(Objects.getObjectFromIndex(object.objectData[0]).rawValue)", heldObjectIndex: i)
             objectNode.children?.append(newNode)
         }
         
@@ -147,7 +154,7 @@ class SceneBuilder {
         for i in 0...sceneWrapper.materials.count - 1 {
             
             // Create a new node && append it
-            let newNode: SceneNode = SceneNode(name: "Material \(i+1)", heldObject: sceneWrapper.materials[i])
+            let newNode: SceneNode = SceneNode(name: "Material \(i+1)", heldObjectIndex: i + sceneWrapper.objects.count)
             materialNode.children?.append(newNode)
         }
         

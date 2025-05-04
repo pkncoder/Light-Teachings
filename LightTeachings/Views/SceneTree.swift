@@ -3,23 +3,22 @@ import SwiftUI
 // View that shows all items in the scene, used to select items
 struct SceneTree: View {
     
-    // Scene builder, wrapper, and nodes
-    let sceneBuilder: SceneBuilder
-    let sceneWrapper: SceneBuilder.SceneWrapper
+    // Scene wrapper and nodes
+    @Binding var sceneWrapper: SceneBuilder.SceneWrapper
     let sceneNodes: SceneBuilder.SceneNode
     
     // Hold a state for the node selection
-    @State var selection: SceneBuilder.SceneNode? = nil
+    @Binding var sceneNodeSelection: SceneBuilder.SceneNode?
     
     // Initializer
-    init() {
-        
-        // Build the scene
-        self.sceneBuilder = SceneBuilder("lifeScene")
+    init(sceneWrapper: Binding<SceneBuilder.SceneWrapper>, sceneNodeSelection: Binding<SceneBuilder.SceneNode?>) {
         
         // Get the scene wrapper and nodes
-        self.sceneWrapper = sceneBuilder.getScene()
-        self.sceneNodes = sceneBuilder.getNodeTree(sceneWrapper: sceneWrapper)
+        self._sceneWrapper = sceneWrapper
+        self.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: sceneWrapper.wrappedValue)
+        
+        // Set the node selection
+        self._sceneNodeSelection = sceneNodeSelection
     }
     
     // Top level body of the SceneTree view
@@ -27,7 +26,7 @@ struct SceneTree: View {
         VStack {
             
             // Have a list containing the outline view to stop strange sizing occourances and to make the stlye better
-            List(selection: $selection) { // Hold a selection variable for the outline group
+            List(selection: $sceneNodeSelection) { // Hold a selection variable for the outline group
                 
                 // Outline group holds the children of the scene ndoes and displays their names
                 OutlineGroup(sceneNodes, children: \.children) { node in
@@ -44,6 +43,6 @@ struct SceneTree: View {
             }
             .listStyle(SidebarListStyle())
         }
-        .padding()
+        .padding(EdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2))
     }
 }
