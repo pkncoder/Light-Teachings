@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SphereEditor: View {
     
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var appState: RendererSettings
     @Binding var object: SceneBuilder.ObjectWrapper
     
     var body: some View {

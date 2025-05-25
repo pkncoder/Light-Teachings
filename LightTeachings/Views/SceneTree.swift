@@ -3,20 +3,14 @@ import SwiftUI
 // View that shows all items in the scene, used to select items
 struct SceneTree: View {
     
-    @State var sceneNodes: SceneBuilder.SceneNode? = nil
-    
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var rendererSettings: RendererSettings
     
     // Hold a state for the node selection
     @Binding var sceneNodeSelection: SceneBuilder.SceneNode?
+    @State var sceneNodes: SceneBuilder.SceneNode? = nil
     
     // Initializer
     init(sceneNodeSelection: Binding<SceneBuilder.SceneNode?>) {
-        
-//        @EnvironmentObject var appState: AppState
-        
-        // Get the scene wrapper and nodes
-//        self.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: appState.sceneWrapper)
         
         // Set the node selection
         self._sceneNodeSelection = sceneNodeSelection
@@ -52,7 +46,7 @@ struct SceneTree: View {
         }
         .padding(EdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2))
         .onAppear() {
-            self.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: appState.sceneWrapper)
+            self.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: rendererSettings.sceneWrapper)
         }
     }
 }

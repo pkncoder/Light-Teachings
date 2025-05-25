@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct OpenFile: View {
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var rendererSettings: RendererSettings
 
     var body: some View {
         HStack {
@@ -15,11 +15,14 @@ struct OpenFile: View {
                 panel.canChooseFiles = true
                 
                 if panel.runModal() == .OK {
-                    self.appState.filename = panel.url?.lastPathComponent ?? "<none>"
-                    self.appState.fileUrl = panel.url
+                    self.rendererSettings.filename = panel.url?.lastPathComponent.split(separator: ".").first?.description ?? "<none>"
+                    self.rendererSettings.fileUrl = panel.url
+                    
+                    print(rendererSettings.filename)
+                    print(rendererSettings.fileUrl!)
                 }
                 
-                appState.sceneWrapper = SceneBuilder(appState.filename).getScene()
+                rendererSettings.sceneWrapper = SceneBuilder(rendererSettings.filename).getScene()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

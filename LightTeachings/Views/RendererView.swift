@@ -7,8 +7,8 @@ struct RendererView: NSViewRepresentable {
     // Renderer
     @State var renderer: Renderer
     
-    init(appState: AppState) {
-        renderer = Renderer(appState: appState)
+    init(rendererSettings: RendererSettings) {
+        renderer = Renderer(rendererSettings: rendererSettings)
     }
     
     // Create the view for the renderer

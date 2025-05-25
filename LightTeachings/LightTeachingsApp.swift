@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct SimpleRayTracerApp: App {
     
-    @StateObject var appState: AppState
+    @StateObject var rendererSettings: RendererSettings
     
     init() {
         
@@ -18,26 +18,27 @@ struct SimpleRayTracerApp: App {
         let sceneBuilder: SceneBuilder = SceneBuilder(filename)
         let sceneWrapper = sceneBuilder.getScene()
         
-        let newAppState = AppState(sceneWrapper: sceneWrapper)
-//        newAppState.sceneWrapper = sceneWrapper
+        let newAppState = RendererSettings(sceneWrapper: sceneWrapper)
         newAppState.filename = filename
         
-        self._appState = StateObject(wrappedValue: newAppState)
+        self._rendererSettings = StateObject(wrappedValue: newAppState)
         
     }
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(appState)
+                .environmentObject(rendererSettings)
         }
         .commands {
             CommandGroup(replacing: .newItem) {
                 OpenFile()
+                    .environmentObject(rendererSettings)
             }
             
             CommandGroup(replacing: .saveItem) {
                 SaveFile()
+                    .environmentObject(rendererSettings)
             }
         }
     }

@@ -83,12 +83,6 @@ class SceneBuilder {
         var materials: [MaterialWrapper]
         var lengths: SIMD4<Float>
         
-//        init(objects: [ObjectWrapper], materials: [MaterialWrapper], lengths: SIMD4<Float>) {
-//            self.objects = objects
-//            self.materials = materials
-//            self.lengths = lengths
-//        }
-        
         required init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.objects = try container.decode([ObjectWrapper].self, forKey: .objects)
@@ -100,6 +94,7 @@ class SceneBuilder {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(objects, forKey: .objects)
             try container.encode(materials, forKey: .materials)
+            try container.encode(lengths, forKey: .lengths)
         }
         
         enum CodingKeys: CodingKey {
@@ -115,13 +110,13 @@ class SceneBuilder {
         var id: Self { self }
         
         var name: String
-        var heldObjectIndex: Int? = nil
+        var selectionData: SceneSelectionData?
         
         var children: [SceneNode]? = nil
         
-        init(name: String, heldObjectIndex: Int? = nil, children: [SceneNode]? = nil) {
+        init(name: String, sceneSelectionType: SceneSelectionType? = nil, index: Int? = nil, children: [SceneNode]? = nil) {
             self.name = name
-            self.heldObjectIndex = heldObjectIndex
+            self.selectionData = SceneSelectionData(selectedIndex: index, selectionType: sceneSelectionType)
             self.children = children
         }
     }
@@ -145,7 +140,9 @@ class SceneBuilder {
 
                 // Return the final scene wrapper
                 return sceneWrapper
-           }
+            } else {
+                print("Something is nil")
+            }
         } catch {
             
             // If there is an error, then print it out and continue
@@ -181,7 +178,7 @@ class SceneBuilder {
             
             // Create a new node && append it
             let object = sceneWrapper.objects[i]
-            let newNode: SceneNode = SceneNode(name: "\(Objects.getObjectFromIndex(object.objectData[0]).rawValue)", heldObjectIndex: i)
+            let newNode: SceneNode = SceneNode(name: "\(Objects.getObjectFromIndex(object.objectData[0]).rawValue)", sceneSelectionType: .Object, index: i)
             objectNode.children?.append(newNode)
         }
         
@@ -189,7 +186,7 @@ class SceneBuilder {
         for i in 0...sceneWrapper.materials.count - 1 {
             
             // Create a new node && append it
-            let newNode: SceneNode = SceneNode(name: "Material \(i+1)", heldObjectIndex: i + sceneWrapper.objects.count)
+            let newNode: SceneNode = SceneNode(name: "Material \(i+1)", sceneSelectionType: .Material, index: i)
             materialNode.children?.append(newNode)
         }
         

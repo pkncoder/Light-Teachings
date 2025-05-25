@@ -9,8 +9,7 @@ struct Editor: View {
     
     @State var value: Float = 0.0
     
-    @EnvironmentObject var appState: AppState
-//    @Binding var sceneWrapper: SceneBuilder.SceneWrapper
+    @EnvironmentObject var rendererSettings: RendererSettings
     
     init(editorVisible: Binding<Bool>, sceneNodeSelection: Binding<SceneBuilder.SceneNode?>) {
         
@@ -30,10 +29,10 @@ struct Editor: View {
                 // VStack that holds all info, and that is modified with inspector-like qualities
                 VStack {
                     if sceneNodeSelection != nil {
-                        if sceneNodeSelection?.heldObjectIndex ?? 255 < appState.sceneWrapper.objects.count {
-                            ObjectEditor(object: $appState.sceneWrapper.objects[sceneNodeSelection!.heldObjectIndex!])
-                        } else if sceneNodeSelection?.heldObjectIndex ?? 255 < appState.sceneWrapper.objects.count + appState.sceneWrapper.materials.count {
-                            MaterialEditor(materialIndex: sceneNodeSelection!.heldObjectIndex!)
+                        if sceneNodeSelection?.selectionData?.selectionType == .Object {
+                            ObjectEditor(object: $rendererSettings.sceneWrapper.objects[sceneNodeSelection!.selectionData!.selectedIndex!])
+                        } else if sceneNodeSelection?.selectionData?.selectionType == .Material {
+                            MaterialEditor(material: $rendererSettings.sceneWrapper.materials[sceneNodeSelection!.selectionData!.selectedIndex!])
                         } else {
                             Text("You've selected a Title")
                         }
@@ -46,11 +45,8 @@ struct Editor: View {
                 
                 Spacer()
             }
-            .onChange(of: self.appState) { oldValue, newValue in
-//                appState.sceneWrapper = self.sceneWrapper
-                print("EDITOR: Update | \(appState.sceneWrapper.objects[0].bounds)")
-                
-//                print(AppState.shared.sceneWrapper.objects[0].bounds)
+            .onChange(of: self.rendererSettings) { oldValue, newValue in
+                print("EDITOR: Update")
             }
         }
     }

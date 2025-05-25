@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct SaveFile: View {
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var rendererSettings: RendererSettings
 
     var body: some View {
         HStack {
-            Button("Open...")
+            Button("Save File")
             {
                 do {
                     let savePanel = NSSavePanel()
@@ -18,17 +18,17 @@ struct SaveFile: View {
                     savePanel.prompt = "Save"
                     
                     savePanel.nameFieldLabel = "File name:"
-                    savePanel.nameFieldStringValue = self.appState.filename
+                    savePanel.nameFieldStringValue = self.rendererSettings.filename
                     
                     if savePanel.runModal() == .OK {
-                        appState.fileUrl = savePanel.url
-                        self.appState.filename = savePanel.url?.lastPathComponent ?? "<none>"
+                        rendererSettings.fileUrl = savePanel.url
+                        self.rendererSettings.filename = savePanel.url?.lastPathComponent ?? "<none>"
                     }
                     
-                    print(appState.filename)
+                    print(rendererSettings.filename)
                     
-                    let data = try JSONEncoder().encode(appState.sceneWrapper)
-                    try data.write(to: appState.fileUrl!)
+                    let data = try JSONEncoder().encode(rendererSettings.sceneWrapper)
+                    try data.write(to: rendererSettings.fileUrl!)
                 } catch {
                     print("Error while saving file: \(error)")
                 }

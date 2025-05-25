@@ -2,15 +2,7 @@ import SwiftUI
 
 struct ObjectEditor: View {
     
-//    @EnvironmentObject var appState: AppState
     @Binding var object: SceneBuilder.ObjectWrapper
-    
-//    var objectIndex: Int
-//    
-//    init(o: Int) {
-////        self.object = object
-//        self.objectIndex = objectIndex
-//    }
     
     var body: some View {
         

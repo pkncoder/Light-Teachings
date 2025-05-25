@@ -10,7 +10,7 @@ struct ContentView: View {
     
     @State var rendererView: RendererView? = nil
     
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var rendererSettings: RendererSettings
     
     // Main view shown / top view
     var body: some View {
@@ -28,7 +28,7 @@ struct ContentView: View {
                     rendererUnwrappedView
                     .aspectRatio(1, contentMode: .fill)
                 } else {
-                    Text("wait")
+                    Text("Loading Renderer View...")
                 }
                 
                 // Custom made inspector for the editor, splitting the screen into 3 parts
@@ -36,7 +36,6 @@ struct ContentView: View {
                 
             }
             .toolbar {
-                
                 // Toggle Editor view
                 ToolbarItem {
                     Button {
@@ -48,13 +47,12 @@ struct ContentView: View {
             }
         }
         .font(.title)
-        .onChange(of: self.appState.sceneWrapper.objects) { oldValue, newValue in
-            rendererView!.rebuildSceneBuffer(appState.sceneWrapper)
-            print("Content View Update | \(appState.sceneWrapper.objects[0].bounds)")
+        .onChange(of: self.rendererSettings.sceneWrapper.objects) { oldValue, newValue in
+            rendererView!.rebuildSceneBuffer(rendererSettings.sceneWrapper)
+            print("Content View Update")
         }
         .onAppear() {
-            rendererView = RendererView(appState: appState)
-            print("CONTENT VIEW APPEARED")
+            rendererView = RendererView(rendererSettings: rendererSettings)
         }
     }
 }

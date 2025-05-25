@@ -15,7 +15,7 @@ class Renderer: NSObject, MTKViewDelegate {
     private var uniformBuffer: MTLBuffer!
     
     // Initializer
-    init(appState: AppState) {
+    init(rendererSettings: RendererSettings) {
         if let device = MTLCreateSystemDefaultDevice() { // Try to create the device, if sucesfull save it
             self.device = device
         } else {
@@ -27,7 +27,7 @@ class Renderer: NSObject, MTKViewDelegate {
         // Get the scene from the builder
         self.frameNum = 1
         
-        self.sceneWrapper = appState.sceneWrapper
+        self.sceneWrapper = rendererSettings.sceneWrapper
         
         // Call the init function for MetalKit
         super.init()

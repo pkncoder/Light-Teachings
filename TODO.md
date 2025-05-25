@@ -4,8 +4,9 @@ This is the file that I save all of the things that I still have to do
 
 
 ## User Interactions
-- [x] Better ui for single item edits & triple item edits
+- [ ] Better ui for single item edits & triple item edits
     - [x] Sliding
+        - [ ] Better sensitivity sliding
     - [x] Steppers on either side
     - [x] Lighter BG
     - [x] Larger Form
@@ -30,8 +31,8 @@ This is the file that I save all of the things that I still have to do
 - [ ] Private protection everywhere I can
 - [ ] More file seperation?
 - [ ] Rename files
-- [ ] RENAME APP STATE
-- [ ] Change the passing of scene info around to using the shared singleton
+- [x] RENAME APP STATE
+- [x] Change the passing of scene info around to using envirormentObjects
 
 
 
