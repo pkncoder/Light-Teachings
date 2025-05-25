@@ -1,0 +1,56 @@
+{
+    "objects": [
+        {
+            "origin": [3, 0, 5, 0],
+            "bounds": [0.0, 0.0, 0.0, 1.0],
+            "objectData": [1, 0, 0, 2],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 0, 5, 0],
+            "bounds": [1, 1, 1, 0],
+            "objectData": [1, 0, 0, 2],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [-3, 3, 5, 0],
+            "bounds": [1.0, 1.0, 1.0, 0.2],
+            "objectData": [6, 0, 0, 2],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 3, 5, 0],
+            "bounds": [0, 1.0, 0, 0.6],
+            "objectData": [1, 0, 0, 2],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 3, 5, 0],
+            "bounds": [0, 1.0, 0, 0.6],
+            "objectData": [1, 0, 0, 2],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 0, 5, -3.0],
+            "bounds": [0, 1, 0, 0],
+            "objectData": [5, 0, 0, 1],
+            "tempData": [0, 0, 0, 0]
+        }
+        
+    ],
+    "materials": [
+        {
+            "albedo": [1, 1, 1, 0],
+            "materialSettings": [1, 0, 0, 0]
+        },
+        {
+            "albedo": [0, 0, 1, 0],
+            "materialSettings": [0.4, 0, 0, 0]
+        },
+        {
+            "albedo": [0.3, 0.2, 0, 0],
+            "materialSettings": [0.3, 0, 0, 0]
+        }
+    ],
+    "lengths": [6, 3, 0, 0]
+}
