@@ -8,14 +8,14 @@ class Renderer: NSObject, MTKViewDelegate {
     var commandQueue: MTLCommandQueue!
     var pipeline: MTLRenderPipelineState
 
-    var sceneWrapper: SceneBuilder.SceneWrapper
+    private var sceneWrapper: SceneBuilder.SceneWrapper
     private var frameNum: Float
     
     private var sceneBuffer: MTLBuffer!
     private var uniformBuffer: MTLBuffer!
     
     // Initializer
-    override init() {
+    init(appState: AppState) {
         if let device = MTLCreateSystemDefaultDevice() { // Try to create the device, if sucesfull save it
             self.device = device
         } else {
@@ -24,28 +24,28 @@ class Renderer: NSObject, MTKViewDelegate {
         self.commandQueue = device.makeCommandQueue() // Create the command que from the device
         self.pipeline = createPipeline(device: device) // Build the render pipeline and save it
         
-//         Make the scene builder and pass in the file name
-        let sceneBuilder: SceneBuilder = SceneBuilder("lifeScene")
-        
         // Get the scene from the builder
-        self.sceneWrapper = sceneBuilder.getScene()
         self.frameNum = 1
+        
+        self.sceneWrapper = appState.sceneWrapper
         
         // Call the init function for MetalKit
         super.init()
         
         
         /* Create Buffers */
-        self.sceneBuffer = buildSceneBuffer()!
+        DispatchQueue.main.async {
+            self.sceneBuffer = self.buildSceneBuffer()!
+        }
         self.uniformBuffer = createUniformBuffer()!
     }
     
-    func buildSceneBuffer() -> MTLBuffer? {
+    @MainActor func buildSceneBuffer() -> MTLBuffer? {
         
         // Split the portions of the scene
-        var objectArray: [SceneBuilder.ObjectWrapper] = sceneWrapper.objects
-        var materialArray: [SceneBuilder.MaterialWrapper] = sceneWrapper.materials
-        var lengths: SIMD4<Float> = sceneWrapper.lengths
+        var objectArray: [SceneBuilder.ObjectWrapper] = self.sceneWrapper.objects
+        var materialArray: [SceneBuilder.MaterialWrapper] = self.sceneWrapper.materials
+        var lengths: SIMD4<Float> = self.sceneWrapper.lengths
         
         // Create a buffer for the scene
         let sceneBuffer: MTLBuffer? = device.makeBuffer(length: MemoryLayout<RayTracedScene>.stride, options: [.storageModeShared])
@@ -56,7 +56,7 @@ class Renderer: NSObject, MTKViewDelegate {
             MemoryLayout<RayTracedScene>.stride
         )
         memcpy( // Pass in the lengths
-            sceneBuffer?.contents().advanced(by: (MemoryLayout<Object>.stride * 10 + MemoryLayout<RayTracingMaterial>.stride * 10)), // Shift the memory so the offset is past the object array
+            sceneBuffer?.contents().advanced(by: (MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10)), // Shift the memory so the offset is past the object array
             &lengths,
             MemoryLayout<RayTracedScene>.stride
         )
@@ -64,8 +64,13 @@ class Renderer: NSObject, MTKViewDelegate {
         return sceneBuffer
     }
     
-    func rebuildSceneBuffer() {
-        self.sceneBuffer = buildSceneBuffer()
+    func rebuildSceneBuffer(_ sceneWrapper: SceneBuilder.SceneWrapper) {
+        
+        self.sceneWrapper = sceneWrapper
+        
+        DispatchQueue.main.async {
+            self.sceneBuffer = self.buildSceneBuffer()
+        }
     }
     
     func createUniformBuffer() -> MTLBuffer? {

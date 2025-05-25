@@ -11,7 +11,7 @@ struct PlaneEditor: View {
             // Performed opperation
             OpperationEdit(opperation: $object.objectData[1])
                 .onChange(of: object.objectData[1]) { old, new in
-                    print("PLN Opperation: \(new)")
+//                    print("PLN Opperation: \(new)")
                 }
             
         }
@@ -19,21 +19,21 @@ struct PlaneEditor: View {
         Section("Position and Scale") {
             
             // Plane center
-            TripleItemEdit(name: "Center", coordinate: $object.origin)
+            TripleItemEdit(name: "Center", value: $object.origin)
                 .onChange(of: object.origin) { old, new in
-                    print("PLN Origin: \(new)")
+//                    print("PLN Origin: \(new)")
                 }
                     
             // Height
             SingleItemEdit(name: "Height", value: $object.origin[3])
                 .onChange(of: object.bounds[3]) { old, new in
-                    print("PLN Height: \(new)")
+//                    print("PLN Height: \(new)")
                 }
             
             // Plane Normal
-            TripleItemEdit(name: "Front Direction", coordinate: $object.bounds)
+            TripleItemEdit(name: "Front Direction", value: $object.bounds)
                 .onChange(of: object.bounds) { old, new in
-                    print("PLN Normal: \(new)")
+//                    print("PLN Normal: \(new)")
                 }
             
         }
@@ -43,7 +43,7 @@ struct PlaneEditor: View {
             // Material Index
             ObjectMaterialIndexEdit(index: $object.objectData[3])
                 .onChange(of: object.objectData[3]) { old, new in
-                    print("PLN Material Index: \(new)")
+//                    print("PLN Material Index: \(new)")
                 }
             
         }

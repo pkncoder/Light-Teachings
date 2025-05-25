@@ -5,13 +5,18 @@ import MetalKit
 struct RendererView: NSViewRepresentable {
     
     // Renderer
-    @State var renderer: Renderer = Renderer()
+    @State var renderer: Renderer
+    
+    init(appState: AppState) {
+        renderer = Renderer(appState: appState)
+    }
     
     // Create the view for the renderer
     func makeNSView(context: NSViewRepresentableContext<RendererView>) -> MTKView {
         
         // Initialize the Metal View
         let mtkView = MTKView()
+        
         mtkView.delegate = renderer // Set the delagate that controlls and makes objects for the view
         mtkView.preferredFramesPerSecond = 60 // Set perfered fps (basiclly like a fps cap)
         mtkView.enableSetNeedsDisplay = true // Set that we do indeed need a display
@@ -37,8 +42,7 @@ struct RendererView: NSViewRepresentable {
     // Update the Renderer View, currently unused
     func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<RendererView>) {}
     
-    func updateSceneWrapper(_ sceneWrapper: SceneBuilder.SceneWrapper) {
-        renderer.sceneWrapper = sceneWrapper
-        renderer.rebuildSceneBuffer()
+    func rebuildSceneBuffer(_ sceneWrapper: SceneBuilder.SceneWrapper) {
+        renderer.rebuildSceneBuffer(sceneWrapper)
     }
 }

@@ -7,7 +7,7 @@ class SceneBuilder {
     var sceneFile: String
     
     // Wrapper for the metal object struct
-    struct ObjectWrapper: Hashable, Identifiable, Decodable {
+    struct ObjectWrapper: Hashable, Identifiable, Decodable, Encodable {
         
         var id: Self { self }
         
@@ -15,6 +15,13 @@ class SceneBuilder {
         var bounds: SIMD4<Float>
         var objectData: SIMD4<Float>
         var tempData: SIMD4<Float>
+        
+        init(origin: SIMD4<Float>, bounds: SIMD4<Float>, objectData: SIMD4<Float>, tempData: SIMD4<Float>) {
+            self.origin = origin
+            self.bounds = bounds
+            self.objectData = objectData
+            self.tempData = tempData
+        }
         
         enum CodingKeys: CodingKey {
             case origin
@@ -35,7 +42,7 @@ class SceneBuilder {
     }
     
     // Wrapper for the metal material struct
-    struct MaterialWrapper: Hashable, Identifiable, Decodable {
+    struct MaterialWrapper: Hashable, Identifiable, Decodable, Encodable {
         
         var id: Self { self }
         
@@ -59,13 +66,41 @@ class SceneBuilder {
     }
     
     // Wrapper for the metal scene struct
-    struct SceneWrapper: Hashable, Identifiable, Decodable {
+    @Observable
+    class SceneWrapper: Hashable, Decodable, Encodable {
+        static func == (lhs: SceneWrapper, rhs: SceneWrapper) -> Bool {
+            ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(ObjectIdentifier(self))
+        }
+        
         
         var id: Self { self }
         
         var objects: [ObjectWrapper]
         var materials: [MaterialWrapper]
         var lengths: SIMD4<Float>
+        
+//        init(objects: [ObjectWrapper], materials: [MaterialWrapper], lengths: SIMD4<Float>) {
+//            self.objects = objects
+//            self.materials = materials
+//            self.lengths = lengths
+//        }
+        
+        required init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.objects = try container.decode([ObjectWrapper].self, forKey: .objects)
+            self.materials = try container.decode([MaterialWrapper].self, forKey: .materials)
+            self.lengths = try container.decode(SIMD4<Float>.self, forKey: .lengths)
+        }
+        
+        func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(objects, forKey: .objects)
+            try container.encode(materials, forKey: .materials)
+        }
         
         enum CodingKeys: CodingKey {
             case objects

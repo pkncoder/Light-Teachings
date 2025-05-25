@@ -20,11 +20,7 @@ struct SingleItemEdit: View {
             
             HStack {
                 Text(name)
-                TextField("", value: $value, formatter: numberFormatter)
-                    .frame(width: 20)
-                Stepper(value: $value, step: 0.1) {
-                    EmptyView()
-                }
+                NumberEdit(value: $value)
             }
         }
     }

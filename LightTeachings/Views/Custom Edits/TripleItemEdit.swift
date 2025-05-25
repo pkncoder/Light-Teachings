@@ -8,18 +8,20 @@ struct TripleItemEdit: View {
     let inputTwoName: String
     let inputThreeName: String
     
-    @Binding var coordinate: SIMD4<Float>
+    @Binding var value: SIMD4<Float>
     
     var numberFormatter: NumberFormatter
     
-    init(name: String, inputOneName: String = "X", inputTwoName: String = "Y", inputThreeName: String = "Z", coordinate: Binding<SIMD4<Float>>) {
+    @State private var disclosureIsExpanded = true
+    
+    init(name: String, inputOneName: String = "X", inputTwoName: String = "Y", inputThreeName: String = "Z", value: Binding<SIMD4<Float>>) {
         self.name = name
         
         self.inputOneName = inputOneName
         self.inputTwoName = inputTwoName
         self.inputThreeName = inputThreeName
         
-        self._coordinate = coordinate
+        self._value = value
         
         self.numberFormatter = NumberFormatter()
         self.numberFormatter.numberStyle = .decimal
@@ -27,31 +29,19 @@ struct TripleItemEdit: View {
     
     var body: some View {
         Section {
-            DisclosureGroup(name) {
+            DisclosureGroup(name, isExpanded: $disclosureIsExpanded) {
                 VStack {
                     HStack {
                         Text(inputOneName)
-                        TextField("", value: $coordinate[0], formatter: numberFormatter)
-                            .frame(width: 20)
-                        Stepper(value: $coordinate[0], step: 0.1) {
-                            EmptyView()
-                        }
+                        NumberEdit(value: $value[0])
                     }
                     HStack {
                         Text(inputTwoName)
-                        TextField("", value: $coordinate[1], formatter: numberFormatter)
-                            .frame(width: 20)
-                        Stepper(value: $coordinate[1], step: 0.1) {
-                            EmptyView()
-                        }
+                        NumberEdit(value: $value[1])
                     }
                     HStack {
                         Text(inputThreeName)
-                        TextField("", value: $coordinate[2], formatter: numberFormatter)
-                            .frame(width: 20)
-                        Stepper(value: $coordinate[2], step: 0.1) {
-                            EmptyView()
-                        }
+                        NumberEdit(value: $value[2])
                     }
                 }
             }

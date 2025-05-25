@@ -9,22 +9,23 @@ struct Object {
     simd_float4 tempData;
 };
 
-// Material
-struct RayTracingMaterial {
-    simd_float4 albedo;
-    simd_float4 materialSettings;
-};
-
 // Point light
 struct PointLight {
-    simd_float4 origin;
-    simd_float4 data;
+    simd_float4 position;
+    simd_float4 albedo;
+};
+
+// Material
+struct ObjectMaterial {
+    simd_float4 albedo;
+    simd_float4 materialSettings;
 };
 
 // Scene info
 struct RayTracedScene {
     struct Object objects[10];
-    struct RayTracingMaterial materials[10];
+    struct ObjectMaterial materials[10];
+//    struct PointLight lights[10];
     simd_float4 lengths;
 };
 

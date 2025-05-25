@@ -11,13 +11,13 @@ struct BoxEditor: View {
             // Performed opperation
             OpperationEdit(opperation: $object.objectData[1])
                 .onChange(of: object.objectData[1]) { old, new in
-                    print("BOX Opperation: \(new)")
+//                    print("BOX Opperation: \(new)")
                 }
             
             // Box Type
             BoxTypeEdit(boxType: $object.objectData[0])
                 .onChange(of: object.objectData[0]) { old, new in
-                    print("BOX Type: \(new)")
+//                    print("BOX Type: \(new)")
                 }
             
         }
@@ -25,15 +25,15 @@ struct BoxEditor: View {
         Section("Position and Scale") {
             
             // Origin
-            TripleItemEdit(name: "Origin", inputOneName: "X", inputTwoName: "Y", inputThreeName: "Z", coordinate: $object.origin)
+            TripleItemEdit(name: "Origin", inputOneName: "X", inputTwoName: "Y", inputThreeName: "Z", value: $object.origin)
                 .onChange(of: object.origin) { old, new in
-                    print("BOX Origin: \(new)")
+//                    print("BOX Origin: \(new)")
                 }
             
             // Bounds
-            TripleItemEdit(name: "Scale", coordinate: $object.bounds)
+            TripleItemEdit(name: "Scale", value: $object.bounds)
                 .onChange(of: object.bounds) { old, new in
-                    print("BOX Scale: \(new)")
+//                    print("BOX Scale: \(new)")
                 }
             
             switch Objects.getObjectFromIndex(object.objectData[0]) {
@@ -52,7 +52,7 @@ struct BoxEditor: View {
             // Material Index
             ObjectMaterialIndexEdit(index: $object.objectData[3])
                 .onChange(of: object.objectData[3]) { old, new in
-                    print("BOX Material Index: \(new)")
+//                    print("BOX Material Index: \(new)")
                 }
             
         }

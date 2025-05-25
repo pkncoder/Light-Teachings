@@ -1,11 +1,39 @@
 import SwiftUI
 
-struct FileSave: View {
-    
+struct SaveFile: View {
+    @EnvironmentObject var appState: AppState
+
     var body: some View {
-        Button("Save Scene") {
-            print("saving scene")
+        HStack {
+            Button("Open...")
+            {
+                do {
+                    let savePanel = NSSavePanel()
+                    
+                    savePanel.allowedContentTypes = [.json]
+                    savePanel.canCreateDirectories = false
+                    
+                    savePanel.title = "Save the scene file"
+                    savePanel.message = "Choose where to save the file"
+                    savePanel.prompt = "Save"
+                    
+                    savePanel.nameFieldLabel = "File name:"
+                    savePanel.nameFieldStringValue = self.appState.filename
+                    
+                    if savePanel.runModal() == .OK {
+                        appState.fileUrl = savePanel.url
+                        self.appState.filename = savePanel.url?.lastPathComponent ?? "<none>"
+                    }
+                    
+                    print(appState.filename)
+                    
+                    let data = try JSONEncoder().encode(appState.sceneWrapper)
+                    try data.write(to: appState.fileUrl!)
+                } catch {
+                    print("Error while saving file: \(error)")
+                }
+            }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
 }

@@ -2,7 +2,15 @@ import SwiftUI
 
 struct ObjectEditor: View {
     
+//    @EnvironmentObject var appState: AppState
     @Binding var object: SceneBuilder.ObjectWrapper
+    
+//    var objectIndex: Int
+//    
+//    init(o: Int) {
+////        self.object = object
+//        self.objectIndex = objectIndex
+//    }
     
     var body: some View {
         
@@ -45,5 +53,8 @@ struct ObjectEditor: View {
             }
         }
         .listStyle(InsetListStyle())
+        .onChange(of: self.object) { oldValue, newValue in
+            print("OBJ EDITOR | CHANGE")
+        }
     }
 }

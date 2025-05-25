@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SphereEditor: View {
     
+    @EnvironmentObject var appState: AppState
     @Binding var object: SceneBuilder.ObjectWrapper
     
     var body: some View {
@@ -19,7 +20,7 @@ struct SphereEditor: View {
         Section("Position and Scale") {
             
             // Sphere Origin
-            TripleItemEdit(name: "Origin", coordinate: $object.origin)
+            TripleItemEdit(name: "Origin", value: $object.origin)
                 .onChange(of: object.origin) { old, new in
                     print("SPH Origin: \(new)")
                 }

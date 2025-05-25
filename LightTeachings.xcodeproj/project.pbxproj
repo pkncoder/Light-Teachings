@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F67FA36D2DC0772E00D8723D /* scenes in Resources */ = {isa = PBXBuildFile; fileRef = F67FA3682DC0762000D8723D /* scenes */; };
-		F6EBEC242DC733F000BA6077 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = F6EBEC232DC733F000BA6077 /* TODO.md */; };
+		F6F565EC2DCAB3890054CB89 /* scenes in Resources */ = {isa = PBXBuildFile; fileRef = F67FA3682DC0762000D8723D /* scenes */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,9 +16,22 @@
 		F6EBEC232DC733F000BA6077 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F6F565EB2DCAB37E0054CB89 /* Exceptions for "Archived Ideas" folder in "LightTeachings" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				pathTracingTest.json,
+			);
+			target = F68D3E2B2D7D61BD00B3CD7E /* LightTeachings */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F6370EB72DC2662C0012581B /* Archived Ideas */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F6F565EB2DCAB37E0054CB89 /* Exceptions for "Archived Ideas" folder in "LightTeachings" target */,
+			);
 			path = "Archived Ideas";
 			sourceTree = "<group>";
 		};
@@ -128,8 +140,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F67FA36D2DC0772E00D8723D /* scenes in Resources */,
-				F6EBEC242DC733F000BA6077 /* TODO.md in Resources */,
+				F6F565EC2DCAB3890054CB89 /* scenes in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

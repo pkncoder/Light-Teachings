@@ -8,33 +8,31 @@ struct ContentView: View {
     
     @State var sceneNodeSelection: SceneBuilder.SceneNode? = nil
     
-    var sceneBuilder: SceneBuilder
-    @State var sceneWrapper: SceneBuilder.SceneWrapper
+    @State var rendererView: RendererView? = nil
     
-    let rendererView = RendererView()
-    
-    init() {
-        self.sceneBuilder = SceneBuilder("lifeScene")
-        self.sceneWrapper = self.sceneBuilder.getScene()
-    }
+    @EnvironmentObject var appState: AppState
     
     // Main view shown / top view
     var body: some View {
 
         // Navigation split view used to split the screen into two parts
         NavigationSplitView {
-            SceneTree(sceneWrapper: $sceneWrapper, sceneNodeSelection: $sceneNodeSelection)
+            SceneTree(sceneNodeSelection: $sceneNodeSelection)
                 
         } detail: {
             
             // Used to have deviders to move view size
             HSplitView {
                 
-                rendererView
+                if let rendererUnwrappedView = rendererView {
+                    rendererUnwrappedView
                     .aspectRatio(1, contentMode: .fill)
+                } else {
+                    Text("wait")
+                }
                 
                 // Custom made inspector for the editor, splitting the screen into 3 parts
-                Editor(editorVisible: $editorVisible, sceneNodeSelection: $sceneNodeSelection, sceneWrapper: $sceneWrapper)
+                Editor(editorVisible: $editorVisible, sceneNodeSelection: $sceneNodeSelection)
                 
             }
             .toolbar {
@@ -50,9 +48,13 @@ struct ContentView: View {
             }
         }
         .font(.title)
-        .onChange(of: sceneWrapper) { oldValue, newValue in
-            rendererView.updateSceneWrapper(newValue)
+        .onChange(of: self.appState.sceneWrapper.objects) { oldValue, newValue in
+            rendererView!.rebuildSceneBuffer(appState.sceneWrapper)
+            print("Content View Update | \(appState.sceneWrapper.objects[0].bounds)")
         }
-        
+        .onAppear() {
+            rendererView = RendererView(appState: appState)
+            print("CONTENT VIEW APPEARED")
+        }
     }
 }

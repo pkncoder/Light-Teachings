@@ -385,7 +385,7 @@ private:
         float3 L = normalize(lightPos - worldPos);
         float3 H = normalize (V + L);
         
-        RayTracingMaterial material = scene.materials[hit.materialIndex - 1];
+        ObjectMaterial material = scene.materials[hit.materialIndex - 1];
         
         float3 lightColor = float3(50);
         

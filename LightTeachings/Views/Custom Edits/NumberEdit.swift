@@ -2,8 +2,9 @@ import SwiftUI
 struct NumberEdit: View {
     @Binding public var value: Float
     
-    private var stepperSensitivity: Float = 0.1
-    private var slidingSensitivity: Float = 1.0
+    private var step: Float
+    private var slidingSensitivity: Float
+    private var intSliding: Bool
     
     private var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
@@ -14,10 +15,11 @@ struct NumberEdit: View {
     @FocusState private var isFocused: Bool
     @StateObject var numberStates: NumberSliderState = NumberSliderState()
     
-    init(value: Binding<Float>, stepperSensitivity: Float = 1, slidingSensitivity: Float = 50) {
+    init(value: Binding<Float>, step: Float = 1, slidingSensitivity: Float = 50, intSliding: Bool = false) {
         self._value = value
-        self.stepperSensitivity = stepperSensitivity
+        self.step = step
         self.slidingSensitivity = slidingSensitivity
+        self.intSliding = intSliding
     }
     
     var body: some View {
@@ -25,7 +27,7 @@ struct NumberEdit: View {
         HStack {
             
             Button("-") {
-                value -= stepperSensitivity
+                value -= step
             }
             .padding(0)
             
@@ -41,13 +43,17 @@ struct NumberEdit: View {
                     .frame(width: 40)
                     .lineLimit(1)
             } else {
-                Text(String(format: "%.1f", value))
+                Text(self.intSliding ? String(format: "%.0f", value) : String(format: "%.2f", value))
                     .gesture(
                         DragGesture(minimumDistance: 1.0, coordinateSpace: .local)
                             .onChanged { coord in
                                 let deltaX = Float(coord.location.x) - numberStates.lastDeltaX
                                 
-                                value += deltaX / slidingSensitivity
+                                if (self.intSliding) {
+                                    value += Float(Int(deltaX / slidingSensitivity))
+                                } else {
+                                    value += deltaX / slidingSensitivity
+                                }
                                 
                                 numberStates.updateValueX(newDeltaX: Float(coord.location.x))
                             }
@@ -63,7 +69,7 @@ struct NumberEdit: View {
             }
             
             Button("+") {
-                value += stepperSensitivity
+                value += step
             }
             .padding(0)
         }

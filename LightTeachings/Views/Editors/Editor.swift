@@ -6,7 +6,17 @@ struct Editor: View {
     // Hold the binding with the editor visible from whatever that initializes this
     @Binding var editorVisible: Bool
     @Binding var sceneNodeSelection: SceneBuilder.SceneNode?
-    @Binding var sceneWrapper: SceneBuilder.SceneWrapper
+    
+    @State var value: Float = 0.0
+    
+    @EnvironmentObject var appState: AppState
+//    @Binding var sceneWrapper: SceneBuilder.SceneWrapper
+    
+    init(editorVisible: Binding<Bool>, sceneNodeSelection: Binding<SceneBuilder.SceneNode?>) {
+        
+        self._editorVisible = editorVisible
+        self._sceneNodeSelection = sceneNodeSelection
+    }
     
     // Top level view for the Editor view
     var body: some View {
@@ -20,10 +30,10 @@ struct Editor: View {
                 // VStack that holds all info, and that is modified with inspector-like qualities
                 VStack {
                     if sceneNodeSelection != nil {
-                        if sceneNodeSelection?.heldObjectIndex ?? 255 < sceneWrapper.objects.count {
-                            ObjectEditor(object: $sceneWrapper.objects[sceneNodeSelection!.heldObjectIndex!])
-                        } else if sceneNodeSelection?.heldObjectIndex ?? 255 < sceneWrapper.objects.count + sceneWrapper.materials.count {
-                            MaterialEditor(material: $sceneWrapper.materials[sceneNodeSelection!.heldObjectIndex! - sceneWrapper.objects.count])
+                        if sceneNodeSelection?.heldObjectIndex ?? 255 < appState.sceneWrapper.objects.count {
+                            ObjectEditor(object: $appState.sceneWrapper.objects[sceneNodeSelection!.heldObjectIndex!])
+                        } else if sceneNodeSelection?.heldObjectIndex ?? 255 < appState.sceneWrapper.objects.count + appState.sceneWrapper.materials.count {
+                            MaterialEditor(materialIndex: sceneNodeSelection!.heldObjectIndex!)
                         } else {
                             Text("You've selected a Title")
                         }
@@ -35,6 +45,12 @@ struct Editor: View {
                 .font(.subheadline)
                 
                 Spacer()
+            }
+            .onChange(of: self.appState) { oldValue, newValue in
+//                appState.sceneWrapper = self.sceneWrapper
+                print("EDITOR: Update | \(appState.sceneWrapper.objects[0].bounds)")
+                
+//                print(AppState.shared.sceneWrapper.objects[0].bounds)
             }
         }
     }

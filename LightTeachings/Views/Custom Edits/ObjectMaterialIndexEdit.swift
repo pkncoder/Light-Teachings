@@ -9,11 +9,7 @@ struct ObjectMaterialIndexEdit: View {
             
             HStack {
                 Text("Material Index")
-                TextField("", value: $index, formatter: NumberFormatter())
-                    .frame(width: 30)
-                Stepper(value: $index, step: 1) {
-                    EmptyView()
-                }
+                NumberEdit(value: $index, step: 1, slidingSensitivity: 1, intSliding: true)
             }
         }
     }
