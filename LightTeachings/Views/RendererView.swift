@@ -58,12 +58,4 @@ struct RendererView: NSViewRepresentable {
 //        renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
         print("Updating")
     }
-    
-    func makeCoordinator() -> Coordinator {
-            Coordinator()
-        }
-
-    class Coordinator {
-        var displayLinkController: DisplayLinkController?
-    }
 }
