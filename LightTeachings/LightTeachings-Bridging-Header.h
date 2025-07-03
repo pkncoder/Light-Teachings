@@ -21,11 +21,18 @@ struct ObjectMaterial {
     simd_float4 materialSettings;
 };
 
+// Bounding Box
+struct BoundingBox {
+    simd_float4 boxMin;
+    simd_float4 boxMax;
+};
+
 // Scene info
 struct RayTracedScene {
     struct Object objects[10];
     struct ObjectMaterial materials[10];
 //    struct PointLight lights[10];
+    struct BoundingBox topBoundingBox;
     simd_float4 lengths;
 };
 

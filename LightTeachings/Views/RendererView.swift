@@ -1,48 +1,69 @@
 import SwiftUI
 import MetalKit
 
+class MetalViewLayer: NSView {
+    override func makeBackingLayer() -> CALayer {
+        let metalLayer = CAMetalLayer()
+        metalLayer.pixelFormat = .bgra8Unorm
+        metalLayer.framebufferOnly = true
+        metalLayer.contentsScale = NSScreen.main?.backingScaleFactor ?? 2.0
+        return metalLayer
+    }
+
+    var metalLayer: CAMetalLayer {
+        return self.layer as! CAMetalLayer
+    }
+}
+
 // The view controller for the renderer
 struct RendererView: NSViewRepresentable {
     
     // Renderer
-    @State var renderer: Renderer
+    var renderer: Renderer
     
     init(rendererSettings: RendererSettings) {
         renderer = Renderer(rendererSettings: rendererSettings)
     }
     
     // Create the view for the renderer
-    func makeNSView(context: NSViewRepresentableContext<RendererView>) -> MTKView {
+    func makeNSView(context: NSViewRepresentableContext<RendererView>) -> MetalViewLayer {
         
-        // Initialize the Metal View
-        let mtkView = MTKView()
-        
-        mtkView.delegate = renderer // Set the delagate that controlls and makes objects for the view
-        mtkView.preferredFramesPerSecond = 60 // Set perfered fps (basiclly like a fps cap)
-        mtkView.enableSetNeedsDisplay = true // Set that we do indeed need a display
-        
-        // Create the metal device
-        if let metalDevice = MTLCreateSystemDefaultDevice() {
-            mtkView.device = metalDevice
-        }
-        
-        // There is not only a framebuffer for the render
-        mtkView.framebufferOnly = false
-        
-        // Set the drawable size
-        mtkView.drawableSize = mtkView.frame.size
-        
-        // Turn off isPaused so the view continues to render as many times per second as set (soft-capped at 60)
-        mtkView.isPaused = false
+        let view = MetalViewLayer()
+        view.wantsLayer = true
+        renderer.attachToLayer(view.metalLayer)
         
         // Return our full mtkview
-        return mtkView
+        return view
     }
     
     // Update the Renderer View, currently unused
-    func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<RendererView>) {}
+    func updateNSView(_ nsView: MetalViewLayer, context: NSViewRepresentableContext<RendererView>) {}
+    
+    func step(displaylink: CADisplayLink) {
+        print(displaylink.targetTimestamp)
+    }
     
     func rebuildSceneBuffer(_ sceneWrapper: SceneBuilder.SceneWrapper) {
         renderer.rebuildSceneBuffer(sceneWrapper)
+        print("Rebuilding")
+    }
+    
+    func updateSceneBuffer(sceneWrapper: SceneBuilder.SceneWrapper, updateData: UpdateData) {
+        
+        // Prepare new buffer in the background
+        DispatchQueue.global(qos: .userInitiated).async {
+            renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
+        }
+        
+//        renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
+        print("Updating")
+    }
+    
+    func makeCoordinator() -> Coordinator {
+            Coordinator()
+        }
+
+    class Coordinator {
+        var displayLinkController: DisplayLinkController?
     }
 }

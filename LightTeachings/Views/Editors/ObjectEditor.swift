@@ -2,7 +2,9 @@ import SwiftUI
 
 struct ObjectEditor: View {
     
+    @EnvironmentObject var rendererSettings: RendererSettings
     @Binding var object: SceneBuilder.ObjectWrapper
+    var objectIndex: Int
     
     var body: some View {
         
@@ -45,8 +47,9 @@ struct ObjectEditor: View {
             }
         }
         .listStyle(InsetListStyle())
-        .onChange(of: self.object) { oldValue, newValue in
+        .onChange(of: self.rendererSettings.sceneWrapper.objects) { oldValue, newValue in
             print("OBJ EDITOR | CHANGE")
+            rendererSettings.updateData = UpdateData(updateType: .Object, updateIndex: objectIndex)
         }
     }
 }

@@ -48,8 +48,12 @@ struct ContentView: View {
         }
         .font(.title)
         .onChange(of: self.rendererSettings.sceneWrapper.objects) { oldValue, newValue in
-            rendererView!.rebuildSceneBuffer(rendererSettings.sceneWrapper)
-            print("Content View Update")
+            DispatchQueue.global(qos: .userInteractive).async {
+                if let updateData = rendererSettings.updateData {
+                    rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
+                    print("Content View Update")
+                }
+            }
         }
         .onAppear() {
             rendererView = RendererView(rendererSettings: rendererSettings)

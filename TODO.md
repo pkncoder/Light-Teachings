@@ -11,10 +11,14 @@ This is the file that I save all of the things that I still have to do
     - [x] Lighter BG
     - [x] Larger Form
     - [x] ***Blender Based***
+    - [ ] Check that it actually works right
 - [ ] Make the scene tree disclosures open by default
 - [ ] Add MacOs menubar commands
     - [x] Saving scenes
     - [ ] Opening scenes
+
+## User Interface
+- [ ] Material editor
 
 ## Shader Stuff
 - [ ] Full Refactoring of said file
@@ -25,14 +29,19 @@ This is the file that I save all of the things that I still have to do
     - Indicates an object index that is being opporated on
     - Indicates what opporation "group" is being opporated on
 - [ ] Add the point lights
+- [x] Bounding Box
+- [ ] Use multithreading to decouple renderer and SwiftUI
 
 ## Background Stuff
 - [ ] Recommenting
-- [ ] Private protection everywhere I can
+- [ ] Attribute protection levels everywhere I can
+- [ ] Deconstructors & attribute memory levels (like weak)
 - [ ] More file seperation?
 - [ ] Rename files
 - [x] RENAME APP STATE
+- [ ] Rename Render Settings ?
 - [x] Change the passing of scene info around to using envirormentObjects
+
 
 
 
@@ -42,7 +51,9 @@ This is the stuff in the future for ideas to mark down
 ## User Interactions
 
 ## Shader Stuff
+- [ ] Full BVH instead of just a Bounding Box
 
 ## Background Stuff
 
 ## Major Stuff
+- [ ] Make a block language to interact with the renderer

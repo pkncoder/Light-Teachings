@@ -7,7 +7,7 @@ class SceneBuilder {
     var sceneFile: String
     
     // Wrapper for the metal object struct
-    struct ObjectWrapper: Hashable, Identifiable, Decodable, Encodable {
+    struct ObjectWrapper: Hashable, Identifiable, Decodable, Encodable, Equatable {
         
         var id: Self { self }
         

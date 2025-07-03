@@ -1,7 +1,8 @@
 import MetalKit
 import SwiftUI
 
-class Renderer: NSObject, MTKViewDelegate {
+class Renderer: NSObject, CAMetalDisplayLinkDelegate {
+    
     
     // Rendering variables
     var device: MTLDevice!
@@ -13,6 +14,11 @@ class Renderer: NSObject, MTKViewDelegate {
     
     private var sceneBuffer: MTLBuffer!
     private var uniformBuffer: MTLBuffer!
+    
+    // Uniform struct
+    private var uniforms: Uniforms
+    
+    weak var metalLayer: CAMetalLayer?
     
     // Initializer
     init(rendererSettings: RendererSettings) {
@@ -29,22 +35,41 @@ class Renderer: NSObject, MTKViewDelegate {
         
         self.sceneWrapper = rendererSettings.sceneWrapper
         
+        self.uniforms = Uniforms()
+        
         // Call the init function for MetalKit
         super.init()
         
         
         /* Create Buffers */
-        DispatchQueue.main.async {
-            self.sceneBuffer = self.buildSceneBuffer()!
-        }
+        self.sceneBuffer = self.buildSceneBuffer()!
+       
         self.uniformBuffer = createUniformBuffer()!
+        
+        print("Renderer Init")
     }
     
-    @MainActor func buildSceneBuffer() -> MTLBuffer? {
+    func attachToLayer(_ layer: CAMetalLayer) {
+        self.metalLayer = layer
+        layer.device = device
+        layer.pixelFormat = .bgra8Unorm
+        layer.framebufferOnly = true
+
+        // Set drawable size
+        layer.drawableSize = CGSize(width: 300, height: 300)
+
+        // Start the display link
+        let displayLink = CAMetalDisplayLink(metalLayer: layer)
+        displayLink.delegate = self
+        displayLink.add(to: .main, forMode: .default)
+    }
+    
+    func buildSceneBuffer() -> MTLBuffer? {
         
         // Split the portions of the scene
         var objectArray: [SceneBuilder.ObjectWrapper] = self.sceneWrapper.objects
         var materialArray: [SceneBuilder.MaterialWrapper] = self.sceneWrapper.materials
+        var boundingBox: BoundingBox = BoundingBoxBuilder(objects: objectArray).fullBuild()
         var lengths: SIMD4<Float> = self.sceneWrapper.lengths
         
         // Create a buffer for the scene
@@ -55,8 +80,13 @@ class Renderer: NSObject, MTKViewDelegate {
             &materialArray,
             MemoryLayout<RayTracedScene>.stride
         )
+        memcpy(
+            sceneBuffer?.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10),
+            &boundingBox,
+            MemoryLayout<RayTracedScene>.stride
+        )
         memcpy( // Pass in the lengths
-            sceneBuffer?.contents().advanced(by: (MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10)), // Shift the memory so the offset is past the object array
+            sceneBuffer?.contents().advanced(by: (MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10 + MemoryLayout<BoundingBox>.stride)), // Shift the memory so the offset is past the object array
             &lengths,
             MemoryLayout<RayTracedScene>.stride
         )
@@ -67,9 +97,28 @@ class Renderer: NSObject, MTKViewDelegate {
     func rebuildSceneBuffer(_ sceneWrapper: SceneBuilder.SceneWrapper) {
         
         self.sceneWrapper = sceneWrapper
+        self.sceneBuffer = self.buildSceneBuffer()
+    }
+    
+    func updateSceneBuffer(sceneWrapper: SceneBuilder.SceneWrapper, updateData: UpdateData) {
         
-        DispatchQueue.main.async {
-            self.sceneBuffer = self.buildSceneBuffer()
+        self.sceneWrapper = sceneWrapper
+        
+        switch updateData.updateType {
+            case .Object:
+            
+            sceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.objects[updateData.updateIndex], byteCount: MemoryLayout<Object>.stride)
+                var boundingBox: BoundingBox = BoundingBoxBuilder(objects: sceneWrapper.objects).fullBuild()
+            sceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10).copyMemory(from: &boundingBox, byteCount: MemoryLayout<BoundingBox>.stride)
+            
+            
+            case .Material:
+            
+            sceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: MemoryLayout<ObjectMaterial>.stride)
+            
+            
+            case .Light:
+                break
         }
     }
     
@@ -81,34 +130,30 @@ class Renderer: NSObject, MTKViewDelegate {
         return uniformBuffer
     }
     
-    // View initializer - not used
-    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
+    func metalDisplayLink(_ link: CAMetalDisplayLink, needsUpdate update: CAMetalDisplayLink.Update) {
+//        print("Drew")
+        draw(to: update.drawable)
+        
+    }
     
     // Main draw function - used
-    func draw(in view: MTKView) {
-        
+    func draw(to drawable: CAMetalDrawable) {
         
         /* MARK: - Info added Setup - */
         
-        // Get the drawable from the view - protections are put so bad errors don't happen
-        guard let drawable = view.currentDrawable else {
-            return
-        }
-        
-        view.drawableSize = CGSize(width: 300, height: 300)
-        
         // Set the settings for the current render
-        let renderPassDescriptor = view.currentRenderPassDescriptor
-        renderPassDescriptor?.colorAttachments[0].clearColor = MTLClearColorMake(1, 0, 1, 1.0) // What color the screen is cleared to
-        renderPassDescriptor?.colorAttachments[0].loadAction = .clear // What to do at the start of the render pass
-        renderPassDescriptor?.colorAttachments[0].storeAction = .store // What to do at the end of the render pass
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(1, 0, 1, 1.0) // What color the screen is cleared to
+        renderPassDescriptor.colorAttachments[0].loadAction = .clear // What to do at the start of the render pass
+        renderPassDescriptor.colorAttachments[0].storeAction = .store // What to do at the end of the render pass
         
         // Get a command *buffer* from the que to add commands too each frame
         let commandBuffer = commandQueue.makeCommandBuffer()!
 
         // Get the render encoder from the command buffer
         let renderEncoder = commandBuffer
-            .makeRenderCommandEncoder(descriptor: renderPassDescriptor!)!
+            .makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         
         // Give the render encoder the pipeline
         renderEncoder.setRenderPipelineState(pipeline)
@@ -124,20 +169,21 @@ class Renderer: NSObject, MTKViewDelegate {
         
         // Screen size
         let screenSize = ScreenSize(
-            width: Float(view.drawableSize.width),
-            height: Float(view.drawableSize.height)
+            width: Float(drawable.layer.drawableSize.width),
+            height: Float(drawable.layer.drawableSize.height)
         )
         
-        // Uniform struct
-        var uniforms = Uniforms(
-            screenSize: screenSize,
-            frameNum: frameNum,
-            padding: 0
-        );
+        var newUniforms = Uniforms(screenSize: screenSize, frameNum: frameNum, padding: 0)
         
-        // Update the frame number
-        memcpy(self.uniformBuffer?.contents(), &uniforms, MemoryLayout<Uniforms>.stride)
+        if (uniforms.screenSize.width != newUniforms.screenSize.width || uniforms.screenSize.height != newUniforms.screenSize.height) {
+            uniformBuffer.contents().copyMemory(from: &newUniforms.screenSize, byteCount: MemoryLayout<ScreenSize>.stride)
+            print("Updated Screen Size")
+            
+            uniforms.screenSize = newUniforms.screenSize
+        }
         
+        uniformBuffer.contents().advanced(by: MemoryLayout<ScreenSize>.stride).copyMemory(from: &newUniforms.frameNum, byteCount: MemoryLayout<Float>.stride)
+                                                                                          
         // Pass it to the fragment
         renderEncoder.setFragmentBuffer(self.uniformBuffer, offset: 0, index: 2)
         
@@ -155,8 +201,8 @@ class Renderer: NSObject, MTKViewDelegate {
         // Commit the changes to the command buffer
         commandBuffer.commit()
         
-//        // Wait for the GPU to stop the screen tearing
-//        commandBuffer.waitUntilCompleted()
+        // Wait for the GPU to stop the screen tearing
+        commandBuffer.waitUntilCompleted()
         
         // Increase the frame number
         frameNum += 1

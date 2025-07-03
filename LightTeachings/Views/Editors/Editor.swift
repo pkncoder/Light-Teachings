@@ -30,7 +30,7 @@ struct Editor: View {
                 VStack {
                     if sceneNodeSelection != nil {
                         if sceneNodeSelection?.selectionData?.selectionType == .Object {
-                            ObjectEditor(object: $rendererSettings.sceneWrapper.objects[sceneNodeSelection!.selectionData!.selectedIndex!])
+                            ObjectEditor(object: $rendererSettings.sceneWrapper.objects[sceneNodeSelection!.selectionData!.selectedIndex!], objectIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
                         } else if sceneNodeSelection?.selectionData?.selectionType == .Material {
                             MaterialEditor(material: $rendererSettings.sceneWrapper.materials[sceneNodeSelection!.selectionData!.selectedIndex!])
                         } else {

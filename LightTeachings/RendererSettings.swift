@@ -10,6 +10,8 @@ class RendererSettings: ObservableObject, Equatable, Identifiable {
     @Published var filename: String = ""
     @Published var fileUrl: URL? = nil
     
+    @Published var updateData: UpdateData? = nil
+    
     init(sceneWrapper: SceneBuilder.SceneWrapper) {
         self._sceneWrapper = Published(wrappedValue: sceneWrapper)
     }
