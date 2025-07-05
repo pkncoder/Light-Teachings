@@ -23,6 +23,7 @@ struct OpenFile: View {
                 }
                 
                 rendererSettings.sceneWrapper = SceneBuilder(rendererSettings.filename).getScene()
+                rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: -1)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

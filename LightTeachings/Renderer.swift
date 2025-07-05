@@ -61,7 +61,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         // Start the display link
         let displayLink = CAMetalDisplayLink(metalLayer: layer)
         displayLink.delegate = self
-        displayLink.add(to: .main, forMode: .default)
+        displayLink.add(to: .main, forMode: .common)
     }
     
     func buildSceneBuffer() -> MTLBuffer? {
@@ -104,21 +104,32 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         
         self.sceneWrapper = sceneWrapper
         
+        var backSceneBuffer: MTLBuffer!
+        backSceneBuffer = self.sceneBuffer
+        
         switch updateData.updateType {
-            case .Object:
+        case .Object:
             
-            sceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.objects[updateData.updateIndex], byteCount: MemoryLayout<Object>.stride)
-                var boundingBox: BoundingBox = BoundingBoxBuilder(objects: sceneWrapper.objects).fullBuild()
-            sceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10).copyMemory(from: &boundingBox, byteCount: MemoryLayout<BoundingBox>.stride)
-            
-            
-            case .Material:
-            
-            sceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: MemoryLayout<ObjectMaterial>.stride)
+            backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.objects[updateData.updateIndex], byteCount: MemoryLayout<Object>.stride)
+            var boundingBox: BoundingBox = BoundingBoxBuilder(objects: sceneWrapper.objects).fullBuild()
+            backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10).copyMemory(from: &boundingBox, byteCount: MemoryLayout<BoundingBox>.stride)
             
             
-            case .Light:
-                break
+        case .Material:
+            
+            backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: MemoryLayout<ObjectMaterial>.stride)
+            
+        case .Full:
+            print("FULL")
+            backSceneBuffer = self.buildSceneBuffer()
+            
+        case .Light:
+            break
+            
+        }
+        
+        DispatchQueue.main.async {
+            self.sceneBuffer.contents().copyMemory(from: backSceneBuffer.contents(), byteCount: self.sceneBuffer.length)
         }
     }
     

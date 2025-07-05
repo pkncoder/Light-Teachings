@@ -130,6 +130,8 @@ class SceneBuilder {
     func getScene() -> SceneWrapper {
         
         do {
+            
+            print(sceneFile)
         
             // Get the file path (while catching erros) && get the json data from the bundle path
             if let bundlePath = Bundle.main.path(forResource: self.sceneFile, ofType: "json", inDirectory: "scenes"),

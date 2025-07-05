@@ -48,6 +48,7 @@ struct ObjectEditor: View {
         }
         .listStyle(InsetListStyle())
         .onChange(of: self.rendererSettings.sceneWrapper.objects) { oldValue, newValue in
+            if self.rendererSettings.updateData?.updateType == .Full { return }
             print("OBJ EDITOR | CHANGE")
             rendererSettings.updateData = UpdateData(updateType: .Object, updateIndex: objectIndex)
         }
