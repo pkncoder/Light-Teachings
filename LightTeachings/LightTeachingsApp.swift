@@ -14,8 +14,8 @@ struct SimpleRayTracerApp: App {
     
     init() {
         
-        let filename: String = "lifeScene"
-        let sceneBuilder: SceneBuilder = SceneBuilder(filename)
+        let filename: String = "lifeScene.json 09-51-43-364"
+        let sceneBuilder: SceneBuilder = SceneBuilder(Bundle.main.url(forResource: filename, withExtension: "json", subdirectory: "scenes")!)
         let sceneWrapper = sceneBuilder.getScene()
         
         let newAppState = RendererSettings(sceneWrapper: sceneWrapper)

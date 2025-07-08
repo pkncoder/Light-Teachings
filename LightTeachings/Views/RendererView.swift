@@ -39,10 +39,6 @@ struct RendererView: NSViewRepresentable {
     // Update the Renderer View, currently unused
     func updateNSView(_ nsView: MetalViewLayer, context: NSViewRepresentableContext<RendererView>) {}
     
-    func step(displaylink: CADisplayLink) {
-        print(displaylink.targetTimestamp)
-    }
-    
     func rebuildSceneBuffer(_ sceneWrapper: SceneBuilder.SceneWrapper) {
         renderer.rebuildSceneBuffer(sceneWrapper)
         print("Rebuilding")
@@ -51,11 +47,10 @@ struct RendererView: NSViewRepresentable {
     func updateSceneBuffer(sceneWrapper: SceneBuilder.SceneWrapper, updateData: UpdateData) {
         
         // Prepare new buffer in the background
-        DispatchQueue.global(qos: .userInitiated).async {
+//        DispatchQueue.global(qos: .background).async {
             renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
-        }
+//        }
         
-//        renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
         print("Updating")
     }
 }

@@ -32,7 +32,7 @@ struct Editor: View {
                         if sceneNodeSelection?.selectionData?.selectionType == .Object {
                             ObjectEditor(object: $rendererSettings.sceneWrapper.objects[sceneNodeSelection!.selectionData!.selectedIndex!], objectIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
                         } else if sceneNodeSelection?.selectionData?.selectionType == .Material {
-                            MaterialEditor(material: $rendererSettings.sceneWrapper.materials[sceneNodeSelection!.selectionData!.selectedIndex!])
+                            MaterialEditor(material: $rendererSettings.sceneWrapper.materials[sceneNodeSelection!.selectionData!.selectedIndex!], materialIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
                         } else {
                             Text("You've selected a Title")
                         }

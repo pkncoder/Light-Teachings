@@ -13,6 +13,8 @@ struct SaveFile: View {
                     savePanel.allowedContentTypes = [.json]
                     savePanel.canCreateDirectories = false
                     
+                    savePanel.directoryURL = URL(fileURLWithPath: try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).description)
+                    
                     savePanel.title = "Save the scene file"
                     savePanel.message = "Choose where to save the file"
                     savePanel.prompt = "Save"

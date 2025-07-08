@@ -429,7 +429,7 @@ private:
         float NdotL = max(dot(N, L), 0.0);
 
         float3 color = lightColor * (kD * pow(material.albedo.xyz, float3(2.2)) / M_PI_F + specular) *
-        (NdotL / dot(lightPos - worldPos, lightPos - worldPos));
+        (NdotL / dot(lightPos - worldPos, lightPos - worldPos)) + 0.05;
 
 
         ray.origin = hit.hitPos + normal * epsilon;

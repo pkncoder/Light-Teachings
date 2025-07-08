@@ -22,7 +22,7 @@ struct OpenFile: View {
                     print(rendererSettings.fileUrl!)
                 }
                 
-                rendererSettings.sceneWrapper = SceneBuilder(rendererSettings.filename).getScene()
+                rendererSettings.sceneWrapper = SceneBuilder(rendererSettings.fileUrl!).getScene()
                 rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: -1)
             }
         }

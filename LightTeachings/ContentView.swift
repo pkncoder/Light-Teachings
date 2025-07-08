@@ -55,8 +55,15 @@ struct ContentView: View {
                     print("Content View Update")
                 }
             }
+        }
+        .onChange(of: self.rendererSettings.sceneWrapper.materials) { oldValue, newValue in
             
-            self.rendererSettings.updateData = nil
+            DispatchQueue.global(qos: .background).async {
+                if let _ = rendererSettings.updateData {
+                    rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
+                    print("Content View Update")
+                }
+            }
         }
         .onAppear() {
             rendererView = RendererView(rendererSettings: rendererSettings)

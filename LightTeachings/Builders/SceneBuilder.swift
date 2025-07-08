@@ -4,7 +4,7 @@ import SwiftUI
 class SceneBuilder {
     
     // Variable for the file name of the scene, not including extentions
-    var sceneFile: String
+    var sceneUrl: URL
     
     // Wrapper for the metal object struct
     struct ObjectWrapper: Hashable, Identifiable, Decodable, Encodable, Equatable {
@@ -122,8 +122,8 @@ class SceneBuilder {
     }
     
     // Initializer
-    init(_ sceneFile: String) {
-        self.sceneFile = sceneFile
+    init(_ sceneUrl: URL) {
+        self.sceneUrl = sceneUrl
     }
     
     // Returns a scene wrapper
@@ -131,20 +131,17 @@ class SceneBuilder {
         
         do {
             
-            print(sceneFile)
-        
-            // Get the file path (while catching erros) && get the json data from the bundle path
-            if let bundlePath = Bundle.main.path(forResource: self.sceneFile, ofType: "json", inDirectory: "scenes"),
-                let jsonData = try String(contentsOfFile: bundlePath, encoding: .utf8).data(using: .utf8) {
-                     
-                // Decode the json data into the scene wrapper
-                let sceneWrapper = try JSONDecoder().decode(SceneWrapper.self, from: jsonData)
-
-                // Return the final scene wrapper
-                return sceneWrapper
-            } else {
-                print("Something is nil")
+            if !FileManager().fileExists(atPath: sceneUrl.path) {
+                fatalError("File doesn't exist")
             }
+            
+            let jsonData = try Data(contentsOf: sceneUrl)
+            
+            // Decode the json data into the scene wrapper
+            let sceneWrapper = try JSONDecoder().decode(SceneWrapper.self, from: jsonData)
+
+            // Return the final scene wrapper
+            return sceneWrapper
         } catch {
             
             // If there is an error, then print it out and continue

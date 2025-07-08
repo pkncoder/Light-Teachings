@@ -12,13 +12,14 @@ This is the file that I save all of the things that I still have to do
     - [x] Larger Form
     - [x] ***Blender Based***
     - [ ] Check that it actually works right
+    - [ ] Add ranges
 - [ ] Make the scene tree disclosures open by default
-- [ ] Add MacOs menubar commands
+- [x] Add MacOs menubar commands
     - [x] Saving scenes
-    - [ ] Opening scenes
+    - [x] Opening scenes
 
 ## User Interface
-- [ ] Material editor
+- [x] Material editor
 
 ## Shader Stuff
 - [ ] Full Refactoring of said file
@@ -36,12 +37,13 @@ This is the file that I save all of the things that I still have to do
 - [ ] Recommenting
 - [ ] Attribute protection levels everywhere I can
 - [ ] Deconstructors & attribute memory levels (like weak)
-- [ ] More file seperation?
+- [ ] Sepperate structs and other things into more files
 - [ ] Rename files
 - [x] RENAME APP STATE
 - [ ] Rename Render Settings ?
 - [x] Change the passing of scene info around to using envirormentObjects
-
+- [ ] Try to use getter and setter methods to not need .onChange as much
+    - [ ] If that goes well maybe even add a update flag to render settings so there's only one for all .onChange in ContentView
 
 
 
