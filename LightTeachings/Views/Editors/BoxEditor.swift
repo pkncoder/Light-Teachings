@@ -27,9 +27,9 @@ struct BoxEditor: View {
             // Other possible settings based on box type
             switch Objects.getObjectFromIndex(object.objectData[0]) {
                 case .borderedBox:
-                    SingleItemEdit(name: "Border Width", value: $object.bounds[3]) // Bordered box border width
+                SingleItemEdit(name: "Border Width", value: $object.bounds[3], range: 0...10000) // Bordered box border width
                 case .roundedBox:
-                    SingleItemEdit(name: "Rounding Amount", value: $object.bounds[3]) // Rounding amount on rounded boxes
+                SingleItemEdit(name: "Rounding Amount", value: $object.bounds[3], range: 0...10000) // Rounding amount on rounded boxes
                 default:
                     EmptyView()
             }

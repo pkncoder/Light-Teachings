@@ -40,7 +40,7 @@ This is the file that I save all of the things that I still have to do
 
 ## Background Stuff
 - [ ] Recommenting
- - [ ] Done 9/7/25 - d/m/yy at 00:35
+ - [x] Done 9/7/25 - d/m/yy at 00:35
 - [ ] Attribute protection levels everywhere I can
 - [ ] Deconstructors & attribute memory levels (like weak)
 - [ ] Sepperate structs and other things into more files

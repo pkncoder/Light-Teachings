@@ -23,7 +23,7 @@ struct CylinderEditor: View {
             SingleItemEdit(name: "Height", value: $object.bounds[1])
             
             // Radius
-            SingleItemEdit(name: "Radius", value: $object.bounds[3])
+            SingleItemEdit(name: "Radius", value: $object.bounds[3], range: 0...10000)
             
         }
         

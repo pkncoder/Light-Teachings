@@ -20,7 +20,7 @@ struct SphereEditor: View {
             TripleItemEdit(name: "Origin", value: $object.origin)
             
             // Radius
-            SingleItemEdit(name: "Radius", value: $object.bounds[3])
+            SingleItemEdit(name: "Radius", value: $object.bounds[3], range: 0...10000)
             
         }
         
