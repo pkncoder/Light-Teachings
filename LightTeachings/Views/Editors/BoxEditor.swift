@@ -8,17 +8,11 @@ struct BoxEditor: View {
         
         Section("Object Proporties and Interations") {
             
-            // Performed opperation
+            // Performed sdf opperation
             OpperationEdit(opperation: $object.objectData[1])
-                .onChange(of: object.objectData[1]) { old, new in
-//                    print("BOX Opperation: \(new)")
-                }
             
             // Box Type
             BoxTypeEdit(boxType: $object.objectData[0])
-                .onChange(of: object.objectData[0]) { old, new in
-//                    print("BOX Type: \(new)")
-                }
             
         }
       
@@ -26,21 +20,16 @@ struct BoxEditor: View {
             
             // Origin
             TripleItemEdit(name: "Origin", inputOneName: "X", inputTwoName: "Y", inputThreeName: "Z", value: $object.origin)
-                .onChange(of: object.origin) { old, new in
-//                    print("BOX Origin: \(new)")
-                }
             
             // Bounds
             TripleItemEdit(name: "Scale", value: $object.bounds)
-                .onChange(of: object.bounds) { old, new in
-//                    print("BOX Scale: \(new)")
-                }
             
+            // Other possible settings based on box type
             switch Objects.getObjectFromIndex(object.objectData[0]) {
                 case .borderedBox:
-                    SingleItemEdit(name: "Border Width", value: $object.bounds[3])
+                    SingleItemEdit(name: "Border Width", value: $object.bounds[3]) // Bordered box border width
                 case .roundedBox:
-                    SingleItemEdit(name: "Rounding Amount", value: $object.bounds[3])
+                    SingleItemEdit(name: "Rounding Amount", value: $object.bounds[3]) // Rounding amount on rounded boxes
                 default:
                     EmptyView()
             }
@@ -51,10 +40,6 @@ struct BoxEditor: View {
             // TODO: -Make a material editor here-
             // Material Index
             ObjectMaterialIndexEdit(index: $object.objectData[3])
-                .onChange(of: object.objectData[3]) { old, new in
-//                    print("BOX Material Index: \(new)")
-                }
-            
         }
     }
 }

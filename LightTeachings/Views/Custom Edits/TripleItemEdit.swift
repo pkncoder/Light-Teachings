@@ -2,33 +2,37 @@ import SwiftUI
 
 struct TripleItemEdit: View {
     
+    // Name of edit
     let name: String
     
+    // Names of all inputs
     let inputOneName: String
     let inputTwoName: String
     let inputThreeName: String
     
+    // Value inside of a vec4
     @Binding var value: SIMD4<Float>
     
-    var numberFormatter: NumberFormatter
-    
+    // MARK: -Probally not good to share this-
+    // State variable for expanded disclosures
     @State private var disclosureIsExpanded = true
     
     init(name: String, inputOneName: String = "X", inputTwoName: String = "Y", inputThreeName: String = "Z", value: Binding<SIMD4<Float>>) {
-        self.name = name
         
+        // Set names
+        self.name = name
         self.inputOneName = inputOneName
         self.inputTwoName = inputTwoName
         self.inputThreeName = inputThreeName
         
+        // Set value
         self._value = value
-        
-        self.numberFormatter = NumberFormatter()
-        self.numberFormatter.numberStyle = .decimal
     }
     
     var body: some View {
         Section {
+            
+            // Disclosure group with 3 number edits
             DisclosureGroup(name, isExpanded: $disclosureIsExpanded) {
                 VStack {
                     HStack {

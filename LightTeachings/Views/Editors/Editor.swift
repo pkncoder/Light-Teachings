@@ -3,16 +3,17 @@ import SwiftUI
 // View that is used to edit things within the scene, used in conjunction with the SceneTree
 struct Editor: View {
     
-    // Hold the binding with the editor visible from whatever that initializes this
-    @Binding var editorVisible: Bool
-    @Binding var sceneNodeSelection: SceneBuilder.SceneNode?
-    
-    @State var value: Float = 0.0
-    
+    // Renderer settings
     @EnvironmentObject var rendererSettings: RendererSettings
     
+    // Hold the binding with the editor visible from whatever that initializes this
+    @Binding var editorVisible: Bool
+    
+    // Scene node selection
+    @Binding var sceneNodeSelection: SceneBuilder.SceneNode?
+    
+    // Init, needs the visibility of the editor and the scene node selection
     init(editorVisible: Binding<Bool>, sceneNodeSelection: Binding<SceneBuilder.SceneNode?>) {
-        
         self._editorVisible = editorVisible
         self._sceneNodeSelection = sceneNodeSelection
     }
@@ -23,20 +24,32 @@ struct Editor: View {
         // If the editor is visible
         if self.editorVisible {
             
-            // Full that contains all editor stuff
             VStack {
                 
-                // VStack that holds all info, and that is modified with inspector-like qualities
+                // Vstack for the other editors
                 VStack {
+                    
+                    // Check if there actually is a selected node
                     if sceneNodeSelection != nil {
+                        
+                        // If the selection type is an object
                         if sceneNodeSelection?.selectionData?.selectionType == .Object {
                             ObjectEditor(object: $rendererSettings.sceneWrapper.objects[sceneNodeSelection!.selectionData!.selectedIndex!], objectIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
-                        } else if sceneNodeSelection?.selectionData?.selectionType == .Material {
+                        }
+                        
+                        // If the selection type is a material
+                        else if sceneNodeSelection?.selectionData?.selectionType == .Material {
                             MaterialEditor(material: $rendererSettings.sceneWrapper.materials[sceneNodeSelection!.selectionData!.selectedIndex!], materialIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
-                        } else {
+                        }
+                        
+                        // If the selected type is a title
+                        else {
                             Text("You've selected a Title")
                         }
-                    } else {
+                    }
+                    
+                    // If nothing is selected, don't leave the view empty
+                    else {
                         Text("No item is selected at the moment!")
                     }
                 }
@@ -44,9 +57,6 @@ struct Editor: View {
                 .font(.subheadline)
                 
                 Spacer()
-            }
-            .onChange(of: self.rendererSettings) { oldValue, newValue in
-                print("EDITOR: Update")
             }
         }
     }

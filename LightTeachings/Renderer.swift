@@ -3,59 +3,67 @@ import SwiftUI
 
 class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     
-    
     // Rendering variables
     var device: MTLDevice!
     var commandQueue: MTLCommandQueue!
     var pipeline: MTLRenderPipelineState
 
+    // Scene wrapper that's being rendered
     private var sceneWrapper: SceneBuilder.SceneWrapper
-    private var frameNum: Float
     
+    // Buffers
     private var sceneBuffer: MTLBuffer!
     private var uniformBuffer: MTLBuffer!
     
-    // Uniform struct
+    // Uniform struct and info
     private var uniforms: Uniforms
+    private var frameNum: Float
     
+    // Drawing layer
     weak var metalLayer: CAMetalLayer?
     
     // Initializer
     init(rendererSettings: RendererSettings) {
-        if let device = MTLCreateSystemDefaultDevice() { // Try to create the device, if sucesfull save it
+        
+        // Get metal device
+        if let device = MTLCreateSystemDefaultDevice() {
             self.device = device
         } else {
             fatalError("Device could not be created")
         }
+        
+        // Drawing necesities
         self.commandQueue = device.makeCommandQueue() // Create the command que from the device
         self.pipeline = createPipeline(device: device) // Build the render pipeline and save it
         
-        // Get the scene from the builder
-        self.frameNum = 1
         
+        // Get the scene wrapper
         self.sceneWrapper = rendererSettings.sceneWrapper
         
+        // Create uniforms
         self.uniforms = Uniforms()
+        self.frameNum = 1
         
         // Call the init function for MetalKit
         super.init()
         
-        
         /* Create Buffers */
         self.sceneBuffer = self.buildSceneBuffer()!
-       
         self.uniformBuffer = createUniformBuffer()!
-        
-        print("Renderer Init")
     }
     
+    // Setup metal layer for drawwing and create the display link
     func attachToLayer(_ layer: CAMetalLayer) {
+        
+        // Save layer
         self.metalLayer = layer
+        
+        // Set attributes
         layer.device = device
         layer.pixelFormat = .bgra8Unorm
         layer.framebufferOnly = true
 
-        // Set drawable size
+        // Set drawable size (scaled on presentation
         layer.drawableSize = CGSize(width: 300, height: 300)
 
         // Start the display link
@@ -64,12 +72,13 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         displayLink.add(to: .main, forMode: .common)
     }
     
+    // Builds a full scene buffer (uses self.sceneWrapper)
     func buildSceneBuffer() -> MTLBuffer? {
         
         // Split the portions of the scene
         var objectArray: [SceneBuilder.ObjectWrapper] = self.sceneWrapper.objects
         var materialArray: [SceneBuilder.MaterialWrapper] = self.sceneWrapper.materials
-        var boundingBox: BoundingBox = BoundingBoxBuilder(objects: objectArray).fullBuild()
+        var boundingBox: BoundingBox = BoundingBoxBuilder(objects: objectArray).fullBuild() // Build the bounding box
         var lengths: SIMD4<Float> = self.sceneWrapper.lengths
         
         // Create a buffer for the scene
@@ -94,63 +103,75 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         return sceneBuffer
     }
     
+    // Full rebuild of the scene buffer with new scene wrapper
     func rebuildSceneBuffer(_ sceneWrapper: SceneBuilder.SceneWrapper) {
         
+        // Save new scene wrapper then build
         self.sceneWrapper = sceneWrapper
         self.sceneBuffer = self.buildSceneBuffer()
     }
     
+    // Update the scene wrapper in one spot
     func updateSceneBuffer(sceneWrapper: SceneBuilder.SceneWrapper, updateData: UpdateData) {
         
+        // Save new scene wrapper
         self.sceneWrapper = sceneWrapper
         
+        // Create a back scene buffer
         var backSceneBuffer: MTLBuffer!
         backSceneBuffer = self.sceneBuffer
         
+        // Switch through the update types
         switch updateData.updateType {
-        case .Object:
             
-            backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.objects[updateData.updateIndex], byteCount: MemoryLayout<Object>.stride)
-            var boundingBox: BoundingBox = BoundingBoxBuilder(objects: sceneWrapper.objects).fullBuild()
-            backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10).copyMemory(from: &boundingBox, byteCount: MemoryLayout<BoundingBox>.stride)
+            // Object (with bounding box)
+            case .Object:
+                
+                // Advance through to the next index and set new object info
+                backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.objects[updateData.updateIndex], byteCount: MemoryLayout<Object>.stride)
             
+                // Get the new bounding box and set it too
+                var boundingBox: BoundingBox = BoundingBoxBuilder(objects: sceneWrapper.objects).fullBuild()
+                backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10).copyMemory(from: &boundingBox, byteCount: MemoryLayout<BoundingBox>.stride)
+                
+            // Material
+            case .Material:
+                
+            // Set the new material at the correct index
+                backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: MemoryLayout<ObjectMaterial>.stride)
+                
+            // Full rebuild
+            case .Full:
+                backSceneBuffer = self.buildSceneBuffer()
             
-        case .Material:
-            
-            backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: MemoryLayout<ObjectMaterial>.stride)
-            
-        case .Full:
-            print("FULL")
-            backSceneBuffer = self.buildSceneBuffer()
-            
-        case .Light:
-            break
+            // TODO: NOT IMPLIMENTED
+            case .Light:
+                break
             
         }
         
-        DispatchQueue.main.async {
-            self.sceneBuffer.contents().copyMemory(from: backSceneBuffer.contents(), byteCount: self.sceneBuffer.length)
-        }
+        // Update to the new scene buffer
+        self.sceneBuffer.contents().copyMemory(from: backSceneBuffer.contents(), byteCount: self.sceneBuffer.length)
     }
     
+    // Create the uniform buffer
     func createUniformBuffer() -> MTLBuffer? {
         
         // Create a buffer for the scene
         let uniformBuffer: MTLBuffer? = device.makeBuffer(length: MemoryLayout<Uniforms>.stride, options: [.storageModeShared])
-        
         return uniformBuffer
     }
     
+    // Update function from the metal display link
     func metalDisplayLink(_ link: CAMetalDisplayLink, needsUpdate update: CAMetalDisplayLink.Update) {
-//        print("Drew")
-        draw(to: update.drawable)
+        draw(to: update.drawable) // Call draw function and pass through the new drawable
         
     }
     
-    // Main draw function - used
+    // Main draw function called from metalDisplayLink()
     func draw(to drawable: CAMetalDrawable) {
         
-        /* MARK: - Info added Setup - */
+        /* MARK: - Settup info - */
         
         // Set the settings for the current render
         let renderPassDescriptor = MTLRenderPassDescriptor()
@@ -159,7 +180,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         renderPassDescriptor.colorAttachments[0].loadAction = .clear // What to do at the start of the render pass
         renderPassDescriptor.colorAttachments[0].storeAction = .store // What to do at the end of the render pass
         
-        // Get a command *buffer* from the que to add commands too each frame
+        // Get a command *buffer*
         let commandBuffer = commandQueue.makeCommandBuffer()!
 
         // Get the render encoder from the command buffer
@@ -170,12 +191,14 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         renderEncoder.setRenderPipelineState(pipeline)
         
         
-        /* MARK: -SCENE-*/
         
-        // Set the buffer for the fragment function
+        /* MARK: -SCENE- */
+        
+        // Give the fragment buffer the scene info
         renderEncoder.setFragmentBuffer(self.sceneBuffer, offset: 0, index: 1);
                                         
-                                        
+                        
+        
         /* MARK: -UNIFORMS- */
         
         // Screen size
@@ -184,24 +207,33 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
             height: Float(drawable.layer.drawableSize.height)
         )
         
+        // Create a new uniform struct
         var newUniforms = Uniforms(screenSize: screenSize, frameNum: frameNum, padding: 0)
         
+        // Check for updates
         if (uniforms.screenSize.width != newUniforms.screenSize.width || uniforms.screenSize.height != newUniforms.screenSize.height) {
-            uniformBuffer.contents().copyMemory(from: &newUniforms.screenSize, byteCount: MemoryLayout<ScreenSize>.stride)
-            print("Updated Screen Size")
             
+            // If needed to, copy in the new screen size
+            uniformBuffer.contents().copyMemory(from: &newUniforms.screenSize, byteCount: MemoryLayout<ScreenSize>.stride)
             uniforms.screenSize = newUniforms.screenSize
         }
         
+        // Update the uniform buffer for the frame num
         uniformBuffer.contents().advanced(by: MemoryLayout<ScreenSize>.stride).copyMemory(from: &newUniforms.frameNum, byteCount: MemoryLayout<Float>.stride)
                                                                                           
-        // Pass it to the fragment
+        // Pass it to the fragment shader
         renderEncoder.setFragmentBuffer(self.uniformBuffer, offset: 0, index: 2)
         
-        /* MARK: - Post info added setup - */
+        
+        
+        /* MARK: - Draw call(s) - */
         
         // Draw two trainlges covering the window
         renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
+        
+        
+        
+        /* MARK: - Post-draw and presentation - */
         
         // Finish the encoding
         renderEncoder.endEncoding()

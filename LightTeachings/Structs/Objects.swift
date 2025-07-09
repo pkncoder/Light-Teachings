@@ -1,3 +1,4 @@
+// Different objects, float conversions, and object groups
 enum Objects: String, CaseIterable {
     case sphere = "Sphere"
     case box = "Box"
@@ -6,6 +7,7 @@ enum Objects: String, CaseIterable {
     case plane = "Plane"
     case cylinder = "Cylinder"
     
+    // Float -> Object
     static func getObjectFromIndex(_ index: Float) -> Self {
         switch index {
             case 1:
@@ -25,6 +27,7 @@ enum Objects: String, CaseIterable {
         }
     }
     
+    // Object -> Float
     static func getIndexFromObject(_ object: Self) -> Float {
         switch object {
             case .sphere:
@@ -42,6 +45,7 @@ enum Objects: String, CaseIterable {
         }
     }
     
+    // All box typ
     static var allBoxes: [Self] {
         return [Self.box, Self.roundedBox, Self.borderedBox]
     }

@@ -10,34 +10,43 @@ import SwiftUI
 @main
 struct SimpleRayTracerApp: App {
     
+    // Mostly global memory for updating the renderer and saving info
     @StateObject var rendererSettings: RendererSettings
     
+    // Init
     init() {
+      
+        // Base file for the renderer
+        let filename: String = "objects"
         
-        let filename: String = "lifeScene.json 09-51-43-364"
+        // Create a scene builder with the base file
         let sceneBuilder: SceneBuilder = SceneBuilder(Bundle.main.url(forResource: filename, withExtension: "json", subdirectory: "scenes")!)
+        
+        // Gain a scene wrapper
         let sceneWrapper = sceneBuilder.getScene()
         
-        let newAppState = RendererSettings(sceneWrapper: sceneWrapper)
-        newAppState.filename = filename
+        // Get the new render settings
+        let newRenderSettings = RendererSettings(sceneWrapper: sceneWrapper)
+        newRenderSettings.filename = filename
         
-        self._rendererSettings = StateObject(wrappedValue: newAppState)
+        // Set the newRenderSettings for the base render settings
+        self._rendererSettings = StateObject(wrappedValue: newRenderSettings)
         
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView() // Content View
                 .environmentObject(rendererSettings)
         }
         .commands {
             CommandGroup(replacing: .newItem) {
-                OpenFile()
+                OpenFile() // Open a scene
                     .environmentObject(rendererSettings)
             }
             
             CommandGroup(replacing: .saveItem) {
-                SaveFile()
+                SaveFile() // Save a scene
                     .environmentObject(rendererSettings)
             }
         }

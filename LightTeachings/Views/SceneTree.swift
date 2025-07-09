@@ -3,10 +3,13 @@ import SwiftUI
 // View that shows all items in the scene, used to select items
 struct SceneTree: View {
     
+    // Renderer settings
     @EnvironmentObject var rendererSettings: RendererSettings
     
-    // Hold a state for the node selection
+    // Node selection info
     @Binding var sceneNodeSelection: SceneBuilder.SceneNode?
+    
+    // Scene nodes
     @State var sceneNodes: SceneBuilder.SceneNode? = nil
     
     // Initializer
@@ -24,7 +27,6 @@ struct SceneTree: View {
             List(selection: $sceneNodeSelection) { // Hold a selection variable for the outline group
                 
                 // Outline group holds the children of the scene ndoes and displays their names
-                
                 if let unwrappedSceneNodes = self.sceneNodes {
                     
                     OutlineGroup(unwrappedSceneNodes, children: \.children) { node in
@@ -46,6 +48,7 @@ struct SceneTree: View {
         }
         .padding(EdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2))
         .onAppear() {
+            // Get the node tree from the scene builder
             self.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: rendererSettings.sceneWrapper)
         }
     }

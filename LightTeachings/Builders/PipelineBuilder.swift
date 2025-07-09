@@ -1,6 +1,5 @@
 import Metal
 
-
 func createPipeline(device: MTLDevice) -> MTLRenderPipelineState {
     
     // Final pipeline variable

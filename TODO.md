@@ -31,10 +31,16 @@ This is the file that I save all of the things that I still have to do
     - Indicates what opporation "group" is being opporated on
 - [ ] Add the point lights
 - [x] Bounding Box
-- [ ] Use multithreading to decouple renderer and SwiftUI
+- [x] Use multithreading to decouple renderer and SwiftUI
+- [ ] Better buffer implimentations?
+    - [ ] Example: https://github.com/ralfebert/MetalSwiftUIExample/blob/main/MetalSwiftUIExample/Renderer.swift
+- [ ] Better implementation with Uniform struct
+- [ ] buildSceneBuffer redo?
+- [ ] THREADS
 
 ## Background Stuff
 - [ ] Recommenting
+ - [ ] Done 9/7/25 - d/m/yy at 00:35
 - [ ] Attribute protection levels everywhere I can
 - [ ] Deconstructors & attribute memory levels (like weak)
 - [ ] Sepperate structs and other things into more files
@@ -44,6 +50,8 @@ This is the file that I save all of the things that I still have to do
 - [x] Change the passing of scene info around to using envirormentObjects
 - [ ] Try to use getter and setter methods to not need .onChange as much
     - [ ] If that goes well maybe even add a update flag to render settings so there's only one for all .onChange in ContentView
+- [ ] On a new open the scene tree needs updated
+- [ ] Change number Slider State where needed
 
 
 

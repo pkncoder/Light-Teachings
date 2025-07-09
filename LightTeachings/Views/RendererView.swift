@@ -2,25 +2,26 @@ import SwiftUI
 import MetalKit
 
 class MetalViewLayer: NSView {
+    
+    // Create the layer for the NSView
     override func makeBackingLayer() -> CALayer {
         let metalLayer = CAMetalLayer()
-        metalLayer.pixelFormat = .bgra8Unorm
-        metalLayer.framebufferOnly = true
         metalLayer.contentsScale = NSScreen.main?.backingScaleFactor ?? 2.0
         return metalLayer
     }
 
+    // Saved layer (as a CAMetalLayer)
     var metalLayer: CAMetalLayer {
         return self.layer as! CAMetalLayer
     }
 }
 
-// The view controller for the renderer
 struct RendererView: NSViewRepresentable {
     
     // Renderer
     var renderer: Renderer
     
+    // For the init, just needs the rendererSettins to get the renderer
     init(rendererSettings: RendererSettings) {
         renderer = Renderer(rendererSettings: rendererSettings)
     }
@@ -28,29 +29,27 @@ struct RendererView: NSViewRepresentable {
     // Create the view for the renderer
     func makeNSView(context: NSViewRepresentableContext<RendererView>) -> MetalViewLayer {
         
+        // Get the layer
         let view = MetalViewLayer()
         view.wantsLayer = true
+
+        // Attatch the layer to the renderer
         renderer.attachToLayer(view.metalLayer)
         
-        // Return our full mtkview
+        // Return the metalViewLayer (nsView
         return view
     }
     
     // Update the Renderer View, currently unused
     func updateNSView(_ nsView: MetalViewLayer, context: NSViewRepresentableContext<RendererView>) {}
     
+    // Function to rebuild the scene buffer
     func rebuildSceneBuffer(_ sceneWrapper: SceneBuilder.SceneWrapper) {
         renderer.rebuildSceneBuffer(sceneWrapper)
-        print("Rebuilding")
     }
     
+    // Function to update the scene buffer
     func updateSceneBuffer(sceneWrapper: SceneBuilder.SceneWrapper, updateData: UpdateData) {
-        
-        // Prepare new buffer in the background
-//        DispatchQueue.global(qos: .background).async {
-            renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
-//        }
-        
-        print("Updating")
+        renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
     }
 }

@@ -2,7 +2,10 @@ import SwiftUI
 
 struct MaterialEditor: View {
     
+    // Renderer settings
     @EnvironmentObject var rendererSettings: RendererSettings
+    
+    // Material info
     @Binding var material: SceneBuilder.MaterialWrapper
     var materialIndex: Int
     
@@ -28,19 +31,28 @@ struct MaterialEditor: View {
         List {
             Section("Colors") {
                 
+                // Albedo
                 ColorPicker("Diffuse Color", selection: color, supportsOpacity: false)
                 
             }
             
             Section("Material Settings") {
                 
+                // Material rougness
                 SingleItemEdit(name: "Roughness", value: $material.materialSettings[0])
+                
+                // Material mettalic amount
                 SingleItemEdit(name: "Matallic Index", value: $material.materialSettings[1])
                 
             }
         }
         .listStyle(InsetListStyle())
         .onChange(of: material.materialSettings) { oldValue, newValue in
+            
+            // If the update data is full, just ignore it so it can flush through
+            if self.rendererSettings.updateData?.updateType == .Full { return }
+            
+            // Updating the scene tree
             rendererSettings.updateData = UpdateData(updateType: .Material, updateIndex: self.materialIndex)
         }
     }
