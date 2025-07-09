@@ -7,12 +7,16 @@ struct SingleItemEdit: View {
     
     var numberFormatter: NumberFormatter
     
-    init(name: String, value: Binding<Float>) {
+    var range: ClosedRange<Float>?
+    
+    init(name: String, value: Binding<Float>, range: ClosedRange<Float>? = nil) {
         self.name = name
         self._value = value
         
         self.numberFormatter = NumberFormatter()
         self.numberFormatter.numberStyle = .decimal
+        
+        self.range = range
     }
     
     var body: some View {
@@ -20,7 +24,7 @@ struct SingleItemEdit: View {
             
             HStack {
                 Text(name)
-                NumberEdit(value: $value)
+                NumberEdit(value: $value, range: range)
             }
         }
     }

@@ -1,4 +1,5 @@
 import SwiftUI
+
 struct NumberEdit: View {
     @Binding public var value: Float
     
@@ -15,11 +16,14 @@ struct NumberEdit: View {
     @FocusState private var isFocused: Bool
     @StateObject var numberStates: NumberSliderState = NumberSliderState()
     
-    init(value: Binding<Float>, step: Float = 1, slidingSensitivity: Float = 50, intSliding: Bool = false) {
+    var range: ClosedRange<Float>?
+    
+    init(value: Binding<Float>, step: Float = 1, slidingSensitivity: Float = 50, intSliding: Bool = false, range: ClosedRange<Float>? = nil) {
         self._value = value
         self.step = step
         self.slidingSensitivity = slidingSensitivity
         self.intSliding = intSliding
+        self.range = range
     }
     
     var body: some View {
@@ -28,6 +32,10 @@ struct NumberEdit: View {
             
             Button("-") {
                 value -= step
+                
+                if let numRange = self.range {
+                    value = min(max(value, numRange.lowerBound), numRange.upperBound)
+                }
             }
             .padding(0)
             
@@ -55,6 +63,10 @@ struct NumberEdit: View {
                                     value += deltaX / slidingSensitivity
                                 }
                                 
+                                if let numRange = self.range {
+                                    value = min(max(value, numRange.lowerBound), numRange.upperBound)
+                                }
+                                
                                 numberStates.updateValueX(newDeltaX: Float(coord.location.x))
                             }
                             .onEnded({ _ in
@@ -70,6 +82,10 @@ struct NumberEdit: View {
             
             Button("+") {
                 value += step
+                
+                if let numRange = self.range {
+                    value = min(max(value, numRange.lowerBound), numRange.upperBound)
+                }
             }
             .padding(0)
         }
