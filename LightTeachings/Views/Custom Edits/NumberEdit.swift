@@ -25,10 +25,12 @@ struct NumberEdit: View {
     @FocusState private var isFocused: Bool
     
     // Number slider state
-    @StateObject var numberSliderState: NumberSliderState = NumberSliderState()
+    @StateObject var numberSliderState: NumberSliderData = NumberSliderData()
     
     // Range for the number
     var range: ClosedRange<Float>?
+    
+    @State var delta: Float = 0
     
     // Init, just needs value. Step, sensitivity, int sliding, and range are all optional
     init(value: Binding<Float>, step: Float = 1, slidingSensitivity: Float = 50, intSliding: Bool = false, range: ClosedRange<Float>? = nil) {
@@ -75,13 +77,15 @@ struct NumberEdit: View {
                             .onChanged { coord in
                                 
                                 // Delta X for the coordinate location
-                                let deltaX = Float(coord.location.x) - numberSliderState.lastDeltaX
+                                let deltaX = Float(coord.location.x) - delta
+                                
+                                delta = deltaX
                                 
                                 // Truncate the sliding if needed
                                 if (self.intSliding) {
-                                    value += Float(Int(deltaX / slidingSensitivity))
+                                    value += Float(Int(delta / slidingSensitivity))
                                 } else {
-                                    value += deltaX / slidingSensitivity
+                                    value += delta / slidingSensitivity
                                 }
                                 
                                 // If needed, clamp the value
@@ -89,11 +93,14 @@ struct NumberEdit: View {
                                     value = min(max(value, numRange.lowerBound), numRange.upperBound)
                                 }
                                 
+                                delta = Float(coord.location.x)
+                                
                                 // Update delta x
-                                numberSliderState.updateValueX(newDeltaX: Float(coord.location.x))
+//                                numberSliderState.updateValueX(newDeltaX: Float(coord.location.x))
                             }
                             .onEnded({ _ in // When finished, update delta x to 0
-                                numberSliderState.updateValueX(newDeltaX: 0.0)
+//                                numberSliderState.updateValueX(newDeltaX: 0.0)
+                                delta = 0.0
                             })
                     )
                     .onTapGesture(count: 2) { // Double click, get ready for the text feild
@@ -122,7 +129,7 @@ struct NumberEdit: View {
 }
 
 // Number slider state for values that need to be saved
-class NumberSliderState: ObservableObject {
+class NumberSliderData: ObservableObject {
     @Published var myValue: Bool = false // Text feild focus-like state
     @Published var lastDeltaX: Float = 0.0 // Delta x save for the slider
 

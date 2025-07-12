@@ -12,11 +12,14 @@ This is the file that I save all of the things that I still have to do
     - [x] Larger Form
     - [x] ***Blender Based***
     - [ ] Check that it actually works right
-    - [ ] Add ranges
+        - Idk if it does, I think the slider sensitivity is throwing it off however
+    - [x] Add ranges
 - [ ] Make the scene tree disclosures open by default
 - [x] Add MacOs menubar commands
     - [x] Saving scenes
     - [x] Opening scenes
+- [ ] Plus Minus objects & mats
+- [ ] Changing object types
 
 ## User Interface
 - [x] Material editor
@@ -59,6 +62,7 @@ This is the file that I save all of the things that I still have to do
 This is the stuff in the future for ideas to mark down
 
 ## User Interactions
+- [ ] Add a circle-like dragable for updating x & y at the same time
 
 ## Shader Stuff
 - [ ] Full BVH instead of just a Bounding Box
