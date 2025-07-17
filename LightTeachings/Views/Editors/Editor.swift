@@ -33,18 +33,19 @@ struct Editor: View {
                     if sceneNodeSelection != nil {
                         
                         // If the selection type is an object
-                        if sceneNodeSelection?.selectionData?.selectionType == .Object {
+                        if sceneNodeSelection?.selectionData?.selectionType == .Object && sceneNodeSelection?.selectionData?.selectedIndex ?? -1 < Int(rendererSettings.sceneWrapper.lengths[0]) {
+                            
                             ObjectEditor(object: $rendererSettings.sceneWrapper.objects[sceneNodeSelection!.selectionData!.selectedIndex!], objectIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
                         }
                         
                         // If the selection type is a material
-                        else if sceneNodeSelection?.selectionData?.selectionType == .Material {
+                        else if sceneNodeSelection?.selectionData?.selectionType == .Material && sceneNodeSelection?.selectionData?.selectedIndex ?? -1 < Int(rendererSettings.sceneWrapper.lengths[1]) {
                             MaterialEditor(material: $rendererSettings.sceneWrapper.materials[sceneNodeSelection!.selectionData!.selectedIndex!], materialIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
                         }
                         
                         // If the selected type is a title
                         else {
-                            Text("You've selected a Title")
+                            Text("You've selected a title.")
                         }
                     }
                     

@@ -37,7 +37,7 @@ struct SceneTree: View {
                         HStack {
                             
                             if node.selectionData?.selectionType != nil {
-                                Text("\(node.name)")
+                                Text("\(node.name) \(node.selectionData!.selectedIndex!)")
                                     .contextMenu {
                                         Button("Delete Item") {
                                             rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: node.selectionData!.selectedIndex!)
@@ -80,6 +80,7 @@ struct SceneTree: View {
                                                             tempData: SIMD4<Float>(repeating: 0)
                                                         )
                                                     )
+                                                
                                                 case .Material:
                                                     rendererSettings.sceneWrapper.lengths[1] += 1
                                                 rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: Int(rendererSettings.sceneWrapper.lengths[1]))

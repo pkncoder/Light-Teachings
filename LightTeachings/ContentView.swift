@@ -58,20 +58,25 @@ struct ContentView: View {
                 
                 self.rendererSettings.sceneWrapper.lengths[3] = rendererSettings.doIt ? 1 : 0
                 
-                if let _ = rendererSettings.updateData {
-                    
+                if self.rendererSettings.updateData?.updateType == .Full {
+                    rendererView!.rebuildSceneBuffer(self.rendererSettings.sceneWrapper)
+                }
+                
+                else if let _ = rendererSettings.updateData {
                     rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
-                    
                 }
             }
-            
-            self.rendererSettings.updateData = nil
         }
         .onChange(of: self.rendererSettings.sceneWrapper.materials) { oldValue, newValue in
             
             // Material update, do it in a background thread
             DispatchQueue.global(qos: .background).async {
-                if let _ = rendererSettings.updateData {
+                
+                if self.rendererSettings.updateData?.updateType == .Full {
+                    rendererView!.rebuildSceneBuffer(self.rendererSettings.sceneWrapper)
+                }
+                
+                else if let _ = rendererSettings.updateData {
                     rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
                 }
             }

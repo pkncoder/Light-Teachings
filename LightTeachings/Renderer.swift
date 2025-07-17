@@ -13,6 +13,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     
     // Buffers
     private var sceneBuffer: MTLBuffer!
+    private var backSceneBuffer: MTLBuffer!
     private var uniformBuffer: MTLBuffer!
     
     // Uniform struct and info
@@ -49,6 +50,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         
         /* Create Buffers */
         self.sceneBuffer = self.buildSceneBuffer()!
+        self.backSceneBuffer = self.sceneBuffer
         
         self.uniformBuffer = createUniformBuffer()!
     }
@@ -119,7 +121,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         self.sceneWrapper = sceneWrapper
         
         // Create a back scene buffer
-        var backSceneBuffer: MTLBuffer!
+//        var backSceneBuffer: MTLBuffer!
         backSceneBuffer = self.sceneBuffer
         
         // Switch through the update types
@@ -134,11 +136,6 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
                 // Get the new bounding box and set it too
                 var boundingBox: BoundingBox = BoundingBoxBuilder(objects: sceneWrapper.objects).fullBuild()
                 backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10).copyMemory(from: &boundingBox, byteCount: MemoryLayout<BoundingBox>.stride)
-            
-            backSceneBuffer.contents().advanced(by: (MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10 + MemoryLayout<BoundingBox>.stride)).copyMemory( // Shift the memory so the offset is past the object array
-                    from: &sceneWrapper.lengths,
-                    byteCount: MemoryLayout<SIMD4<Float>>.stride
-                )
             
             // Material
             case .Material:
@@ -157,7 +154,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         }
         
         // Update to the new scene buffer
-        self.sceneBuffer.contents().copyMemory(from: backSceneBuffer.contents(), byteCount: self.sceneBuffer.length)
+        
     }
     
     // Create the uniform buffer
@@ -199,6 +196,9 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         
         
         /* MARK: -SCENE- */
+        
+        // Update to the back scene buffer
+        self.sceneBuffer.contents().copyMemory(from: backSceneBuffer.contents(), byteCount: self.sceneBuffer.length)
         
         // Give the fragment buffer the scene info
         renderEncoder.setFragmentBuffer(self.sceneBuffer, offset: 0, index: 1);
