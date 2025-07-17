@@ -49,6 +49,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         
         /* Create Buffers */
         self.sceneBuffer = self.buildSceneBuffer()!
+        
         self.uniformBuffer = createUniformBuffer()!
     }
     
@@ -133,7 +134,12 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
                 // Get the new bounding box and set it too
                 var boundingBox: BoundingBox = BoundingBoxBuilder(objects: sceneWrapper.objects).fullBuild()
                 backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10).copyMemory(from: &boundingBox, byteCount: MemoryLayout<BoundingBox>.stride)
-                
+            
+            backSceneBuffer.contents().advanced(by: (MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10 + MemoryLayout<BoundingBox>.stride)).copyMemory( // Shift the memory so the offset is past the object array
+                    from: &sceneWrapper.lengths,
+                    byteCount: MemoryLayout<SIMD4<Float>>.stride
+                )
+            
             // Material
             case .Material:
                 

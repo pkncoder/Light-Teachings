@@ -17,7 +17,7 @@ struct ObjectTypeEdit: View {
     var body: some View {
         Section {
             HStack {
-                Text("Current Opperation: ")
+                Text("Current Type: ")
                 Picker(selection: $objectEnum, label: Text("")) {
                     ForEach(Objects.allCases, id: \.self) { object in
                         Text(object.rawValue)

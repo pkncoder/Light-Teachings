@@ -6,6 +6,10 @@ struct BoxEditor: View {
     
     var body: some View {
         
+        Section("Object Description Settings") {
+            ObjectTypeEdit(objectType: $object.objectData[0])
+        }
+        
         Section("Object Proporties and Interations") {
             
             // Performed sdf opperation

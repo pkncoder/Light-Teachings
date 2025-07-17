@@ -25,8 +25,9 @@ struct OpenFile: View {
                     self.rendererSettings.fileUrl = panel.url // Set the url from the panel
                 }
                 
-                // Get a new scene wrapper
+                // Get a new scene wrapper and update scene nodes
                 rendererSettings.sceneWrapper = SceneBuilder(rendererSettings.fileUrl!).getScene()
+                rendererSettings.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: rendererSettings.sceneWrapper)
                 
                 // Create a new update data / ticket for a full rebuild
                 rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: -1)

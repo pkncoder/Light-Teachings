@@ -17,6 +17,11 @@ class RendererSettings: ObservableObject, Equatable, Identifiable {
     // Update info
     @Published var updateData: UpdateData? = nil
     
+    // Scene tree node
+    @Published var sceneNodes: SceneBuilder.SceneNode? = nil
+    
+    @Published var doIt: Bool = true
+    
     // Only thing needed is the scene wrapper for init
     init(sceneWrapper: SceneBuilder.SceneWrapper) {
         self._sceneWrapper = Published(wrappedValue: sceneWrapper)

@@ -174,15 +174,16 @@ private:
 
     // Bounding Box
     bool BBoxIntersect(const float3 boxMin, const float3 boxMax, const Ray r) {
-        float3 tbot = 1 / r.direction * (boxMin - r.origin);
-        float3 ttop = 1 / r.direction * (boxMax - r.origin);
-        float3 tmin = min(ttop, tbot);
-        float3 tmax = max(ttop, tbot);
-        float2 t = max(tmin.xx, tmin.yz);
-        float t0 = max(t.x, t.y);
-        t = min(tmax.xx, tmax.yz);
-        float t1 = min(t.x, t.y);
-        return t1 > max(t0, 0.0);
+        float3 t1 = (boxMin - ray.origin) / ray.direction;
+        float3 t2 = (boxMax - ray.origin) / ray.direction;
+        
+        float3 tMin = min(t1, t2);
+        float3 tMax = max(t1, t2);
+        
+        float largestMin = max(max(tMin.x, tMin.y), tMin.z);
+        float smallestMax = min(min(tMax.x, tMax.y), tMax.z);
+        
+        return smallestMax >= largestMin && smallestMax >= 0.0;
     }
 
 
@@ -224,7 +225,7 @@ private:
 
     // MARK: -Scene mapping-
 
-    HitInfo getObjectHit(Ray ray) {
+    HitInfo getObjectHit(Ray ray, bool planesOnly) {
 
         // Declare variables
         float finalDistance = -1.0; // Initialized to -1.0 for the start
@@ -237,7 +238,8 @@ private:
 
             // Get said object
             Object currentObject = scene.objects[objectNum];
-
+            
+            if (planesOnly &&currentObject.objectData[0] != 5) { continue; }
 
             // Get this object distance
             if (currentObject.objectData[0] == 1) {          // Sphere
@@ -313,19 +315,8 @@ private:
         do {
 
             // Calculate the next distance
-            if (planeOnly) {
-                float t = planeSDF(ray, scene.objects[(int) (scene.lengths.x-1)]);
-
-                objectInfo = {
-                    true,
-                    t,
-                    ray.origin + ray.direction * t,
-                    (int)scene.objects[(int) (scene.lengths.x-1)].objectData[3]
-                };
-
-            } else {
-                objectInfo = getObjectHit(ray);
-            }
+            objectInfo = getObjectHit(ray, planeOnly);
+            
             dist = objectInfo.dist;
 
             // Add to the distance travled
@@ -373,12 +364,16 @@ private:
     }
 
     // Coloring
-    float3 sceneColoring(float2 uv, float time) {
+    float3 sceneColoring(float2 uv, float doIt) {
 
         // Light position
         float3 lightPos = float3(0, 0.7, 1.6);
 
         bool objectsHit = !BBoxIntersect(scene.topBoundingBox.boxMin.xyz, scene.topBoundingBox.boxMax.xyz, ray);
+
+//        if (doIt > 0.0) {
+//            return float3(!objectsHit);
+//        }
 
         // Get the hit
         HitInfo hit = sceneSDF(ray, objectsHit);
@@ -489,7 +484,7 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
 
     // Create our ray marcher
     RayMarcher rayMarcher = RayMarcher(ray, scene);
-    float3 color = rayMarcher.getColor(uv, frameNum);
+    float3 color = rayMarcher.getColor(uv, scene.lengths.w);
 
 
     // Output the final ray's color

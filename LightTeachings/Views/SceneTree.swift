@@ -10,7 +10,7 @@ struct SceneTree: View {
     @Binding var sceneNodeSelection: SceneBuilder.SceneNode?
     
     // Scene nodes
-    @State var sceneNodes: SceneBuilder.SceneNode? = nil
+//    @State var sceneNodes: SceneBuilder.SceneNode? = nil
     
     // Initializer
     init(sceneNodeSelection: Binding<SceneBuilder.SceneNode?>) {
@@ -26,14 +26,83 @@ struct SceneTree: View {
             // Have a list containing the outline view to stop strange sizing occourances and to make the stlye better
             List(selection: $sceneNodeSelection) { // Hold a selection variable for the outline group
                 
+                Toggle("Swap", isOn: $rendererSettings.doIt)
+                
                 // Outline group holds the children of the scene ndoes and displays their names
-                if let unwrappedSceneNodes = self.sceneNodes {
+                if let unwrappedSceneNodes = rendererSettings.sceneNodes {
                     
                     OutlineGroup(unwrappedSceneNodes, children: \.children) { node in
                         
                         // HStack with a spacer to left-align text
                         HStack {
-                            Text("\(node.name)")
+                            
+                            if node.selectionData?.selectionType != nil {
+                                Text("\(node.name)")
+                                    .contextMenu {
+                                        Button("Delete Item") {
+                                            rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: node.selectionData!.selectedIndex!)
+                                            
+                                            switch node.selectionData!.selectionType {
+                                                case .Object:
+                                                    rendererSettings.sceneWrapper.lengths[0] -= 1
+                                                    rendererSettings.sceneWrapper.objects.remove(at: node.selectionData!.selectedIndex!)
+                                                case .Material:
+                                                    rendererSettings.sceneWrapper.lengths[1] -= 1
+                                                    rendererSettings.sceneWrapper.materials.remove(at: node.selectionData!.selectedIndex!)
+                                                case .Light:
+                                                    rendererSettings.sceneWrapper.lengths[2] -= 1
+                                                default:
+                                                    print("This node is not defined.")
+                                            }
+                                            
+                                            
+                                            
+                                            rendererSettings.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: rendererSettings.sceneWrapper)
+                                        }
+                                    }
+                            }
+                            
+                            else if node.children?[0].selectionData?.selectionType != nil {
+                                Text("\(node.name)")
+                                    .contextMenu {
+                                        Button("Add Item") {
+                                            
+                                            
+                                            switch node.children![0].selectionData!.selectionType {
+                                                case .Object:
+                                                    rendererSettings.sceneWrapper.lengths[0] += 1
+                                                rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: Int(rendererSettings.sceneWrapper.lengths[0]))
+                                                    rendererSettings.sceneWrapper.objects.append(
+                                                        SceneBuilder.ObjectWrapper(
+                                                            origin: SIMD4<Float>(0,0,0,0),
+                                                            bounds: SIMD4<Float>(1,1,1,1),
+                                                            objectData: SIMD4<Float>(1,0,0,1),
+                                                            tempData: SIMD4<Float>(repeating: 0)
+                                                        )
+                                                    )
+                                                case .Material:
+                                                    rendererSettings.sceneWrapper.lengths[1] += 1
+                                                rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: Int(rendererSettings.sceneWrapper.lengths[1]))
+                                                    rendererSettings.sceneWrapper.materials.append(
+                                                        SceneBuilder.MaterialWrapper(
+                                                            albedo: SIMD4<Float>(1,1,1,0),
+                                                            materialSettings: SIMD4<Float>(repeating: 0)
+                                                        )
+                                                    )
+                                                case .Light:
+                                                    rendererSettings.sceneWrapper.lengths[2] += 1
+                                                default:
+                                                    print("This node is not defined.")
+                                            }
+                                            
+                                            rendererSettings.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: rendererSettings.sceneWrapper)
+                                        }
+                                    }
+                            }
+                            
+                            else {
+                                Text("\(node.name)")
+                            }
                             Spacer()
                         }
                     }
@@ -49,7 +118,7 @@ struct SceneTree: View {
         .padding(EdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2))
         .onAppear() {
             // Get the node tree from the scene builder
-            self.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: rendererSettings.sceneWrapper)
+            rendererSettings.sceneNodes = SceneBuilder.getNodeTree(sceneWrapper: rendererSettings.sceneWrapper)
         }
     }
 }

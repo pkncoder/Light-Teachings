@@ -18,11 +18,13 @@ This is the file that I save all of the things that I still have to do
 - [x] Add MacOs menubar commands
     - [x] Saving scenes
     - [x] Opening scenes
-- [ ] Plus Minus objects & mats
-- [ ] Changing object types
+- [x] Plus Minus objects & mats
+- [x] Changing object types
 
 ## User Interface
 - [x] Material editor
+- [x] Fix the scene tree when updateed
+- [ ] Keep scene tree open & in same state after update
 
 ## Shader Stuff
 - [ ] Full Refactoring of said file
@@ -40,6 +42,7 @@ This is the file that I save all of the things that I still have to do
 - [ ] Better implementation with Uniform struct
 - [ ] buildSceneBuffer redo?
 - [ ] THREADS
+- [x] Fix BB error with planes
 
 ## Background Stuff
 - [ ] Recommenting

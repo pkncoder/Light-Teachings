@@ -15,7 +15,6 @@ struct ObjectEditor: View {
         
         // List here for style choices in the other editors
         List {
-            ObjectTypeEdit(objectType: $object.objectData[0])
             
             // This shows what kind of object editor to use
             if (object.objectData[0] == 1) {

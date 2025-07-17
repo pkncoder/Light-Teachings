@@ -55,10 +55,17 @@ struct ContentView: View {
             
             // Object update, do it in a background thread
             DispatchQueue.global(qos: .background).async {
+                
+                self.rendererSettings.sceneWrapper.lengths[3] = rendererSettings.doIt ? 1 : 0
+                
                 if let _ = rendererSettings.updateData {
+                    
                     rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
+                    
                 }
             }
+            
+            self.rendererSettings.updateData = nil
         }
         .onChange(of: self.rendererSettings.sceneWrapper.materials) { oldValue, newValue in
             
