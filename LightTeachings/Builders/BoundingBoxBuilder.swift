@@ -1,7 +1,7 @@
 class BoundingBoxBuilder {
     
     // Object list
-    var objects: [ObjectWrapper]
+    private var objects: [ObjectWrapper]
     
     // Ignored object indexes
     private let infObjectIndexes: [Int] = [5]

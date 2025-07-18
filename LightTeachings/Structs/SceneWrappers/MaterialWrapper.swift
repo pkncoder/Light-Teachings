@@ -4,20 +4,20 @@ import SwiftUI
 struct MaterialWrapper: Hashable, Identifiable, Decodable, Encodable {
     
     // Id
-    var id: Self { self }
+    public var id: Self { self }
     
     // Atttr
-    var albedo: SIMD4<Float>
-    var materialSettings: SIMD4<Float>
+    public var albedo: SIMD4<Float>
+    public var materialSettings: SIMD4<Float>
     
     // Coding keys for en/decryption
-    enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case albedo
         case materialSettings
     }
     
     // To-String method
-    var description: String {
+    public var description: String {
         return
             """
             Color: \(albedo.description)

@@ -11,7 +11,7 @@ import SwiftUI
 struct SimpleRayTracerApp: App {
     
     // Mostly global memory for updating the renderer and saving info
-    @StateObject var rendererSettings: RendererSettings
+    @StateObject public var rendererSettings: RendererSettings
     
     // Init
     init() {

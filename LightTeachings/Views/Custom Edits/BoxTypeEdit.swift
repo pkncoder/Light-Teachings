@@ -3,8 +3,8 @@ import SwiftUI
 struct BoxTypeEdit: View {
     
     // Box type binding in float and enum
-    @Binding var boxType: Float
-    @State var boxTypeEnum: Objects
+    @Binding public var boxType: Float
+    @State private var boxTypeEnum: Objects
     
     // Init with the float value of the box type
     init(boxType: Binding<Float>) {

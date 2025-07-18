@@ -11,7 +11,7 @@ class MetalViewLayer: NSView {
     }
 
     // Saved layer (as a CAMetalLayer)
-    var metalLayer: CAMetalLayer {
+    public var metalLayer: CAMetalLayer {
         return self.layer as! CAMetalLayer
     }
 }

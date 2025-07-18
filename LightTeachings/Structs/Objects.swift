@@ -8,7 +8,7 @@ enum Objects: String, CaseIterable {
     case cylinder = "Cylinder"
     
     // Float -> Object
-    static func getObjectFromIndex(_ index: Float) -> Self {
+    public static func getObjectFromIndex(_ index: Float) -> Self {
         switch index {
             case 1:
                 return .sphere
@@ -28,7 +28,7 @@ enum Objects: String, CaseIterable {
     }
     
     // Object -> Float
-    static func getIndexFromObject(_ object: Self) -> Float {
+    public static func getIndexFromObject(_ object: Self) -> Float {
         switch object {
             case .sphere:
                 return 1
@@ -46,7 +46,7 @@ enum Objects: String, CaseIterable {
     }
     
     // All box typ
-    static var allBoxes: [Self] {
+    public static var allBoxes: [Self] {
         return [Self.box, Self.roundedBox, Self.borderedBox]
     }
 }

@@ -3,7 +3,7 @@ import SwiftUI
 struct ObjectMaterialIndexEdit: View {
     
     // Index binding
-    @Binding var index: Float
+    @Binding public var index: Float
     
     var body: some View {
         Section {

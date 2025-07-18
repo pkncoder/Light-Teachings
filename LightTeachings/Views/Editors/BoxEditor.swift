@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BoxEditor: View {
     
-    @Binding var object: ObjectWrapper
+    @Binding public var object: ObjectWrapper
     
     var body: some View {
         

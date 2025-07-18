@@ -6,11 +6,11 @@ struct MaterialEditor: View {
     @EnvironmentObject var rendererSettings: RendererSettings
     
     // Material info
-    @Binding var material: MaterialWrapper
-    var materialIndex: Int
+    @Binding public var material: MaterialWrapper
+    public var materialIndex: Int
     
     // Computed Binding for ColorPicker
-    var color: Binding<Color> {
+    private var color: Binding<Color> {
         Binding<Color>(
             get: {
                 // Convert SIMD4<Float> to Color

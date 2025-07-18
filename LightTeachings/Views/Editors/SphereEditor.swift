@@ -3,7 +3,7 @@ import SwiftUI
 struct SphereEditor: View {
     
     // Object binding
-    @Binding var object: ObjectWrapper
+    @Binding public var object: ObjectWrapper
     
     var body: some View {
         

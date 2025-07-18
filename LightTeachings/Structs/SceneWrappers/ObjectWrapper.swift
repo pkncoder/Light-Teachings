@@ -2,13 +2,13 @@
 struct ObjectWrapper: Hashable, Identifiable, Decodable, Encodable, Equatable {
     
     // Id
-    var id: Self { self }
+    public var id: Self { self }
     
     // Attrs
-    var origin: SIMD4<Float>
-    var bounds: SIMD4<Float>
-    var objectData: SIMD4<Float>
-    var tempData: SIMD4<Float>
+    public var origin: SIMD4<Float>
+    public var bounds: SIMD4<Float>
+    public var objectData: SIMD4<Float>
+    public var tempData: SIMD4<Float>
     
     // Initializer
     init(origin: SIMD4<Float>, bounds: SIMD4<Float>, objectData: SIMD4<Float>, tempData: SIMD4<Float>) {
@@ -19,7 +19,7 @@ struct ObjectWrapper: Hashable, Identifiable, Decodable, Encodable, Equatable {
     }
     
     // Coding keys for JSON en/decryption
-    enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case origin
         case bounds
         case objectData
@@ -27,7 +27,7 @@ struct ObjectWrapper: Hashable, Identifiable, Decodable, Encodable, Equatable {
     }
     
     // To-String method
-    var description: String {
+    public var description: String {
         return
             """
             Origin: \(origin.description)

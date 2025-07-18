@@ -5,7 +5,7 @@ enum Opperations: String, CaseIterable {
     case intercept = "Intercept"
     
     // Float to Opperation
-    static func getOpperationFromIndex(_ index: Float) -> Self {
+    public static func getOpperationFromIndex(_ index: Float) -> Self {
         switch index {
             case 0:
                 return .union
@@ -19,7 +19,7 @@ enum Opperations: String, CaseIterable {
     }
     
     // Opperation to Float
-    static func getIndexFromOpperation(_ opperation: Self) -> Float {
+    public static func getIndexFromOpperation(_ opperation: Self) -> Float {
         switch opperation {
             case .union:
                 return 0.0

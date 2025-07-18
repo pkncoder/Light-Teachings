@@ -4,19 +4,19 @@ import SwiftUI
 struct SceneNode: Hashable, Identifiable {
     
     // Id
-    var id: Self { self }
+    public var id: Self { self }
     
     // Name
-    var name: String
+    public var name: String
     
     // Data in the node
-    var selectionData: SceneSelectionData?
+    public var selectionData: SceneSelectionData?
     
     // Children
-    var children: [SceneNode]? = nil
+    public var children: [SceneNode]? = nil
     
     // Initializer
-    init(name: String, sceneSelectionType: SceneSelectionType? = nil, index: Int? = nil, children: [SceneNode]? = nil) {
+    public init(name: String, sceneSelectionType: SceneSelectionType? = nil, index: Int? = nil, children: [SceneNode]? = nil) {
         self.name = name
         self.selectionData = SceneSelectionData(selectedIndex: index, selectionType: sceneSelectionType)
         self.children = children

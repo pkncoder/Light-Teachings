@@ -2,18 +2,18 @@ import SwiftUI
 
 struct ContentView: View {
     
-    // States for closable items
-    @State var columnVisibility: NavigationSplitViewVisibility = .all
-    @State var editorVisible: Bool = true
-    
-    // Scene node selection in the scene tree
-    @State var sceneNodeSelection: SceneNode? = nil
-    
-    // Renderer view
-    @State var rendererView: RendererView? = nil
-    
     // Render settings
     @EnvironmentObject var rendererSettings: RendererSettings
+    
+    // States for closable items
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    @State private var editorVisible: Bool = true
+    
+    // Scene node selection in the scene tree
+    @State private var sceneNodeSelection: SceneNode? = nil
+    
+    // Renderer view
+    @State private var rendererView: RendererView? = nil
     
     // Main view shown / top view
     var body: some View {

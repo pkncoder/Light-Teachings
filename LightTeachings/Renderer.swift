@@ -4,9 +4,9 @@ import SwiftUI
 class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     
     // Rendering variables
-    var device: MTLDevice!
-    var commandQueue: MTLCommandQueue!
-    var pipeline: MTLRenderPipelineState
+    private var device: MTLDevice!
+    private var commandQueue: MTLCommandQueue!
+    private var pipeline: MTLRenderPipelineState
 
     // Scene wrapper that's being rendered
     private var sceneWrapper: SceneWrapper
@@ -62,7 +62,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     }
     
     // Setup metal layer for drawwing and create the display link
-    func attachToLayer(_ layer: CAMetalLayer) {
+    public func attachToLayer(_ layer: CAMetalLayer) {
         
         // Save layer
         self.metalLayer = layer
@@ -82,7 +82,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     }
     
     // Builds a full scene buffer (uses self.sceneWrapper)
-    func buildSceneBuffer() -> MTLBuffer? {
+    private func buildSceneBuffer() -> MTLBuffer? {
         
         // Split the portions of the scene
         var objectArray: [ObjectWrapper] = self.sceneWrapper.objects
@@ -117,7 +117,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     }
     
     // Full rebuild of the scene buffer with new scene wrapper
-    func rebuildSceneBuffer(_ sceneWrapper: SceneWrapper) {
+    public func rebuildSceneBuffer(_ sceneWrapper: SceneWrapper) {
         
         // Save new scene wrapper then build
         self.sceneWrapper = sceneWrapper
@@ -125,7 +125,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     }
     
     // Update the scene wrapper in one spot
-    func updateSceneBuffer(sceneWrapper: SceneWrapper, updateData: UpdateData) {
+    public func updateSceneBuffer(sceneWrapper: SceneWrapper, updateData: UpdateData) {
         
         // Save new scene wrapper
         self.sceneWrapper = sceneWrapper
@@ -168,7 +168,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     }
     
     // Create the uniform buffer
-    func createUniformBuffer() -> MTLBuffer? {
+    private func createUniformBuffer() -> MTLBuffer? {
         
         // Create a buffer for the scene
         let uniformBuffer: MTLBuffer? = device.makeBuffer(length: MemoryLayout<Uniforms>.stride, options: [.storageModeShared])
@@ -176,13 +176,13 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     }
     
     // Update function from the metal display link
-    func metalDisplayLink(_ link: CAMetalDisplayLink, needsUpdate update: CAMetalDisplayLink.Update) {
+    public func metalDisplayLink(_ link: CAMetalDisplayLink, needsUpdate update: CAMetalDisplayLink.Update) {
         draw(to: update.drawable) // Call draw function and pass through the new drawable
         
     }
     
     // Main draw function called from metalDisplayLink()
-    func draw(to drawable: CAMetalDrawable) {
+    private func draw(to drawable: CAMetalDrawable) {
         
         /* MARK: - Settup info - */
         

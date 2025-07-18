@@ -2,6 +2,6 @@ import Foundation
 
 // Scene Selection data
 struct SceneSelectionData: Equatable, Hashable {
-    var selectedIndex: Int?
-    var selectionType: SceneSelectionType?
+    public var selectedIndex: Int?
+    public var selectionType: SceneSelectionType?
 }

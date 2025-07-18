@@ -4,7 +4,7 @@ import MetalKit
 struct RendererView: NSViewRepresentable {
     
     // Renderer
-    var renderer: Renderer
+    private var renderer: Renderer
     
     // For the init, just needs the rendererSettins to get the renderer
     init(rendererSettings: RendererSettings) {
@@ -12,7 +12,7 @@ struct RendererView: NSViewRepresentable {
     }
     
     // Create the view for the renderer
-    func makeNSView(context: NSViewRepresentableContext<RendererView>) -> MetalViewLayer {
+    public func makeNSView(context: NSViewRepresentableContext<RendererView>) -> MetalViewLayer {
         
         // Get the layer
         let view = MetalViewLayer()
@@ -26,15 +26,15 @@ struct RendererView: NSViewRepresentable {
     }
     
     // Update the Renderer View, currently unused
-    func updateNSView(_ nsView: MetalViewLayer, context: NSViewRepresentableContext<RendererView>) {}
+    public func updateNSView(_ nsView: MetalViewLayer, context: NSViewRepresentableContext<RendererView>) {}
     
     // Function to rebuild the scene buffer
-    func rebuildSceneBuffer(_ sceneWrapper: SceneWrapper) {
+    public func rebuildSceneBuffer(_ sceneWrapper: SceneWrapper) {
         renderer.rebuildSceneBuffer(sceneWrapper)
     }
     
     // Function to update the scene buffer
-    func updateSceneBuffer(sceneWrapper: SceneWrapper, updateData: UpdateData) {
+    public func updateSceneBuffer(sceneWrapper: SceneWrapper, updateData: UpdateData) {
         renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
     }
 }

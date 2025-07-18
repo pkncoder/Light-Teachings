@@ -3,15 +3,15 @@ import SwiftUI
 struct SingleItemEdit: View {
     
     // Name
-    var name: String
+    public var name: String
     
     // Value
-    @Binding var value: Float
+    @Binding public var value: Float
     
     private var slidingSensitivity: Float
     
     // Optional range for the edit
-    var range: ClosedRange<Float>?
+    private var range: ClosedRange<Float>?
     
     // Just needs the name and value
     init(name: String, value: Binding<Float>, slidingSensitivity: Float = 50, range: ClosedRange<Float>? = nil) {

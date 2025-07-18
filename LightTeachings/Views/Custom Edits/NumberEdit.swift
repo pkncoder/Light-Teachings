@@ -15,7 +15,7 @@ struct NumberEdit: View {
     private var intSliding: Bool
     
     // Range for the value to clamp into
-    var range: ClosedRange<Float>?
+    private var range: ClosedRange<Float>?
     
     // Focus state for the text feild
     @FocusState private var isFocused: Bool

@@ -4,8 +4,8 @@ import SwiftUI
 class SceneBuilder {
     
     // URL To the file
-    var sceneUrl: URL
-    
+    private var sceneUrl: URL
+
     // Initializer
     init(_ sceneUrl: URL) {
         self.sceneUrl = sceneUrl

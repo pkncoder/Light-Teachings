@@ -3,18 +3,18 @@ import SwiftUI
 struct TripleItemEdit: View {
     
     // Name of edit
-    let name: String
+    public let name: String
     
     // Names of all inputs
-    let inputOneName: String
-    let inputTwoName: String
-    let inputThreeName: String
+    public let inputOneName: String
+    public let inputTwoName: String
+    public let inputThreeName: String
     
     private let slidingSensitivity: Float
     private let range: ClosedRange<Float>?
     
     // Value inside of a vec4
-    @Binding var value: SIMD4<Float>
+    @Binding public var value: SIMD4<Float>
     
     // MARK: -Probally not good to share this-
     // State variable for expanded disclosures

@@ -3,8 +3,8 @@ import SwiftUI
 struct ObjectTypeEdit: View {
     
     // Opperation w/ the enum
-    @Binding var objectType: Float
-    @State var objectEnum: Objects
+    @Binding public var objectType: Float
+    @State private var objectEnum: Objects
     
     // Init with the float value of the opperation
     init(objectType: Binding<Float>) {

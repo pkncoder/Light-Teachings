@@ -7,7 +7,7 @@ struct SceneTree: View {
     @EnvironmentObject var rendererSettings: RendererSettings
     
     // Node selection info
-    @Binding var sceneNodeSelection: SceneNode?
+    @Binding public var sceneNodeSelection: SceneNode?
 
     // Initializer
     init(sceneNodeSelection: Binding<SceneNode?>) {

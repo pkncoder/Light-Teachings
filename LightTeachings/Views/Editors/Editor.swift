@@ -7,10 +7,10 @@ struct Editor: View {
     @EnvironmentObject var rendererSettings: RendererSettings
     
     // Hold the binding with the editor visible from whatever that initializes this
-    @Binding var editorVisible: Bool
+    @Binding private var editorVisible: Bool
     
     // Scene node selection
-    @Binding var sceneNodeSelection: SceneNode?
+    @Binding private var sceneNodeSelection: SceneNode?
     
     // Init, needs the visibility of the editor and the scene node selection
     init(editorVisible: Binding<Bool>, sceneNodeSelection: Binding<SceneNode?>) {

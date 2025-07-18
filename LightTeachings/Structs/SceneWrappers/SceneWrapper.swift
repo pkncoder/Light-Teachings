@@ -5,7 +5,7 @@ import SwiftUI
 class SceneWrapper: Hashable, Decodable, Encodable {
     
     // == method
-    static func == (lhs: SceneWrapper, rhs: SceneWrapper) -> Bool {
+    public static func == (lhs: SceneWrapper, rhs: SceneWrapper) -> Bool {
         return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
     }
 
@@ -15,12 +15,12 @@ class SceneWrapper: Hashable, Decodable, Encodable {
     }
     
     // Id
-    var id: Self { self }
+    public var id: Self { self }
     
     // Attrs
-    var objects: [ObjectWrapper]
-    var materials: [MaterialWrapper]
-    var lengths: SIMD4<Float>
+    public var objects: [ObjectWrapper]
+    public var materials: [MaterialWrapper]
+    public var lengths: SIMD4<Float>
     
     // Decoder init
     required init(from decoder: any Decoder) throws {
@@ -35,7 +35,7 @@ class SceneWrapper: Hashable, Decodable, Encodable {
     }
     
     // Encoder
-    func encode(to encoder: any Encoder) throws {
+    public func encode(to encoder: any Encoder) throws {
         
         // Get a container
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -47,7 +47,7 @@ class SceneWrapper: Hashable, Decodable, Encodable {
     }
     
     // Coding keys
-    enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case objects
         case materials
         case lengths
