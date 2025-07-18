@@ -6,7 +6,7 @@ This is the file that I save all of the things that I still have to do
 ## User Interactions
 - [ ] Better ui for single item edits & triple item edits
     - [x] Sliding
-        - [ ] Better sensitivity sliding
+        - [x] Better sensitivity sliding
     - [ ] Better step sizes
     - [x] Steppers on either side
     - [x] Lighter BG

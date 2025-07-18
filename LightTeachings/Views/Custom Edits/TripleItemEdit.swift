@@ -10,6 +10,9 @@ struct TripleItemEdit: View {
     let inputTwoName: String
     let inputThreeName: String
     
+    private let slidingSensitivity: Float
+    private let range: ClosedRange<Float>?
+    
     // Value inside of a vec4
     @Binding var value: SIMD4<Float>
     
@@ -17,13 +20,16 @@ struct TripleItemEdit: View {
     // State variable for expanded disclosures
     @State private var disclosureIsExpanded = true
     
-    init(name: String, inputOneName: String = "X", inputTwoName: String = "Y", inputThreeName: String = "Z", value: Binding<SIMD4<Float>>) {
+    init(name: String, inputOneName: String = "X", inputTwoName: String = "Y", inputThreeName: String = "Z", value: Binding<SIMD4<Float>>, slidingSensitivity: Float = 50, range: ClosedRange<Float>? = nil) {
         
         // Set names
         self.name = name
         self.inputOneName = inputOneName
         self.inputTwoName = inputTwoName
         self.inputThreeName = inputThreeName
+        
+        self.slidingSensitivity = slidingSensitivity
+        self.range = range
         
         // Set value
         self._value = value
@@ -37,15 +43,15 @@ struct TripleItemEdit: View {
                 VStack {
                     HStack {
                         Text(inputOneName)
-                        NumberEdit(value: $value[0])
+                        NumberEdit(value: $value[0], slidingSensitivity: slidingSensitivity, range: range)
                     }
                     HStack {
                         Text(inputTwoName)
-                        NumberEdit(value: $value[1])
+                        NumberEdit(value: $value[1], slidingSensitivity: slidingSensitivity, range: range)
                     }
                     HStack {
                         Text(inputThreeName)
-                        NumberEdit(value: $value[2])
+                        NumberEdit(value: $value[2], slidingSensitivity: slidingSensitivity, range: range)
                     }
                 }
             }

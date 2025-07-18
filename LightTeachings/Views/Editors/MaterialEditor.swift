@@ -39,10 +39,10 @@ struct MaterialEditor: View {
             Section("Material Settings") {
                 
                 // Material rougness
-                SingleItemEdit(name: "Roughness", value: $material.materialSettings[0], range: 0...1)
+                SingleItemEdit(name: "Roughness", value: $material.materialSettings[0], slidingSensitivity: 100, range: 0...1)
                 
                 // Material mettalic amount
-                SingleItemEdit(name: "Matallic Index", value: $material.materialSettings[1], range: 0...1)
+                SingleItemEdit(name: "Matallic Index", value: $material.materialSettings[1], slidingSensitivity: 100, range: 0...1)
                 
             }
         }
