@@ -48,8 +48,6 @@ This is the file that I save all of the things that I still have to do
  - [x] Done 9/7/25 - d/m/yy at 00:35
  - [x] Done 18/7/25 - d/m/yy at 5:46 - Full done on NumberSliderState (only that though)
 - [x] Attribute protection levels everywhere I can
-- [ ] Attribute consts (let) everywhere where needed
-- [ ] Deconstructors & attribute memory levels (like weak)
 - [x] Sepperate structs and other things into more files
 - [x] RENAME APP STATE
 - [ ] Rename Render Settings ?
