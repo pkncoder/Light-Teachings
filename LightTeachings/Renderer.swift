@@ -23,6 +23,12 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     // Drawing layer
     weak var metalLayer: CAMetalLayer?
     
+    private let objectMemSize = MemoryLayout<Object>.stride
+    private let objectMatMemSize = MemoryLayout<ObjectMaterial>.stride
+    private let boundingBoxMemSize = MemoryLayout<BoundingBox>.stride
+    private let lengthsMemSize = MemoryLayout<SIMD4<Float>>.stride
+    private let sceneMemSize = MemoryLayout<RayTracedScene>.stride
+    
     // Initializer
     init(rendererSettings: RendererSettings) {
         
@@ -85,22 +91,26 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         var lengths: SIMD4<Float> = self.sceneWrapper.lengths
         
         // Create a buffer for the scene
-        let sceneBuffer: MTLBuffer? = device.makeBuffer(length: MemoryLayout<RayTracedScene>.stride, options: [.storageModeShared])
-        memcpy(sceneBuffer?.contents(), &objectArray, MemoryLayout<RayTracedScene>.stride) // Pass in the object array
-        memcpy( // Pass in the lengths
-            sceneBuffer?.contents().advanced(by: MemoryLayout<Object>.stride * 10), // Shift the memory so the off is past the object array
-            &materialArray,
-            MemoryLayout<RayTracedScene>.stride
+        let sceneBuffer: MTLBuffer? = device.makeBuffer(length: sceneMemSize, options: [.storageModeShared])
+        
+        sceneBuffer?.contents().copyMemory(from: &objectArray, byteCount: objectMemSize * 10) // Pass in the object array
+        
+        // Pass in the lengths
+        sceneBuffer?.contents().advanced(by: objectMemSize * 10).copyMemory( // Shift the memory so the off is past the object array
+            from: &materialArray,
+            byteCount: objectMatMemSize * 10
         )
-        memcpy(
-            sceneBuffer?.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10),
-            &boundingBox,
-            MemoryLayout<RayTracedScene>.stride
+        
+        // Pass in the bounding box
+        sceneBuffer?.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10).copyMemory(
+            from: &boundingBox,
+            byteCount: boundingBoxMemSize
         )
-        memcpy( // Pass in the lengths
-            sceneBuffer?.contents().advanced(by: (MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10 + MemoryLayout<BoundingBox>.stride)), // Shift the memory so the offset is past the object array
-            &lengths,
-            MemoryLayout<RayTracedScene>.stride
+        
+        // Pass in the lengths
+        sceneBuffer?.contents().advanced(by: (objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize)).copyMemory( // Shift the memory so the offset is past the object array
+            from: &lengths,
+            byteCount: lengthsMemSize
         )
         
         return sceneBuffer
@@ -131,17 +141,17 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
             case .Object:
                 
                 // Advance through to the next index and set new object info
-                backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.objects[updateData.updateIndex], byteCount: MemoryLayout<Object>.stride)
+                backSceneBuffer.contents().advanced(by: objectMemSize * updateData.updateIndex).copyMemory(from: &sceneWrapper.objects[updateData.updateIndex], byteCount: objectMemSize)
             
                 // Get the new bounding box and set it too
                 var boundingBox: BoundingBox = BoundingBoxBuilder(objects: sceneWrapper.objects).fullBuild()
-                backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * 10).copyMemory(from: &boundingBox, byteCount: MemoryLayout<BoundingBox>.stride)
+                backSceneBuffer.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10).copyMemory(from: &boundingBox, byteCount: boundingBoxMemSize)
             
             // Material
             case .Material:
                 
             // Set the new material at the correct index
-                backSceneBuffer.contents().advanced(by: MemoryLayout<Object>.stride * 10 + MemoryLayout<ObjectMaterial>.stride * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: MemoryLayout<ObjectMaterial>.stride)
+                backSceneBuffer.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: objectMatMemSize)
                 
             // Full rebuild
             case .Full:

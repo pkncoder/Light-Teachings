@@ -7,6 +7,7 @@ This is the file that I save all of the things that I still have to do
 - [ ] Better ui for single item edits & triple item edits
     - [x] Sliding
         - [ ] Better sensitivity sliding
+    - [ ] Better step sizes
     - [x] Steppers on either side
     - [x] Lighter BG
     - [x] Larger Form
@@ -24,24 +25,21 @@ This is the file that I save all of the things that I still have to do
 ## User Interface
 - [x] Material editor
 - [x] Fix the scene tree when updateed
-- [ ] Keep scene tree open & in same state after update
+- [ ] Keep scene tree open & in same state after update (add / remove)
 
 ## Shader Stuff
 - [ ] Full Refactoring of said file
   - [ ] Comments
   - [ ] Code Placement
-- [ ] Change the way that sdf opperations are done
-  - Idea: Use object data slot 3
-    - Indicates an object index that is being opporated on
-    - Indicates what opporation "group" is being opporated on
 - [ ] Add the point lights
 - [x] Bounding Box
 - [x] Use multithreading to decouple renderer and SwiftUI
 - [ ] Better buffer implimentations?
     - [ ] Example: https://github.com/ralfebert/MetalSwiftUIExample/blob/main/MetalSwiftUIExample/Renderer.swift
 - [ ] Better implementation with Uniform struct
-- [ ] buildSceneBuffer redo?
-- [ ] THREADS
+- [x] buildSceneBuffer redo
+- [x] Define the byte counts for the arrays
+- [x] THREADS
 - [x] Fix BB error with planes
 
 ## Background Stuff
@@ -58,6 +56,12 @@ This is the file that I save all of the things that I still have to do
     - [ ] If that goes well maybe even add a update flag to render settings so there's only one for all .onChange in ContentView
 - [ ] On a new open the scene tree needs updated
 - [ ] Change number Slider State where needed
+
+## Big Stuff
+- [ ] Change the way that sdf opperations are done
+  - Idea: Use object data slot 3
+    - Indicates an object index that is being opporated on
+    - Indicates what opporation "group" is being opporated on
 
 
 
