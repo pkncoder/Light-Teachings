@@ -1,21 +1,6 @@
 import SwiftUI
 import MetalKit
 
-class MetalViewLayer: NSView {
-    
-    // Create the layer for the NSView
-    override func makeBackingLayer() -> CALayer {
-        let metalLayer = CAMetalLayer()
-        metalLayer.contentsScale = NSScreen.main?.backingScaleFactor ?? 2.0
-        return metalLayer
-    }
-
-    // Saved layer (as a CAMetalLayer)
-    var metalLayer: CAMetalLayer {
-        return self.layer as! CAMetalLayer
-    }
-}
-
 struct RendererView: NSViewRepresentable {
     
     // Renderer
@@ -44,12 +29,12 @@ struct RendererView: NSViewRepresentable {
     func updateNSView(_ nsView: MetalViewLayer, context: NSViewRepresentableContext<RendererView>) {}
     
     // Function to rebuild the scene buffer
-    func rebuildSceneBuffer(_ sceneWrapper: SceneBuilder.SceneWrapper) {
+    func rebuildSceneBuffer(_ sceneWrapper: SceneWrapper) {
         renderer.rebuildSceneBuffer(sceneWrapper)
     }
     
     // Function to update the scene buffer
-    func updateSceneBuffer(sceneWrapper: SceneBuilder.SceneWrapper, updateData: UpdateData) {
+    func updateSceneBuffer(sceneWrapper: SceneWrapper, updateData: UpdateData) {
         renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
     }
 }

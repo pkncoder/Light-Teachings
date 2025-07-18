@@ -9,7 +9,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     var pipeline: MTLRenderPipelineState
 
     // Scene wrapper that's being rendered
-    private var sceneWrapper: SceneBuilder.SceneWrapper
+    private var sceneWrapper: SceneWrapper
     
     // Buffers
     private var sceneBuffer: MTLBuffer!
@@ -85,8 +85,8 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     func buildSceneBuffer() -> MTLBuffer? {
         
         // Split the portions of the scene
-        var objectArray: [SceneBuilder.ObjectWrapper] = self.sceneWrapper.objects
-        var materialArray: [SceneBuilder.MaterialWrapper] = self.sceneWrapper.materials
+        var objectArray: [ObjectWrapper] = self.sceneWrapper.objects
+        var materialArray: [MaterialWrapper] = self.sceneWrapper.materials
         var boundingBox: BoundingBox = BoundingBoxBuilder(objects: objectArray).fullBuild() // Build the bounding box
         var lengths: SIMD4<Float> = self.sceneWrapper.lengths
         
@@ -117,7 +117,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     }
     
     // Full rebuild of the scene buffer with new scene wrapper
-    func rebuildSceneBuffer(_ sceneWrapper: SceneBuilder.SceneWrapper) {
+    func rebuildSceneBuffer(_ sceneWrapper: SceneWrapper) {
         
         // Save new scene wrapper then build
         self.sceneWrapper = sceneWrapper
@@ -125,7 +125,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     }
     
     // Update the scene wrapper in one spot
-    func updateSceneBuffer(sceneWrapper: SceneBuilder.SceneWrapper, updateData: UpdateData) {
+    func updateSceneBuffer(sceneWrapper: SceneWrapper, updateData: UpdateData) {
         
         // Save new scene wrapper
         self.sceneWrapper = sceneWrapper

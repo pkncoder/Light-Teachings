@@ -6,7 +6,7 @@ struct ObjectEditor: View {
     @EnvironmentObject var rendererSettings: RendererSettings
     
     // Object info
-    @Binding var object: SceneBuilder.ObjectWrapper
+    @Binding var object: ObjectWrapper
     var objectIndex: Int
     
     var body: some View {

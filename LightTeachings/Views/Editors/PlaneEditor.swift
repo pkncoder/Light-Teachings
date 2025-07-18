@@ -3,7 +3,7 @@ import SwiftUI
 struct PlaneEditor: View {
     
     // Object binding
-    @Binding var object: SceneBuilder.ObjectWrapper
+    @Binding var object: ObjectWrapper
     
     var body: some View {
         
@@ -27,7 +27,7 @@ struct PlaneEditor: View {
             SingleItemEdit(name: "Height", value: $object.origin[3])
             
             // Plane Normal
-            TripleItemEdit(name: "Front Direction", value: $object.bounds)
+            TripleItemEdit(name: "Front Direction", value: $object.bounds, slidingSensitivity: 75)
             
         }
         

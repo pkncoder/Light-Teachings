@@ -7,7 +7,7 @@ struct ContentView: View {
     @State var editorVisible: Bool = true
     
     // Scene node selection in the scene tree
-    @State var sceneNodeSelection: SceneBuilder.SceneNode? = nil
+    @State var sceneNodeSelection: SceneNode? = nil
     
     // Renderer view
     @State var rendererView: RendererView? = nil

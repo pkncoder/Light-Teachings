@@ -7,13 +7,10 @@ struct SceneTree: View {
     @EnvironmentObject var rendererSettings: RendererSettings
     
     // Node selection info
-    @Binding var sceneNodeSelection: SceneBuilder.SceneNode?
-    
-    // Scene nodes
-//    @State var sceneNodes: SceneBuilder.SceneNode? = nil
-    
+    @Binding var sceneNodeSelection: SceneNode?
+
     // Initializer
-    init(sceneNodeSelection: Binding<SceneBuilder.SceneNode?>) {
+    init(sceneNodeSelection: Binding<SceneNode?>) {
         
         // Set the node selection
         self._sceneNodeSelection = sceneNodeSelection
@@ -73,7 +70,7 @@ struct SceneTree: View {
                                                     rendererSettings.sceneWrapper.lengths[0] += 1
                                                 rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: Int(rendererSettings.sceneWrapper.lengths[0]))
                                                     rendererSettings.sceneWrapper.objects.append(
-                                                        SceneBuilder.ObjectWrapper(
+                                                        ObjectWrapper(
                                                             origin: SIMD4<Float>(0,0,0,0),
                                                             bounds: SIMD4<Float>(1,1,1,1),
                                                             objectData: SIMD4<Float>(1,0,0,1),
@@ -85,7 +82,7 @@ struct SceneTree: View {
                                                     rendererSettings.sceneWrapper.lengths[1] += 1
                                                 rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: Int(rendererSettings.sceneWrapper.lengths[1]))
                                                     rendererSettings.sceneWrapper.materials.append(
-                                                        SceneBuilder.MaterialWrapper(
+                                                        MaterialWrapper(
                                                             albedo: SIMD4<Float>(1,1,1,0),
                                                             materialSettings: SIMD4<Float>(repeating: 0)
                                                         )

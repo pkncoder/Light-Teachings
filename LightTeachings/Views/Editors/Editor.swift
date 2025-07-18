@@ -10,10 +10,10 @@ struct Editor: View {
     @Binding var editorVisible: Bool
     
     // Scene node selection
-    @Binding var sceneNodeSelection: SceneBuilder.SceneNode?
+    @Binding var sceneNodeSelection: SceneNode?
     
     // Init, needs the visibility of the editor and the scene node selection
-    init(editorVisible: Binding<Bool>, sceneNodeSelection: Binding<SceneBuilder.SceneNode?>) {
+    init(editorVisible: Binding<Bool>, sceneNodeSelection: Binding<SceneNode?>) {
         self._editorVisible = editorVisible
         self._sceneNodeSelection = sceneNodeSelection
     }

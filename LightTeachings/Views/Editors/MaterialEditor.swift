@@ -6,7 +6,7 @@ struct MaterialEditor: View {
     @EnvironmentObject var rendererSettings: RendererSettings
     
     // Material info
-    @Binding var material: SceneBuilder.MaterialWrapper
+    @Binding var material: MaterialWrapper
     var materialIndex: Int
     
     // Computed Binding for ColorPicker

@@ -8,7 +8,7 @@ class RendererSettings: ObservableObject, Equatable, Identifiable {
     }
     
     // Most recent scene wrapper
-    @Published var sceneWrapper: SceneBuilder.SceneWrapper
+    @Published var sceneWrapper: SceneWrapper
     
     // Scene  file info
     @Published var filename: String = ""
@@ -18,12 +18,12 @@ class RendererSettings: ObservableObject, Equatable, Identifiable {
     @Published var updateData: UpdateData? = nil
     
     // Scene tree node
-    @Published var sceneNodes: SceneBuilder.SceneNode? = nil
+    @Published var sceneNodes: SceneNode? = nil
     
     @Published var doIt: Bool = true
     
     // Only thing needed is the scene wrapper for init
-    init(sceneWrapper: SceneBuilder.SceneWrapper) {
+    init(sceneWrapper: SceneWrapper) {
         self._sceneWrapper = Published(wrappedValue: sceneWrapper)
     }
 }

@@ -7,13 +7,13 @@ This is the file that I save all of the things that I still have to do
 - [ ] Better ui for single item edits & triple item edits
     - [x] Sliding
         - [x] Better sensitivity sliding
-    - [ ] Better step sizes
+    - [ ] Better step sizes?
     - [x] Steppers on either side
     - [x] Lighter BG
     - [x] Larger Form
     - [x] ***Blender Based***
-    - [ ] Check that it actually works right
-        - Idk if it does, I think the slider sensitivity is throwing it off however
+    - [x] Check that it actually works right
+        - I way over complicated it, now it's 3 lines, no "numberSliderState" and an .onChange for clamps   (╯°□°)╯︵ ┻━┻
     - [x] Add ranges
 - [ ] Make the scene tree disclosures open by default
 - [x] Add MacOs menubar commands
@@ -41,21 +41,24 @@ This is the file that I save all of the things that I still have to do
 - [x] Define the byte counts for the arrays
 - [x] THREADS
 - [x] Fix BB error with planes
+- [ ] Split up into multiple files (and put in own dir)
 
 ## Background Stuff
 - [ ] Recommenting
  - [x] Done 9/7/25 - d/m/yy at 00:35
+ - [x] Done 18/7/25 - d/m/yy at 5:46 - Full done on NumberSliderState (only that though)
 - [ ] Attribute protection levels everywhere I can
 - [ ] Deconstructors & attribute memory levels (like weak)
-- [ ] Sepperate structs and other things into more files
-- [ ] Rename files
+- [x] Sepperate structs and other things into more files
 - [x] RENAME APP STATE
 - [ ] Rename Render Settings ?
 - [x] Change the passing of scene info around to using envirormentObjects
 - [ ] Try to use getter and setter methods to not need .onChange as much
-    - [ ] If that goes well maybe even add a update flag to render settings so there's only one for all .onChange in ContentView
+- [ ] Try to remove the 2 .onChange(s) in ContentView and only have 1
+    - Maybe an update flag in RendererSettings
 - [ ] On a new open the scene tree needs updated
-- [ ] Change number Slider State where needed
+- [x] Change number Slider State where needed
+    - No idea what I did to need to have this
 
 ## Big Stuff
 - [ ] Change the way that sdf opperations are done

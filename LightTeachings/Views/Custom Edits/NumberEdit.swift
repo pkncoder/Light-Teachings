@@ -8,11 +8,21 @@ struct NumberEdit: View {
     // Step amount by the steppers
     private var step: Float
     
-    // Sensitivity on the slider
+    // Sensitivity amount on the slider (larger == smaller change)
     private var slidingSensitivity: Float
     
-    // Tryncate to ints or no
+    // Truncate to ints or not
     private var intSliding: Bool
+    
+    // Range for the value to clamp into
+    var range: ClosedRange<Float>?
+    
+    // Focus state for the text feild
+    @FocusState private var isFocused: Bool
+    
+    // Number slider states
+    @State private var lastCoordLocation: Float = 0
+    @State private var textEditModeOn: Bool = false
     
     // Number formatter
     private var numberFormatter: NumberFormatter {
@@ -21,18 +31,7 @@ struct NumberEdit: View {
         return formatter
     }
     
-    // Focus state for the text feild
-    @FocusState private var isFocused: Bool
-    
-    // Number slider state
-    @StateObject var numberSliderState: NumberSliderData = NumberSliderData()
-    
-    // Range for the number
-    var range: ClosedRange<Float>?
-    
-    @State var delta: Float = 0
-    
-    // Init, just needs value. Step, sensitivity, int sliding, and range are all optional
+    // Init, just **needs** value. Step, sensitivity, int sliding, and range are all optional
     init(value: Binding<Float>, step: Float = 1, slidingSensitivity: Float = 50, intSliding: Bool = false, range: ClosedRange<Float>? = nil) {
         self._value = value
         self.step = step
@@ -47,64 +46,57 @@ struct NumberEdit: View {
             
             // Minus stepper
             Button("-") {
-                // Change the value by step
+                // Change the value by the step
                 value -= step
-                
-                // If needed, clamp the value
-                if let numRange = self.range {
-                    value = min(max(value, numRange.lowerBound), numRange.upperBound)
-                }
             }
             .padding(0)
             
             // If the typing is enabled use a text feild
-            if numberSliderState.myValue {
+            if textEditModeOn {
+                
+                // Text feild that takes in the value and formatter for the number
                 TextField("", value: $value, formatter: self.numberFormatter)
+                
+                    // Slider focus state set to true on appear
                     .focused($isFocused)
                     .onAppear {
                         isFocused = true
                     }
+                
+                    // On submit of the text feild the textEditMode is flipped to go back to a text box
                     .onSubmit {
-                        numberSliderState.toggleMyValue()
+                        textEditModeOn.toggle()
                     }
+                
+                    // Styles
                     .frame(width: 40)
                     .lineLimit(1)
-            } else {
+                
+            }
+            
+            else {
+                
                 // If not focused into the text feild use just regular text
-                Text(self.intSliding ? String(format: "%.0f", value) : String(format: "%.2f", value)) // If int sliding, show an int, else show 2 decimal points
+                Text(self.intSliding ? String(format: "%.0f", value) : String(format: "%.2f", value)) // If int sliding is on, show an int, else show 2 decimal points
                     .gesture(
-                        DragGesture(minimumDistance: 1.0, coordinateSpace: .local) // Drag jesture for a slider
+                        DragGesture(minimumDistance: 1.0, coordinateSpace: .local) // Drag gesture for a slider
                             .onChanged { coord in
                                 
-                                // Delta X for the coordinate location
-                                let deltaX = Float(coord.location.x) - delta
+                                // Get the change in X mouse pos
+                                let deltaX = Float(coord.location.x) - lastCoordLocation
                                 
-                                delta = deltaX
+                                // Save the new... last coord location
+                                lastCoordLocation = Float(coord.location.x)
                                 
-                                // Truncate the sliding if needed
-                                if (self.intSliding) {
-                                    value += Float(Int(delta / slidingSensitivity))
-                                } else {
-                                    value += delta / slidingSensitivity
-                                }
-                                
-                                // If needed, clamp the value
-                                if let numRange = self.range {
-                                    value = min(max(value, numRange.lowerBound), numRange.upperBound)
-                                }
-                                
-                                delta = Float(coord.location.x)
-                                
-                                // Update delta x
-//                                numberSliderState.updateValueX(newDeltaX: Float(coord.location.x))
+                                // Change value by the deltaX and sliding sensitivity
+                                value += deltaX / slidingSensitivity
                             }
-                            .onEnded({ _ in // When finished, update delta x to 0
-//                                numberSliderState.updateValueX(newDeltaX: 0.0)
-                                delta = 0.0
+                            .onEnded({ _ in // When finished, reset the last coord location to 0
+                                lastCoordLocation = 0.0
                             })
                     )
-                    .onTapGesture(count: 2) { // Double click, get ready for the text feild
-                        numberSliderState.toggleMyValue()
+                    .onTapGesture(count: 2) { // On a double click flip the text edit mode
+                        textEditModeOn.toggle()
                     }
                     .frame(width: 40)
                     .lineLimit(1)
@@ -116,32 +108,22 @@ struct NumberEdit: View {
                 // Add to value by step
                 value += step
                 
-                // If needed, clamp the value
-                if let numRange = self.range {
-                    value = min(max(value, numRange.lowerBound), numRange.upperBound)
-                }
             }
             .padding(0)
         }
         .background(Color.gray.opacity(0.2))
         .padding(0)
-    }
-}
-
-// Number slider state for values that need to be saved
-class NumberSliderData: ObservableObject {
-    @Published var myValue: Bool = false // Text feild focus-like state
-    @Published var lastDeltaX: Float = 0.0 // Delta x save for the slider
-
-    // Toggle for text feild
-    func toggleMyValue() {
-        myValue.toggle()
-    }
-    
-    // Delta X update
-    func updateValueX(newDeltaX: Float) {
-        DispatchQueue.main.async {
-            self.lastDeltaX = newDeltaX
+        .onChange(of: value) { oldValue, newValue in // Value settings
+            
+            // If int sliding, truncate value
+            if intSliding {
+                value = Float(Int(value))
+            }
+            
+            // If a range is set clamp value
+            if let numRange = self.range {
+                value = min(max(value, numRange.lowerBound), numRange.upperBound)
+            }
         }
     }
 }
