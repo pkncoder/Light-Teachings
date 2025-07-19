@@ -1,5 +1,8 @@
 #include <metal_stdlib>
 
+// Shading models
+//#include "./BDRF.metal"
+
 #include "./RayMarcher.metal"
 
 using namespace metal;
@@ -29,10 +32,14 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
         float3(0, 2, -6),
         normalize(float3(uv, cameraDistance))
     };
+    
+    // Create our shading model
+    // Thank you: https://learnopengl.com/PBR/Lighting for the help with the bdrf lighting equations & just teaching me how it works
+    BDRF bdrf = BDRF();
 
     // Create our ray marcher
     RayMarcher rayMarcher = RayMarcher(ray, scene);
-    float3 color = rayMarcher.getColor(uv, scene.lengths.w);
+    float3 color = rayMarcher.getColor(uv, scene.lengths.w, bdrf);
 
 
     // Output the final ray's color

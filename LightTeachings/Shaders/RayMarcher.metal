@@ -1,6 +1,8 @@
+//#include "../LightTeachings-Bridging-Header.h"
 #include <metal_stdlib>
 
 #include "./BDRF.metal"
+
 using namespace metal;
 
 class RayMarcher {
@@ -253,7 +255,7 @@ private:
     }
 
     // Coloring
-    float3 sceneColoring(float2 uv, float doIt) {
+    float3 sceneColoring(float2 uv, float doIt, BDRF bdrf) {
 
         // Light position
         float3 lightPos = float3(0, 0.7, 1.6);
@@ -284,40 +286,7 @@ private:
             return float3(0);
         }
 
-
-        // Thank you: https://learnopengl.com/PBR/Lighting for the help with the bdrf lighting equations & just teaching me how it works
-        BDRF bdrf = BDRF();
-
-        float3 worldPos = hit.hitPos.xyz;
-        float3 N = normal;
-        float3 V = -ray.direction;
-        float3 L = normalize(lightPos - worldPos);
-        float3 H = normalize (V + L);
-
-        ObjectMaterial material = scene.materials[hit.materialIndex - 1];
-
-        float3 lightColor = float3(50);
-
-        // Cook-Torrance BRDF
-        float3  F0 = mix (float3 (0.04), pow(material.albedo.xyz, float3(2.2)), material.materialSettings[1]);
-        float NDF = bdrf.distributionGGX(N, H, material.materialSettings[0]);
-        float G   = bdrf.geometrySmith(N, V, L, material.materialSettings[0]);
-        float3  F   = bdrf.fresnelSchlick(max(dot(H, V), 0.0), F0);
-        float3  kD  = float3(1.0) - F;
-        kD *= 1.0 - material.materialSettings[1];
-
-        float3  numerator   = NDF * G * F;
-        float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
-        float3  specular    = numerator / max(denominator, 0.001);
-
-        float NdotL = max(dot(N, L), 0.0);
-
-        float3 color = lightColor * (kD * pow(material.albedo.xyz, float3(2.2)) / M_PI_F + specular) *
-        (NdotL / dot(lightPos - worldPos, lightPos - worldPos)) + 0.05;
-
-
-        ray.origin = hit.hitPos + normal * epsilon;
-        ray.direction = reflect(ray.direction, normal);
+        float3 color = bdrf.color(ray, hit, lightPos, normal, scene);
 
         return color;
     }
@@ -340,7 +309,7 @@ public:
         this->maxDist = maxDist;
     }
 
-    float3 getColor(float2 uv, float time) {
-        return sceneColoring(uv, time);
+    float3 getColor(float2 uv, float time, BDRF bdrf) {
+        return sceneColoring(uv, time, bdrf);
     }
 };
