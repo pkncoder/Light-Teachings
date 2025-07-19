@@ -64,3 +64,10 @@ struct Uniforms {
     float frameNum;
     float padding;
 };
+
+// Vertex function payload
+struct VertexPayload {
+    simd_float4 position [[position]];
+    simd_half3 color;
+
+};

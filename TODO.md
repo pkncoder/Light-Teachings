@@ -42,6 +42,7 @@ This is the file that I save all of the things that I still have to do
 - [x] THREADS
 - [x] Fix BB error with planes
 - [ ] Split up into multiple files (and put in own dir)
+- [ ] Shading models
 
 ## Background Stuff
 - [ ] Recommenting
@@ -55,7 +56,6 @@ This is the file that I save all of the things that I still have to do
 - [ ] Try to use getter and setter methods to not need .onChange as much
 - [ ] Try to remove the 2 .onChange(s) in ContentView and only have 1
     - Maybe an update flag in RendererSettings
-- [ ] On a new open the scene tree needs updated
 - [x] Change number Slider State where needed
     - No idea what I did to need to have this
 
