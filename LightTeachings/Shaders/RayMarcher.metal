@@ -277,13 +277,15 @@ private:
         // Estimate the normal and calculate the shading
         float3 normal = estimateNormal(ray);
 
-        HitInfo shadowRayHit = sceneSDF({
-            lightPos,
-            normalize(hit.hitPos - lightPos)
-        },false);
-
-        if (length(shadowRayHit.hitPos - hit.hitPos) > 0.01) {
-            return float3(0);
+        if (modelinator.shadows) {
+            HitInfo shadowRayHit = sceneSDF({
+                lightPos,
+                normalize(hit.hitPos - lightPos)
+            },false);
+            
+            if (length(shadowRayHit.hitPos - hit.hitPos) > 0.01) {
+                return float3(0);
+            }
         }
 
         float3 color = modelinator.color(ray, hit, lightPos, normal, scene);

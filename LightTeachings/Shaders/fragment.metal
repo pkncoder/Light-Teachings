@@ -50,6 +50,10 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
             modelinator = Modelinator(BDRF_Model);
             break;
     }
+    
+    if (scene.renderingData.shadingInfo[1] > 0.0) {
+        modelinator.setShadowOverride((bool) (scene.renderingData.shadingInfo[1] - 1.0));
+    }
 
     // Create our ray marcher
     RayMarcher rayMarcher = RayMarcher(ray, scene);

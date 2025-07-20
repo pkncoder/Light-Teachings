@@ -15,8 +15,26 @@ private:
     ShaderModels shaderModel;
     
 public:
+    bool shadows;
+    
     Modelinator(ShaderModels shaderModel) {
         this->shaderModel = shaderModel;
+        
+        switch(shaderModel) {
+            case BDRF_Model:
+                this->shadows = true;
+                break;
+            case SimpleShading_Model:
+                this->shadows = false;
+                break;
+            case Hit_Model:
+                this->shadows = false;
+                break;
+            case HitColor_Model:
+                this->shadows = false;
+                break;
+        }
+        
     }
     
     float3 color(Ray ray, HitInfo hit, float3 lightPos, float3 normal, RayTracedScene scene) {
@@ -30,6 +48,10 @@ public:
             case HitColor_Model:
                 return HitColor().color(ray, hit, lightPos, normal, scene);
         }
+    }
+    
+    void setShadowOverride(bool newShadowValue) {
+        this->shadows = newShadowValue;
     }
     
 };

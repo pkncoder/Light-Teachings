@@ -9,7 +9,7 @@
     - arrayLengths
         - [obj, mat, lights, empty]
     - shading info
-        - [modelType, empty, empty, empty]
+        - [modelType, shadowOvr, empty, empty]
     - temp2
         - [empty, empty, empty, empty]
     - temp3
