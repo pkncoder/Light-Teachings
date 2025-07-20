@@ -33,7 +33,7 @@ struct SceneTree: View {
                         // HStack with a spacer to left-align text
                         HStack {
                             
-                            if node.selectionData?.selectionType != nil {
+                            if node.selectionData?.selectionType != nil && node.selectionData?.selectionType != .Scene {
                                 Text("\(node.name) \(node.selectionData!.selectedIndex!)")
                                     .contextMenu {
                                         Button("Delete Item") {

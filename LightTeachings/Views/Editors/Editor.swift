@@ -32,8 +32,13 @@ struct Editor: View {
                     // Check if there actually is a selected node
                     if sceneNodeSelection != nil {
                         
+                        // If the scene selection is the top level or scene title, show the renderer settings UI
+                        if sceneNodeSelection?.selectionData?.selectionType == .Scene {
+                            RendererEditor(rendererData: $rendererSettings.sceneWrapper.rendererData)
+                        }
+                        
                         // If the selection type is an object
-                        if sceneNodeSelection?.selectionData?.selectionType == .Object && sceneNodeSelection?.selectionData?.selectedIndex ?? -1 < Int(rendererSettings.sceneWrapper.rendererData.arrayLengths[0]) {
+                        else if sceneNodeSelection?.selectionData?.selectionType == .Object && sceneNodeSelection?.selectionData?.selectedIndex ?? -1 < Int(rendererSettings.sceneWrapper.rendererData.arrayLengths[0]) {
                             
                             ObjectEditor(object: $rendererSettings.sceneWrapper.objects[sceneNodeSelection!.selectionData!.selectedIndex!], objectIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
                         }

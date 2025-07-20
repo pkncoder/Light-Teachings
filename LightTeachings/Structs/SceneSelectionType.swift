@@ -4,4 +4,5 @@ enum SceneSelectionType {
     case Material
     case Light
     case Full
+    case Scene
 }

@@ -82,6 +82,21 @@ struct ContentView: View {
                 }
             }
         }
+        .onChange(of: self.rendererSettings.sceneWrapper.rendererData) { oldValue, newValue in
+            
+            // Material update, do it in a background thread
+            DispatchQueue.global(qos: .background).async {
+                
+                if self.rendererSettings.updateData?.updateType == .Full {
+                    rendererView!.rebuildSceneBuffer(self.rendererSettings.sceneWrapper)
+                    rendererSettings.updateData = nil
+                }
+                
+                else if let _ = rendererSettings.updateData {
+                    rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
+                }
+            }
+        }
         .onAppear() { // Renderer settings need a sec before they can be used, so the rendererView needs to be created inside of the body
             rendererView = RendererView(rendererSettings: rendererSettings)
         }

@@ -47,7 +47,7 @@ class SceneBuilder {
          */
         
         // Top level / Tree root
-        var topLevelNode: SceneNode = SceneNode(name: "Scene", children: [])
+        var topLevelNode: SceneNode = SceneNode(name: "Scene", sceneSelectionType: .Scene, children: [])
         
         // Object title
         var objectNode: SceneNode = SceneNode(name: "Objects (\( Int(sceneWrapper.rendererData.arrayLengths[0])))", children: [])

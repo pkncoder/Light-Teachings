@@ -138,6 +138,13 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         // Switch through the update types
         switch updateData.updateType {
             
+            // Renderer data
+            case .Scene:
+                backSceneBuffer.contents().advanced(by: (objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize)).copyMemory(
+                    from: &sceneWrapper.rendererData,
+                    byteCount: rendererDataMemSize
+                )
+            
             // Object (with bounding box)
             case .Object:
                 
