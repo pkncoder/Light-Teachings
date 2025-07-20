@@ -48,6 +48,11 @@ This is the file that I save all of the things that I still have to do
     - Hit detetect
     - Hit detetect w/ color
 - [x] Fill up the BDRF class to have a better use in the fragmentMain
+- [ ] Make the modelinator have a shadows boolean
+- [ ] Make a shadows override box
+    - 0 = default based on shading model
+    - 1 = shadows off
+    - 2 = shadows on
 
 ## Background Stuff
 - [ ] Recommenting

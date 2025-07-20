@@ -11,16 +11,16 @@ struct Object {
     simd_float4 tempData;
 };
 
-// Point light
-struct PointLight {
-    simd_float4 position;
-    simd_float4 albedo;
-};
-
 // Material
 struct ObjectMaterial {
     simd_float4 albedo;
     simd_float4 materialSettings;
+};
+
+// Point light
+struct PointLight {
+    simd_float4 position;
+    simd_float4 albedo;
 };
 
 // Bounding Box
@@ -29,13 +29,21 @@ struct BoundingBox {
     simd_float4 boxMax;
 };
 
+// Renderer data
+struct RendererData {
+    simd_float4 arrayLengths;
+    simd_float4 shadingInfo;
+    simd_float4 temp2;
+    simd_float4 temp3;
+};
+
 // Scene info
 struct RayTracedScene {
     struct Object objects[10];
     struct ObjectMaterial materials[10];
 //    struct PointLight lights[10];
     struct BoundingBox topBoundingBox;
-    simd_float4 lengths;
+    struct RendererData renderingData;
 };
 
 // Screen size info

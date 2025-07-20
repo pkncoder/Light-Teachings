@@ -50,10 +50,10 @@ class SceneBuilder {
         var topLevelNode: SceneNode = SceneNode(name: "Scene", children: [])
         
         // Object title
-        var objectNode: SceneNode = SceneNode(name: "Objects (\( Int(sceneWrapper.lengths[0])))", children: [])
+        var objectNode: SceneNode = SceneNode(name: "Objects (\( Int(sceneWrapper.rendererData.arrayLengths[0])))", children: [])
         
         // Material title
-        var materialNode: SceneNode = SceneNode(name: "Materials (\( Int(sceneWrapper.lengths[1])))", children: [])
+        var materialNode: SceneNode = SceneNode(name: "Materials (\( Int(sceneWrapper.rendererData.arrayLengths[1])))", children: [])
         
         
         

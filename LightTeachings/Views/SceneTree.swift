@@ -41,13 +41,14 @@ struct SceneTree: View {
                                             
                                             switch node.selectionData!.selectionType {
                                                 case .Object:
-                                                    rendererSettings.sceneWrapper.lengths[0] -= 1
+                                                rendererSettings.sceneWrapper.rendererData.arrayLengths[0] -= 1
+                                                    print(rendererSettings.sceneWrapper.rendererData.arrayLengths[0])
                                                     rendererSettings.sceneWrapper.objects.remove(at: node.selectionData!.selectedIndex!)
                                                 case .Material:
-                                                    rendererSettings.sceneWrapper.lengths[1] -= 1
+                                                    rendererSettings.sceneWrapper.rendererData.arrayLengths[1] -= 1
                                                     rendererSettings.sceneWrapper.materials.remove(at: node.selectionData!.selectedIndex!)
                                                 case .Light:
-                                                    rendererSettings.sceneWrapper.lengths[2] -= 1
+                                                    rendererSettings.sceneWrapper.rendererData.arrayLengths[2] -= 1
                                                 default:
                                                     print("This node is not defined.")
                                             }
@@ -67,8 +68,9 @@ struct SceneTree: View {
                                             
                                             switch node.children![0].selectionData!.selectionType {
                                                 case .Object:
-                                                    rendererSettings.sceneWrapper.lengths[0] += 1
-                                                rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: Int(rendererSettings.sceneWrapper.lengths[0]))
+                                                    rendererSettings.sceneWrapper.rendererData.arrayLengths[0] += 1
+                                                print(rendererSettings.sceneWrapper.rendererData.arrayLengths[0])
+                                                rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: Int(rendererSettings.sceneWrapper.rendererData.arrayLengths[0]))
                                                     rendererSettings.sceneWrapper.objects.append(
                                                         ObjectWrapper(
                                                             origin: SIMD4<Float>(0,0,0,0),
@@ -77,10 +79,11 @@ struct SceneTree: View {
                                                             tempData: SIMD4<Float>(repeating: 0)
                                                         )
                                                     )
+                                                print(rendererSettings.sceneWrapper.objects.count)
                                                 
                                                 case .Material:
-                                                    rendererSettings.sceneWrapper.lengths[1] += 1
-                                                rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: Int(rendererSettings.sceneWrapper.lengths[1]))
+                                                    rendererSettings.sceneWrapper.rendererData.arrayLengths[1] += 1
+                                                rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: Int(rendererSettings.sceneWrapper.rendererData.arrayLengths[1]))
                                                     rendererSettings.sceneWrapper.materials.append(
                                                         MaterialWrapper(
                                                             albedo: SIMD4<Float>(1,1,1,0),
@@ -88,7 +91,7 @@ struct SceneTree: View {
                                                         )
                                                     )
                                                 case .Light:
-                                                    rendererSettings.sceneWrapper.lengths[2] += 1
+                                                    rendererSettings.sceneWrapper.rendererData.arrayLengths[2] += 1
                                                 default:
                                                     print("This node is not defined.")
                                             }

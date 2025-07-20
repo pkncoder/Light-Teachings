@@ -52,5 +52,10 @@
             "materialSettings": [0.3, 0, 0, 0]
         }
     ],
-    "lengths": [6, 3, 0, 0]
+    "rendererData": {
+        "arrayLengths": [6, 3, 0, 0],
+        "shadingData": [1, 0, 0, 0],
+        "temp2": [0, 0, 0, 0],
+        "temp3": [0, 0, 0, 0]
+    }
 }

@@ -20,7 +20,7 @@ class SceneWrapper: Hashable, Decodable, Encodable {
     // Attrs
     public var objects: [ObjectWrapper]
     public var materials: [MaterialWrapper]
-    public var lengths: SIMD4<Float>
+    public var rendererData: RendererDataWrapper
     
     // Decoder init
     required init(from decoder: any Decoder) throws {
@@ -31,7 +31,7 @@ class SceneWrapper: Hashable, Decodable, Encodable {
         // Try to decode all of the objects, materials and lengths
         self.objects = try container.decode([ObjectWrapper].self, forKey: .objects)
         self.materials = try container.decode([MaterialWrapper].self, forKey: .materials)
-        self.lengths = try container.decode(SIMD4<Float>.self, forKey: .lengths)
+        self.rendererData = try container.decode(RendererDataWrapper.self, forKey: .rendererData)
     }
     
     // Encoder
@@ -43,13 +43,13 @@ class SceneWrapper: Hashable, Decodable, Encodable {
         // Try to encode all of the objects, materials and lengths
         try container.encode(objects, forKey: .objects)
         try container.encode(materials, forKey: .materials)
-        try container.encode(lengths, forKey: .lengths)
+        try container.encode(rendererData, forKey: .rendererData)
     }
     
     // Coding keys
     private enum CodingKeys: CodingKey {
         case objects
         case materials
-        case lengths
+        case rendererData
     }
 }

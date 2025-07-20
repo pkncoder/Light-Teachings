@@ -28,6 +28,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     private let boundingBoxMemSize = MemoryLayout<BoundingBox>.stride
     private let lengthsMemSize = MemoryLayout<SIMD4<Float>>.stride
     private let sceneMemSize = MemoryLayout<RayTracedScene>.stride
+    private let rendererDataMemSize = MemoryLayout<RendererData>.stride
     
     // Initializer
     init(rendererSettings: RendererSettings) {
@@ -88,8 +89,9 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         var objectArray: [ObjectWrapper] = self.sceneWrapper.objects
         var materialArray: [MaterialWrapper] = self.sceneWrapper.materials
         var boundingBox: BoundingBox = BoundingBoxBuilder(objects: objectArray).fullBuild() // Build the bounding box
-        var lengths: SIMD4<Float> = self.sceneWrapper.lengths
+        var rendererData: RendererDataWrapper = self.sceneWrapper.rendererData
         
+        print("UPDATE: \(rendererData.arrayLengths)")
         // Create a buffer for the scene
         let sceneBuffer: MTLBuffer? = device.makeBuffer(length: sceneMemSize, options: [.storageModeShared])
         
@@ -106,12 +108,11 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
             from: &boundingBox,
             byteCount: boundingBoxMemSize
         )
-        
-        // Pass in the lengths
-        sceneBuffer?.contents().advanced(by: (objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize)).copyMemory( // Shift the memory so the offset is past the object array
-            from: &lengths,
-            byteCount: lengthsMemSize
+        sceneBuffer?.contents().advanced(by: (objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize)).copyMemory(
+            from: &rendererData,
+            byteCount: rendererDataMemSize
         )
+        
         
         return sceneBuffer
     }
@@ -126,7 +127,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     
     // Update the scene wrapper in one spot
     public func updateSceneBuffer(sceneWrapper: SceneWrapper, updateData: UpdateData) {
-        
+        print("SML")
         // Save new scene wrapper
         self.sceneWrapper = sceneWrapper
         
@@ -155,6 +156,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
                 
             // Full rebuild
             case .Full:
+                print("Full Case")
                 backSceneBuffer = self.buildSceneBuffer()
             
             // TODO: NOT IMPLIMENTED

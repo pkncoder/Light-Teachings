@@ -33,13 +33,13 @@ struct Editor: View {
                     if sceneNodeSelection != nil {
                         
                         // If the selection type is an object
-                        if sceneNodeSelection?.selectionData?.selectionType == .Object && sceneNodeSelection?.selectionData?.selectedIndex ?? -1 < Int(rendererSettings.sceneWrapper.lengths[0]) {
+                        if sceneNodeSelection?.selectionData?.selectionType == .Object && sceneNodeSelection?.selectionData?.selectedIndex ?? -1 < Int(rendererSettings.sceneWrapper.rendererData.arrayLengths[0]) {
                             
                             ObjectEditor(object: $rendererSettings.sceneWrapper.objects[sceneNodeSelection!.selectionData!.selectedIndex!], objectIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
                         }
                         
                         // If the selection type is a material
-                        else if sceneNodeSelection?.selectionData?.selectionType == .Material && sceneNodeSelection?.selectionData?.selectedIndex ?? -1 < Int(rendererSettings.sceneWrapper.lengths[1]) {
+                        else if sceneNodeSelection?.selectionData?.selectionType == .Material && sceneNodeSelection?.selectionData?.selectedIndex ?? -1 < Int(rendererSettings.sceneWrapper.rendererData.arrayLengths[1]) {
                             MaterialEditor(material: $rendererSettings.sceneWrapper.materials[sceneNodeSelection!.selectionData!.selectedIndex!], materialIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
                         }
                         

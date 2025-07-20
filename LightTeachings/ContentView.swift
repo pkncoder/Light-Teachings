@@ -56,7 +56,7 @@ struct ContentView: View {
             // Object update, do it in a background thread
             DispatchQueue.global(qos: .background).async {
                 
-                self.rendererSettings.sceneWrapper.lengths[3] = rendererSettings.doIt ? 1 : 0
+                self.rendererSettings.sceneWrapper.rendererData.arrayLengths[3] = rendererSettings.doIt ? 1 : 0
                 
                 if self.rendererSettings.updateData?.updateType == .Full {
                     rendererView!.rebuildSceneBuffer(self.rendererSettings.sceneWrapper)
@@ -74,6 +74,7 @@ struct ContentView: View {
                 
                 if self.rendererSettings.updateData?.updateType == .Full {
                     rendererView!.rebuildSceneBuffer(self.rendererSettings.sceneWrapper)
+                    rendererSettings.updateData = nil
                 }
                 
                 else if let _ = rendererSettings.updateData {

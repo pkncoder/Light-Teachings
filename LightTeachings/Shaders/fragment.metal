@@ -31,11 +31,29 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
     };
     
     // Create our modelinator (naming est difficile)
-    Modelinator modelinator = Modelinator(HitColor_Model);
+    Modelinator modelinator = Modelinator(BDRF_Model);
+    
+    switch((int)scene.renderingData.shadingInfo[0]) {
+        case 1:
+            modelinator = Modelinator(BDRF_Model);
+            break;
+        case 2:
+            modelinator = Modelinator(SimpleShading_Model);
+            break;
+        case 3:
+            modelinator = Modelinator(Hit_Model);
+            break;
+        case 4:
+            modelinator = Modelinator(HitColor_Model);
+            break;
+        default:
+            modelinator = Modelinator(BDRF_Model);
+            break;
+    }
 
     // Create our ray marcher
     RayMarcher rayMarcher = RayMarcher(ray, scene);
-    float3 color = rayMarcher.getColor(uv, scene.lengths.w, modelinator);
+    float3 color = rayMarcher.getColor(uv, scene.renderingData.arrayLengths.w, modelinator);
 
 
     // Output the final ray's color

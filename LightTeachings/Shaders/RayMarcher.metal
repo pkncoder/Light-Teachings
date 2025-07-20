@@ -125,12 +125,12 @@ private:
         Object finalObject = scene.objects[0];
 
         // Loop every object
-        for (int objectNum = 0; objectNum < scene.lengths[0]; objectNum++) {
+        for (int objectNum = 0; objectNum < scene.renderingData.arrayLengths[0]; objectNum++) {
 
             // Get said object
             Object currentObject = scene.objects[objectNum];
             
-            if (planesOnly &&currentObject.objectData[0] != 5) { continue; }
+            if (planesOnly && currentObject.objectData[0] != 5) { continue; }
 
             // Get this object distance
             if (currentObject.objectData[0] == 1) {          // Sphere
