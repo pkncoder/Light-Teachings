@@ -35,14 +35,19 @@ This is the file that I save all of the things that I still have to do
 - [x] Bounding Box
 - [x] Use multithreading to decouple renderer and SwiftUI
 - [ ] Better buffer implimentations?
-    - [ ] Example: https://github.com/ralfebert/MetalSwiftUIExample/blob/main/MetalSwiftUIExample/Renderer.swift
+    - Example: https://github.com/ralfebert/MetalSwiftUIExample/blob/main/MetalSwiftUIExample/Renderer.swift
 - [ ] Better implementation with Uniform struct
 - [x] buildSceneBuffer redo
 - [x] Define the byte counts for the arrays
 - [x] THREADS
 - [x] Fix BB error with planes
-- [ ] Split up into multiple files (and put in own dir)
-- [ ] Shading models
+- [x] Split up into multiple files (and put in own dir)
+- [x] Shading models
+    - BDRF
+    - Simple Shading (NdotL)
+    - Hit detetect
+    - Hit detetect w/ color
+- [x] Fill up the BDRF class to have a better use in the fragmentMain
 
 ## Background Stuff
 - [ ] Recommenting

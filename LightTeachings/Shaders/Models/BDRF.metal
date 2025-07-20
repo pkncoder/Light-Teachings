@@ -1,4 +1,4 @@
-#include "../LightTeachings-Bridging-Header.h"
+#include "../../LightTeachings-Bridging-Header.h"
 #include <metal_stdlib>
 using namespace metal;
 

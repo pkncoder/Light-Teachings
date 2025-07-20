@@ -1,3 +1,5 @@
+#pragma once
+
 #include <simd/simd.h>
 #include "boolean.h"
 

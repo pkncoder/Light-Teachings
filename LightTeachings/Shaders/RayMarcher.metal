@@ -1,7 +1,7 @@
 //#include "../LightTeachings-Bridging-Header.h"
 #include <metal_stdlib>
 
-#include "./BDRF.metal"
+#include "./Modelinator.metal"
 
 using namespace metal;
 
@@ -255,7 +255,7 @@ private:
     }
 
     // Coloring
-    float3 sceneColoring(float2 uv, float doIt, BDRF bdrf) {
+    float3 sceneColoring(float2 uv, float doIt, Modelinator modelinator) {
 
         // Light position
         float3 lightPos = float3(0, 0.7, 1.6);
@@ -286,7 +286,7 @@ private:
             return float3(0);
         }
 
-        float3 color = bdrf.color(ray, hit, lightPos, normal, scene);
+        float3 color = modelinator.color(ray, hit, lightPos, normal, scene);
 
         return color;
     }
@@ -309,7 +309,7 @@ public:
         this->maxDist = maxDist;
     }
 
-    float3 getColor(float2 uv, float time, BDRF bdrf) {
-        return sceneColoring(uv, time, bdrf);
+    float3 getColor(float2 uv, float time, Modelinator modelinator) {
+        return sceneColoring(uv, time, modelinator);
     }
 };
