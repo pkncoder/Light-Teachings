@@ -50,7 +50,7 @@ class BoundingBoxBuilder {
             }
         }
         
-        return BoundingBox(boxMin: boxMin, boxMax: boxMax)
+        return BoundingBox(boxMin: boxMin, boxMax: boxMax, temp1: SIMD4<Float>(repeating: 0), temp2: SIMD4<Float>(repeating: 0))
     }
     
     func sphereCase(sphere: ObjectWrapper) {

@@ -9,11 +9,15 @@ struct MaterialWrapper: Hashable, Identifiable, Decodable, Encodable {
     // Atttr
     public var albedo: SIMD4<Float>
     public var materialSettings: SIMD4<Float>
+    public var temp1: SIMD4<Float>
+    public var temp2: SIMD4<Float>
     
     // Coding keys for en/decryption
     private enum CodingKeys: CodingKey {
         case albedo
         case materialSettings
+        case temp1
+        case temp2
     }
     
     // To-String method

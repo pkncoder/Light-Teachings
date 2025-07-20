@@ -30,6 +30,9 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     private let sceneMemSize = MemoryLayout<RayTracedScene>.stride
     private let rendererDataMemSize = MemoryLayout<RendererData>.stride
     
+    private let alignedSceneBufferSize = (MemoryLayout<RayTracedScene>.size + 0xFF) & -0x100
+    private let alignedUniformsSize = (MemoryLayout<Uniforms>.size + 0xFF) & -0x100
+    
     // Initializer
     init(rendererSettings: RendererSettings) {
         
@@ -92,8 +95,9 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         var rendererData: RendererDataWrapper = self.sceneWrapper.rendererData
         
         print("UPDATE: \(rendererData.arrayLengths)")
+        
         // Create a buffer for the scene
-        let sceneBuffer: MTLBuffer? = device.makeBuffer(length: sceneMemSize, options: [.storageModeShared])
+        let sceneBuffer: MTLBuffer? = device.makeBuffer(length: alignedSceneBufferSize, options: [.storageModeShared])
         
         sceneBuffer?.contents().copyMemory(from: &objectArray, byteCount: objectMemSize * 10) // Pass in the object array
         
@@ -180,7 +184,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     private func createUniformBuffer() -> MTLBuffer? {
         
         // Create a buffer for the scene
-        let uniformBuffer: MTLBuffer? = device.makeBuffer(length: MemoryLayout<Uniforms>.stride, options: [.storageModeShared])
+        let uniformBuffer: MTLBuffer? = device.makeBuffer(length: alignedUniformsSize, options: [.storageModeShared])
         return uniformBuffer
     }
     
@@ -233,7 +237,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         )
         
         // Create a new uniform struct
-        var newUniforms = Uniforms(screenSize: screenSize, frameNum: frameNum, padding: 0)
+        var newUniforms = Uniforms(screenSize: screenSize, frameNum: frameNum, padding: 0, temp1: SIMD4<Float>(repeating: 0), temp2: SIMD4<Float>(repeating: 0), temp3: SIMD4<Float>(repeating: 0))
         
         // Check for updates
         if (uniforms.screenSize.width != newUniforms.screenSize.width || uniforms.screenSize.height != newUniforms.screenSize.height) {

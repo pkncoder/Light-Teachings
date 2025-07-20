@@ -69,6 +69,9 @@ This is the file that I save all of the things that I still have to do
 - [x] Change number Slider State where needed
     - No idea what I did to need to have this
 
+## Errors
+- [ ] Error with .Full updates persisting and not being overritten
+
 ## Big Stuff
 - [ ] Change the way that sdf opperations are done
   - Idea: Use object data slot 3

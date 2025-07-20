@@ -41,15 +41,21 @@
     "materials": [
         {
             "albedo": [1, 1, 1, 0],
-            "materialSettings": [1, 0, 0, 0]
+            "materialSettings": [1, 0, 0, 0],
+            "temp1": [0, 0, 0, 0],
+            "temp2": [0, 0, 0, 0]
         },
         {
             "albedo": [0, 0, 1, 0],
-            "materialSettings": [0.4, 0, 0, 0]
+            "materialSettings": [0.4, 0, 0, 0],
+            "temp1": [0, 0, 0, 0],
+            "temp2": [0, 0, 0, 0]
         },
         {
             "albedo": [0.3, 0.2, 0, 0],
-            "materialSettings": [0.3, 0, 0, 0]
+            "materialSettings": [0.3, 0, 0, 0],
+            "temp1": [0, 0, 0, 0],
+            "temp2": [0, 0, 0, 0]
         }
     ],
     "rendererData": {

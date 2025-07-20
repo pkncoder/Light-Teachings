@@ -132,21 +132,47 @@ private:
             
             if (planesOnly && currentObject.objectData[0] != 5) { continue; }
 
+//            // Get this object distance
+//            if (currentObject.objectData[0] == 1) {          // Sphere
+//                objectDistance = sphereSDF(ray, currentObject);
+//            } else if (currentObject.objectData[0] == 2) {   // Box
+//                objectDistance = boxSDF(ray, currentObject);
+//            } else if (currentObject.objectData[0] == 3) {   // Rounded Box
+//                objectDistance = roundedBoxSDF(ray, currentObject);
+//            } else if (currentObject.objectData[0] == 4) {   // Outlined Box
+//                objectDistance = outlinedBoxSDF(ray, currentObject);
+//            } else if (currentObject.objectData[0] == 5) {   // Plane
+//                objectDistance = planeSDF(ray, currentObject);
+//            } else if (currentObject.objectData[0] == 6) {   // Cylinder
+//                objectDistance = cylinderSDF(ray, currentObject);
+//            } else {                            // Default
+//                objectDistance = sphereSDF(ray, currentObject);
+//            }
+            
             // Get this object distance
-            if (currentObject.objectData[0] == 1) {          // Sphere
-                objectDistance = sphereSDF(ray, currentObject);
-            } else if (currentObject.objectData[0] == 2) {   // Box
-                objectDistance = boxSDF(ray, currentObject);
-            } else if (currentObject.objectData[0] == 3) {   // Rounded Box
-                objectDistance = roundedBoxSDF(ray, currentObject);
-            } else if (currentObject.objectData[0] == 4) {   // Outlined Box
-                objectDistance = outlinedBoxSDF(ray, currentObject);
-            } else if (currentObject.objectData[0] == 5) {   // Plane
-                objectDistance = planeSDF(ray, currentObject);
-            } else if (currentObject.objectData[0] == 6) {   // Cylinder
-                objectDistance = cylinderSDF(ray, currentObject);
-            } else {                            // Default
-                objectDistance = sphereSDF(ray, currentObject);
+            switch((int)currentObject.objectData[0]) {          // Sphere
+                
+                case 1:
+                    objectDistance = sphereSDF(ray, currentObject);
+                    break;
+                case 2:   // Box
+                    objectDistance = boxSDF(ray, currentObject);
+                    break;
+                case 3:   // Rounded Box
+                    objectDistance = roundedBoxSDF(ray, currentObject);
+                    break;
+                case 4:   // Outlined Box
+                    objectDistance = outlinedBoxSDF(ray, currentObject);
+                    break;
+                case 5:   // Plane
+                    objectDistance = planeSDF(ray, currentObject);
+                    break;
+                case 6:   // Cylinder
+                    objectDistance = cylinderSDF(ray, currentObject);
+                    break;
+                default: // Default
+                    objectDistance = sphereSDF(ray, currentObject);
+                    break;
             }
 
 

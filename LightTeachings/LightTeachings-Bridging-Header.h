@@ -15,6 +15,8 @@ struct Object {
 struct ObjectMaterial {
     simd_float4 albedo;
     simd_float4 materialSettings;
+    simd_float4 temp1;
+    simd_float4 temp2;
 };
 
 // Point light
@@ -27,6 +29,8 @@ struct PointLight {
 struct BoundingBox {
     simd_float4 boxMin;
     simd_float4 boxMax;
+    simd_float4 temp1;
+    simd_float4 temp2;
 };
 
 // Renderer data
@@ -73,6 +77,9 @@ struct Uniforms {
     struct ScreenSize screenSize;
     float frameNum;
     float padding;
+    simd_float4 temp1;
+    simd_float4 temp2;
+    simd_float4 temp3;
 };
 
 // Vertex function payload
