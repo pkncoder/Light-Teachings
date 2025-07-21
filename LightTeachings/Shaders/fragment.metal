@@ -7,7 +7,7 @@ using namespace metal;
 half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedScene &scene [[buffer(1)]], constant Uniforms &uniforms [[buffer(2)]]) {
 
     ScreenSize screenSize = uniforms.screenSize;
-    float _ = uniforms.frameNum;
+//    float _ = uniforms.frameNum;
 
     // Init important constant values
     float2 resolution = float2(screenSize.width, screenSize.height);
@@ -51,8 +51,10 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
             break;
     }
     
-    if (scene.renderingData.shadingInfo[1] > 0.0) {
-        modelinator.setShadowOverride((bool) (scene.renderingData.shadingInfo[1] - 1.0));
+    float shadingOverride = scene.renderingData.shadingInfo[1];
+    
+    if (shadingOverride > 0.0) {
+        modelinator.setShadowOverride((bool) (shadingOverride - 1.0));
     }
 
     // Create our ray marcher
