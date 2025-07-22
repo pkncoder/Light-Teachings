@@ -7,7 +7,17 @@ struct ObjectEditor: View {
     
     // Object info
     @Binding public var object: ObjectWrapper
+    @State private var objectClone: ObjectWrapper
+    
     public var objectIndex: Int
+    
+    @State private var skip = false
+    
+    init(object: Binding<ObjectWrapper>, objectIndex: Int) {
+        self._object = object
+        self.objectClone = object.wrappedValue
+        self.objectIndex = objectIndex
+    }
     
     var body: some View {
         
@@ -20,32 +30,32 @@ struct ObjectEditor: View {
             if (object.objectData[0] == 1) {
                 
                 // Sphere
-                SphereEditor(object: $object)
+                SphereEditor(object: $objectClone)
                 
             } else if (object.objectData[0] == 2) {
                 
                 // Box
-                BoxEditor(object: $object)
+                BoxEditor(object: $objectClone)
                 
             } else if (object.objectData[0] == 3) {
                 
                 // Box
-                BoxEditor(object: $object)
+                BoxEditor(object: $objectClone)
                 
             } else if (object.objectData[0] == 4) {
                 
                 // Box
-                BoxEditor(object: $object)
+                BoxEditor(object: $objectClone)
                 
             } else if (object.objectData[0] == 5) {
                 
                 // Plane
-                PlaneEditor(object: $object)
+                PlaneEditor(object: $objectClone)
                 
             } else if (object.objectData[0] == 6) {
                 
                 // Cylinder
-                CylinderEditor(object: $object)
+                CylinderEditor(object: $objectClone)
             }
             
             else {
@@ -53,11 +63,26 @@ struct ObjectEditor: View {
             }
         }
         .listStyle(InsetListStyle())
-        .onChange(of: self.rendererSettings.sceneWrapper.objects) { oldValue, newValue in
+        .onChange(of: self.objectClone) { old, new in
+            if skip {
+                skip.toggle()
+                return
+            } else {
+                skip = true
+                object = objectClone
+                rendererSettings.updateData = UpdateData(updateType: .Object, updateIndex: objectIndex)
+            }
+        }
+        .onChange(of: object) { oldValue, newValue in
             
             // If the update data is full, just ignore it so it can flush through
-            if self.rendererSettings.updateData?.updateType == .Full { return }
+            if skip {
+                skip.toggle()
+                return
+            }
             
+            skip = true
+            objectClone = object
             rendererSettings.updateData = UpdateData(updateType: .Object, updateIndex: objectIndex)
         }
     }

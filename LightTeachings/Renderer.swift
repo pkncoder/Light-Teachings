@@ -127,6 +127,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         // Save new scene wrapper then build
         self.sceneWrapper = sceneWrapper
         self.sceneBuffer = self.buildSceneBuffer()
+        print("BIG")
     }
     
     // Update the scene wrapper in one spot

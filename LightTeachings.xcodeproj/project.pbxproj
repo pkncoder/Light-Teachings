@@ -13,7 +13,6 @@
 /* Begin PBXFileReference section */
 		F67FA3682DC0762000D8723D /* scenes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scenes; sourceTree = "<group>"; };
 		F68D3E2C2D7D61BD00B3CD7E /* LightTeachings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LightTeachings.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6EBEC232DC733F000BA6077 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -56,7 +55,6 @@
 		F68D3E232D7D61BD00B3CD7E = {
 			isa = PBXGroup;
 			children = (
-				F6EBEC232DC733F000BA6077 /* TODO.md */,
 				F68D3E2E2D7D61BD00B3CD7E /* LightTeachings */,
 				F68D3E2D2D7D61BD00B3CD7E /* Products */,
 				F67FA3682DC0762000D8723D /* scenes */,

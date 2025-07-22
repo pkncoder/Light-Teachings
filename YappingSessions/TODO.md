@@ -64,13 +64,15 @@ This is the file that I save all of the things that I still have to do
 - [ ] Rename Render Settings ?
 - [x] Change the passing of scene info around to using envirormentObjects
 - [ ] Try to use getter and setter methods to not need .onChange as much
-- [ ] Try to remove the 2 .onChange(s) in ContentView and only have 1
+- [x] Try to remove the 2 .onChange(s) in ContentView and only have 1
     - Maybe an update flag in RendererSettings
 - [x] Change number Slider State where needed
     - No idea what I did to need to have this
 
 ## Errors
-- [ ] Error with .Full updates persisting and not being overritten
+- [x] Error with .Full updates persisting and not being overritten
+- [x] New items not showing up??
+    - Fixed itself (21/7/2025 - dd/m/yyyy). No idea what was casuing it
 
 ## Big Stuff
 - [ ] Change the way that sdf opperations are done
