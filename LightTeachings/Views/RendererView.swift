@@ -37,4 +37,8 @@ struct RendererView: NSViewRepresentable {
     public func updateSceneBuffer(sceneWrapper: SceneWrapper, updateData: UpdateData) {
         renderer.updateSceneBuffer(sceneWrapper: sceneWrapper, updateData: updateData)
     }
+    
+    public func updateRenderSize(_ size: CGSize) {
+        renderer.updateRenderSize(size)
+    }
 }

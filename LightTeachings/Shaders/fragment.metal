@@ -59,7 +59,7 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
 
     // Create our ray marcher
     RayMarcher rayMarcher = RayMarcher(ray, scene);
-    float3 color = rayMarcher.getColor(uv, scene.renderingData.arrayLengths.w, modelinator);
+    float3 color = rayMarcher.getColor(uv, modelinator);
 
 
     // Output the final ray's color

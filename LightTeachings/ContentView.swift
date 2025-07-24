@@ -51,58 +51,14 @@ struct ContentView: View {
             }
         }
         .font(.title)
-//        .onChange(of: self.rendererSettings.sceneWrapper.objects) { oldValue, newValue in
-//            
-//            // Object update, do it in a background thread
-//            DispatchQueue.global(qos: .background).async {
-//                
-//                self.rendererSettings.sceneWrapper.rendererData.arrayLengths[3] = rendererSettings.doIt ? 1 : 0
-//                
-//                if self.rendererSettings.updateData?.updateType == .Full {
-//                    rendererView!.rebuildSceneBuffer(self.rendererSettings.sceneWrapper)
-//                }
-//                
-//                else if let _ = rendererSettings.updateData {
-//                    rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
-//                }
-//            }
-//        }
-//        .onChange(of: self.rendererSettings.sceneWrapper.materials) { oldValue, newValue in
-//            
-//            // Material update, do it in a background thread
-//            DispatchQueue.global(qos: .background).async {
-//                
-//                if self.rendererSettings.updateData?.updateType == .Full {
-//                    rendererView!.rebuildSceneBuffer(self.rendererSettings.sceneWrapper)
-////                    rendererSettings.updateData = nil
-//                }
-//                
-//                else if let _ = rendererSettings.updateData {
-//                    rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
-//                }
-//            }
-//        }
-//        .onChange(of: self.rendererSettings.sceneWrapper.rendererData) { oldValue, newValue in
-//            
-//            // Material update, do it in a background thread
-//            DispatchQueue.global(qos: .background).async {
-//                
-//                if self.rendererSettings.updateData?.updateType == .Full {
-//                    rendererView!.rebuildSceneBuffer(self.rendererSettings.sceneWrapper)
-////                    rendererSettings.updateData = nil
-//                }
-//                
-//                else if let _ = rendererSettings.updateData {
-//                    rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
-//                }
-//            }
-//        }
         .onChange(of: self.rendererSettings.updateData, { old, new in
             if let updateData = self.rendererSettings.updateData {
                 switch (updateData.updateType) {
                 case .Object:
                     rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
                 case .Material:
+                    rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
+                case .Scene:
                     rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
                 case .Full:
                     rendererView!.updateSceneBuffer(sceneWrapper: self.rendererSettings.sceneWrapper, updateData: self.rendererSettings.updateData!)
@@ -111,6 +67,9 @@ struct ContentView: View {
                 }
             }
         })
+        .onChange(of: self.rendererSettings.renderSize) { old, new in
+            rendererView!.updateRenderSize(CGSize(width: Int(new.x), height: Int(new.y)))
+        }
         .onAppear() { // Renderer settings need a sec before they can be used, so the rendererView needs to be created inside of the body
             rendererView = RendererView(rendererSettings: rendererSettings)
         }

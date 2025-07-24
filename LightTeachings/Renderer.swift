@@ -130,6 +130,10 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         print("BIG")
     }
     
+    public func updateRenderSize(_ newSize: CGSize) {
+        self.metalLayer?.drawableSize = newSize
+    }
+    
     // Update the scene wrapper in one spot
     public func updateSceneBuffer(sceneWrapper: SceneWrapper, updateData: UpdateData) {
         print("SML")

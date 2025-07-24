@@ -21,6 +21,11 @@ struct RendererEditor: View {
                 ShadowOverrideEdit(shadowSettings: $rendererData.shadingData[1], shadingModel: rendererData.shadingData[0])
                 
             }
+            
+            Section("Render Size") {
+                NumberEdit(value: $rendererSettings.renderSize.x, intSliding: true)
+                NumberEdit(value: $rendererSettings.renderSize.y, intSliding: true)
+            }
         }
         .listStyle(InsetListStyle())
         .onChange(of: rendererData.shadingData) { oldValue, newValue in

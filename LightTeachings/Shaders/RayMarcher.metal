@@ -265,16 +265,12 @@ private:
     }
 
     // Coloring
-    float3 sceneColoring(float2 uv, float doIt, Modelinator modelinator) {
+    float3 sceneColoring(float2 uv, Modelinator modelinator) {
 
         // Light position
         float3 lightPos = float3(0, 0.7, 1.6);
 
         bool objectsHit = !BBoxIntersect(scene.topBoundingBox.boxMin.xyz, scene.topBoundingBox.boxMax.xyz, ray);
-
-//        if (doIt > 0.0) {
-//            return float3(!objectsHit);
-//        }
 
         // Get the hit
         HitInfo hit = sceneSDF(ray, objectsHit);
@@ -321,7 +317,7 @@ public:
         this->maxDist = maxDist;
     }
 
-    float3 getColor(float2 uv, float time, Modelinator modelinator) {
-        return sceneColoring(uv, time, modelinator);
+    float3 getColor(float2 uv, Modelinator modelinator) {
+        return sceneColoring(uv, modelinator);
     }
 };
