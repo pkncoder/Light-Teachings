@@ -37,7 +37,7 @@ struct BoundingBox {
 struct RendererData {
     simd_float4 arrayLengths;
     simd_float4 shadingInfo;
-    simd_float4 temp2;
+    simd_float4 ambient;
     simd_float4 temp3;
 };
 

@@ -42,17 +42,19 @@ This is the file that I save all of the things that I still have to do
 - [x] THREADS
 - [x] Fix BB error with planes
 - [x] Split up into multiple files (and put in own dir)
-- [x] Shading models
+- [ ] Shading models
     - BDRF
     - Simple Shading (NdotL)
     - Hit detetect
     - Hit detetect w/ color
+    - Phong
 - [x] Fill up the BDRF class to have a better use in the fragmentMain
 - [x] Make the modelinator have a shadows boolean
 - [x] Make a shadows override box
     - 0 = default based on shading model
     - 1 = shadows off
     - 2 = shadows on
+- [ ] Ambient
 
 ## Background Stuff
 - [ ] Recommenting
@@ -73,6 +75,8 @@ This is the file that I save all of the things that I still have to do
 - [x] Error with .Full updates persisting and not being overritten
 - [x] New items not showing up??
     - Fixed itself (21/7/2025 - dd/m/yyyy). No idea what was casuing it
+- [ ] Object type editor isn't working right
+- [ ] Deleting objects isn't working either, duplication again
 
 ## Big Stuff
 - [ ] Change the way that sdf opperations are done

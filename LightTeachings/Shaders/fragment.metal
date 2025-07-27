@@ -38,12 +38,15 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
             modelinator = Modelinator(BDRF_Model);
             break;
         case 2:
-            modelinator = Modelinator(SimpleShading_Model);
+            modelinator = Modelinator(Phong_Model);
             break;
         case 3:
-            modelinator = Modelinator(Hit_Model);
+            modelinator = Modelinator(SimpleShading_Model);
             break;
         case 4:
+            modelinator = Modelinator(Hit_Model);
+            break;
+        case 5:
             modelinator = Modelinator(HitColor_Model);
             break;
         default:

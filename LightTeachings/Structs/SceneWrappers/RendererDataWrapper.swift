@@ -9,14 +9,14 @@ struct RendererDataWrapper: Hashable, Identifiable, Decodable, Encodable {
     // Atttr
     public var arrayLengths: SIMD4<Float>
     public var shadingData: SIMD4<Float>
-    public var temp2: SIMD4<Float>
+    public var ambient: SIMD4<Float>
     public var temp3: SIMD4<Float>
     
     // Coding keys for en/decryption
     private enum CodingKeys: CodingKey {
         case arrayLengths
         case shadingData
-        case temp2
+        case ambient
         case temp3
     }
     
@@ -26,6 +26,7 @@ struct RendererDataWrapper: Hashable, Identifiable, Decodable, Encodable {
             """
             Lengths: \(arrayLengths.description)
             Shading Data: \(shadingData[0].description)
+            Albedo: \(ambient.description)
             """
     }
 }

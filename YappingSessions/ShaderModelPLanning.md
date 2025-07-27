@@ -10,7 +10,7 @@
         - [obj, mat, lights, empty]
     - shading info
         - [modelType, shadowOvr, empty, empty]
-    - temp2
-        - [empty, empty, empty, empty]
+    - ambient
+        - [x, y, z, strength]
     - temp3
         - [empty, empty, empty, empty]

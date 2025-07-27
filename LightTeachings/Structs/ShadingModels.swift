@@ -1,6 +1,7 @@
 // Shading models, included with float conversions
 enum ShadingModels: String, CaseIterable {
     case bdrf = "BDRF"
+    case phong = "Phong"
     case simpleShading = "Simple Shading"
     case hit = "Hit Detect"
     case hitColor = "Colored Hit Detect"
@@ -11,10 +12,12 @@ enum ShadingModels: String, CaseIterable {
             case 1:
                 return .bdrf
             case 2:
-                return .simpleShading
+                return .phong
             case 3:
-                return .hit
+                return .simpleShading
             case 4:
+                return .hit
+            case 5:
                 return .hitColor
             default:
                 return .bdrf
@@ -26,19 +29,21 @@ enum ShadingModels: String, CaseIterable {
         switch model {
             case .bdrf:
                 return 1.0
-            case .simpleShading:
+            case .phong:
                 return 2.0
-            case .hit:
+            case .simpleShading:
                 return 3.0
-            case .hitColor:
+            case .hit:
                 return 4.0
+            case .hitColor:
+                return 5.0
         }
     }
     
     // Default shading data
     public static func getDefaultShading(_ model: Self) -> Float {
         switch model {
-            case self.bdrf, self.simpleShading:
+            case self.bdrf, self.simpleShading, self.phong:
                 return 1.0
             case self.hit, self.hitColor:
                 return 0.0

@@ -269,6 +269,8 @@ private:
 
         // Light position
         float3 lightPos = float3(0, 0.7, 1.6);
+        
+        float4 ambient = scene.renderingData.ambient;
 
         bool objectsHit = !BBoxIntersect(scene.topBoundingBox.boxMin.xyz, scene.topBoundingBox.boxMax.xyz, ray);
 
@@ -290,12 +292,12 @@ private:
             },false);
             
             if (length(shadowRayHit.hitPos - hit.hitPos) > 0.01) {
-                return float3(0);
+                return float3(0) + ambient.xyz * ambient.w;
             }
         }
 
         float3 color = modelinator.color(ray, hit, lightPos, normal, scene);
-
+        
         return color;
     }
 

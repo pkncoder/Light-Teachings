@@ -1,8 +1,108 @@
 # Lesson Plans for Light Teachings App
 
 ## Table of Contents
-- [ ] What is Ray Tracing and where is it used?
-- [ ] Concepts
-- [ ] How does Ray-Tracing Work?
-- [ ] Simple Diffuse Lighting and NdotL shading
-- [ ] 
+- Theory
+    - [ ] What is Ray Tracing and where is it used?
+    - [ ] How does Ray-Tracing Work?
+    - [ ] How to hit an object to return colors
+    - [ ] Simple Diffuse Lighting and NdotL shading
+    - [ ] Basic Full lighting model (Phong)
+    - BRDFs
+        - [ ] What is a BRDF?
+        - [ ] Cook-Torrance BRDF
+        - [ ] Other BRDF's
+            - Disney BRDF
+
+## Plans
+- What is Ray Tracing and where is it used?
+    - Explain examples of where people have seen the use of Ray Tracing
+        - Video Games
+        - Movies
+    - Explain the idea of ray tracing
+        - Emulating light in the real world with pure math
+    - *Overview?*
+    - Next video
+        - How does ray tracing work on a base level
+
+
+- How does Ray-Tracing work?
+    - How does light work in real life?
+        - Light starts from a light source like a lamp or suns
+        - It bounces around, each time tinting itself based on the color of whatever it hit
+        - Eventually it reaches our eyes, and is percevied so we can see the world
+    - How can we emulate this using Ray tracing?
+        - If we use the same idea as in real life...
+            - Starting from a light source
+            - Bounding around until aimlessly
+            - Eventually hitting an imaginary camera
+            - Wherever the light hit on the camera correlates to what pixel is colored i
+        - It would work, however there's one downside
+            - Since most light doesn't hit the tiny area for our imaginary camera it becomes really slow
+        - Solution
+            - Do everything a little bit backwards
+            - Start by sending objects called rays from our imaginary camera until it hits a light
+                - For example, one ray for every pixel in the scene
+            - For every obect that ray hit along it's path to a light source, it gets colored based on that object's color
+            - Finally, the pixel is colored with the found color
+    - Overview
+        - Light in real life comes from light sources like lamps or the suns, bounces around getting tinted until someone percevies it
+        - In ray tracing we send it from an imaginary camera and until it hits a light source, and is tinted based on what it hit throughout it's journey
+    - Next Video
+        - Learn how we can "hit" objects and finally return objects
+
+
+- How to hit an object to return colors
+    - Disclaimer
+        - This is a lot
+        - *maybe make a cheat sheet for all of this to be looked back apon*
+    - Overview needed to know concepts
+        - Vectors
+        - Rays
+            - Origin
+            - Direction
+        - Functions
+        - Colors
+            - RGB
+        - Scene
+    - Wanted final solution
+        - A scene
+            - One purple ball to the left of center
+            - One red ball to the right of center
+    - How do we get there
+        - As said before, we send rays through every pixel in our imaginary camera
+            - We then test to see what it hits before it reaches a light
+        - For now, let's igore the "bounce until a light is hit" so it can be simplier
+        - On each ray we will do a "ray dash" function
+            - Ray dash functions (this is something that I am calling to generalize these functions to make it easier to understand)
+                - A mathimatical function that returns values that we can use to see if a ray hit an object
+                - Examples
+                    - Ray-Sphere
+                    - Ray-Box
+                    - Ray-Triangle
+                - Ray dash functions return the distance that the ray traveled before it hit an object
+            - If our "ray dash" function returns a positive number we know it hit something
+        - Once we figure out what rays hit objects and what rays didn't hit objects we can color accordingly
+            - Remember, each pixel was assined one ray 
+            - If a Ray-Sphere function returns a hit, then we color that pixel white
+            - If the Ray-Sphere function returns that we didn't hit anything, color that pixel black
+                - *send the user to the app to look at scene #1 for this, one white ball in the center of the scene*
+        - Currently we only have one sphere in our scene that is only colored white
+        - How can we get 2 balls instead of 1?
+            - When doing our Ray-Sphere function on each ray, we can do it twice
+                - Once for the first sphere, then the second sphere
+            - *send the user to the app to look at scene #2, with the two white balls at their positions*
+        - Final thing: coloring
+            - In the "ray dash" function, it currently returns the distance until the object hits an object
+            - Change it to also return which object it hits 
+            - For this scenario, let's call the first sphere object 1 and object 2
+            - Now, instead of coloring the pixel white if hit
+                - If object 1 is hit, return object 1's color (purple)
+                - If object 2 is hit, return object 2's color (red)
+            - *send the user to look at scene #3, the final one with the wanted balls*
+    - Overview
+        - Concepts
+        - Send rays through each pixel of the screen
+        - "Ray dash" functions to get object hits
+        - Color objects based on which one was hit
+    - Next video
+        - Simple "diffuse" lighting and NdotL shading

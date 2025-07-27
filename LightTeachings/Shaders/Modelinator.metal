@@ -4,6 +4,7 @@
 #include "./Models/SimpleShading.metal"
 #include "./Models/Hit.metal"
 #include "./Models/HitColor.metal"
+#include "./Models/Phong.metal"
 
 #include "./Enums/ShaderModels.metal"
 
@@ -24,6 +25,9 @@ public:
             case BDRF_Model:
                 this->shadows = true;
                 break;
+            case Phong_Model:
+                this->shadows = true;
+                break;
             case SimpleShading_Model:
                 this->shadows = false;
                 break;
@@ -38,9 +42,12 @@ public:
     }
     
     float3 color(Ray ray, HitInfo hit, float3 lightPos, float3 normal, RayTracedScene scene) {
+        
         switch(shaderModel) {
             case BDRF_Model:
                     return BDRF().color(ray, hit, lightPos, normal, scene);
+            case Phong_Model:
+                return Phong().color(ray, hit, lightPos, normal, scene);
             case SimpleShading_Model:
                 return SimpleShading().color(ray, hit, lightPos, normal, scene);
             case Hit_Model:
