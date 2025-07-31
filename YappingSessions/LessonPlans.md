@@ -4,6 +4,7 @@
 - Theory
     - [ ] What is Ray Tracing and where is it used?
     - [ ] How does Ray-Tracing Work?
+    - [ ] Concepts
     - [ ] How to hit an object to return colors
     - [ ] Simple Diffuse Lighting and NdotL shading
     - [ ] Basic Full lighting model (Phong)
@@ -27,26 +28,30 @@
 
 - How does Ray-Tracing work?
     - How does light work in real life?
-        - Light starts from a light source like a lamp or suns
-        - It bounces around, each time tinting itself based on the color of whatever it hit
-        - Eventually it reaches our eyes, and is percevied so we can see the world
+        - Light starts from a light source, like a lamp or our sun
+        - It bounces around, each time coloring itself based on the color of whatever it hit
+        - Eventually it reaches our eyes, and we use the light to see the world
     - How can we emulate this using Ray tracing?
-        - If we use the same idea as in real life...
-            - Starting from a light source
-            - Bounding around until aimlessly
-            - Eventually hitting an imaginary camera
-            - Wherever the light hit on the camera correlates to what pixel is colored i
-        - It would work, however there's one downside
-            - Since most light doesn't hit the tiny area for our imaginary camera it becomes really slow
+        - We start with creating an "eye" so we can detect light
+        - Now, if we start with the same idea as how light works in real lige
+            - Light starts from a light source
+            - It bounces around a *scene*, coloring itself on each bounce
+            - Eventually hitting our "eye"
+                - This gives us color information, so we can see the ray traced world around us
+    - This works, however is is really show
+        - The light that comes from light sources has a very small chance of hitting our eye, so we have to take longer to get more light. Like exposure on a camera
         - Solution
-            - Do everything a little bit backwards
-            - Start by sending objects called rays from our imaginary camera until it hits a light
-                - For example, one ray for every pixel in the scene
-            - For every obect that ray hit along it's path to a light source, it gets colored based on that object's color
-            - Finally, the pixel is colored with the found color
+            - To ensure that all of the light hits our eye, we can do things in reverse
+            - Instead of starting from light sources, we can make *rays* that start from our eye, going outward into a *scene*
+            - For every object that *ray* hits along it's path, we save the color
+            - Eventually the ray will hit a light source and we can use the final color of our *ray* to paint a picture
     - Overview
-        - Light in real life comes from light sources like lamps or the suns, bounces around getting tinted until someone percevies it
-        - In ray tracing we send it from an imaginary camera and until it hits a light source, and is tinted based on what it hit throughout it's journey
+        - Light in real life comes from light sources like a lamp or our sun, bounces around getting colored until it hits somebodies' eye, letting us see the world
+        - In ray tracing however, we do things backwards, we send our *rays* from an eye, hitting objects, giving the ray a color, and eventually hitting a light source, letting us paint a picture
+    - Next video
+        - Concepts needed to know before continuing
+
+- Concepts
     - Next Video
         - Learn how we can "hit" objects and finally return objects
 
@@ -54,7 +59,7 @@
 - How to hit an object to return colors
     - Disclaimer
         - This is a lot
-        - *maybe make a cheat sheet for all of this to be looked back apon*
+        - *maybe make a cheat sheet for all of this to be looked back upon*
     - Overview needed to know concepts
         - Vectors
         - Rays
@@ -98,7 +103,7 @@
             - Now, instead of coloring the pixel white if hit
                 - If object 1 is hit, return object 1's color (purple)
                 - If object 2 is hit, return object 2's color (red)
-            - *send the user to look at scene #3, the final one with the wanted balls*
+            - *send the user to look at scene #3, the final one with the wanted balls (1 purple to the left, 1 red to the right)*
     - Overview
         - Concepts
         - Send rays through each pixel of the screen
