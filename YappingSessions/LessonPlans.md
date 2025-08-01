@@ -6,7 +6,7 @@
     - [ ] How does Ray-Tracing Work?
     - [ ] Concepts
     - [ ] How to hit an object to return colors
-    - [ ] Simple Diffuse Lighting and NdotL shading
+    - [ ] Simple Diffuse Lighting and basic shading
     - [ ] Basic Full lighting model (Phong)
     - BRDFs
         - [ ] What is a BRDF?
@@ -91,4 +91,10 @@
         - "Ray dash" functions to get object hits and the color of what object it hit
         - Color objects based on which one was hit
     - Next video
-        - Simple "diffuse" lighting and NdotL shading
+        - Simple "diffuse" lighting and basic shading
+
+
+- Simple diffuse lighting and basic shading
+    - Currently, whenever we hit an object with a ray, we always color it the same amount with no regard to how much light is hitting that spot on the object
+    - What we really need is a way to define how much light is hitting any spot on an object
+    -

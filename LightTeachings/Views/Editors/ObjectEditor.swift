@@ -27,32 +27,32 @@ struct ObjectEditor: View {
         List {
             
             // This shows what kind of object editor to use
-            if (object.objectData[0] == 1) {
+            if (objectClone.objectData[0] == 1) {
                 
                 // Sphere
                 SphereEditor(object: $objectClone)
                 
-            } else if (object.objectData[0] == 2) {
+            } else if (objectClone.objectData[0] == 2) {
                 
                 // Box
                 BoxEditor(object: $objectClone)
                 
-            } else if (object.objectData[0] == 3) {
+            } else if (objectClone.objectData[0] == 3) {
                 
                 // Box
                 BoxEditor(object: $objectClone)
                 
-            } else if (object.objectData[0] == 4) {
+            } else if (objectClone.objectData[0] == 4) {
                 
                 // Box
                 BoxEditor(object: $objectClone)
                 
-            } else if (object.objectData[0] == 5) {
+            } else if (objectClone.objectData[0] == 5) {
                 
                 // Plane
                 PlaneEditor(object: $objectClone)
                 
-            } else if (object.objectData[0] == 6) {
+            } else if (objectClone.objectData[0] == 6) {
                 
                 // Cylinder
                 CylinderEditor(object: $objectClone)
@@ -63,9 +63,12 @@ struct ObjectEditor: View {
             }
         }
         .listStyle(InsetListStyle())
+        .onAppear {
+            
+        }
         .onChange(of: self.objectClone) { old, new in
             if skip {
-                skip.toggle()
+                skip = false
                 return
             } else {
                 skip = true
@@ -77,13 +80,13 @@ struct ObjectEditor: View {
             
             // If the update data is full, just ignore it so it can flush through
             if skip {
-                skip.toggle()
+                skip = false
                 return
             }
             
             skip = true
             objectClone = object
-            rendererSettings.updateData = UpdateData(updateType: .Object, updateIndex: objectIndex)
+//            rendererSettings.updateData = UpdateData(updateType: .Object, updateIndex: objectIndex)
         }
     }
 }

@@ -75,8 +75,10 @@ This is the file that I save all of the things that I still have to do
 - [x] Error with .Full updates persisting and not being overritten
 - [x] New items not showing up??
     - Fixed itself (21/7/2025 - dd/m/yyyy). No idea what was casuing it
-- [ ] Object type editor isn't working right
-- [ ] Deleting objects isn't working either, duplication again
+- [x] Object type editor isn't working right
+    - Always use object clone
+- [x] Deleting objects isn't working either, duplication again
+    - I was using object instead of object clone
 
 ## Big Stuff
 - [ ] Change the way that sdf opperations are done
@@ -91,6 +93,7 @@ This is the stuff in the future for ideas to mark down
 
 ## User Interactions
 - [ ] Add a circle-like dragable for updating x & y at the same time
+- [ ] Gizmos
 
 ## Shader Stuff
 - [ ] Full BVH instead of just a Bounding Box

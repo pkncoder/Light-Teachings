@@ -22,6 +22,6 @@ class Phong {
             
             float4 ambient = scene.renderingData.ambient;
             
-            return (specular + diffuse + ambient.xyz * ambient.w) * material.albedo.xyz;
+            return (specular + (diffuse + ambient.xyz * ambient.w) * material.albedo.xyz);
         }
 };
