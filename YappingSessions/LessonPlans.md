@@ -35,79 +35,60 @@
         - We start with creating an "eye" so we can detect light
         - Now, if we start with the same idea as how light works in real lige
             - Light starts from a light source
-            - It bounces around a *scene*, coloring itself on each bounce
+            - It bounces around hitting objects, coloring itself on each bounce
             - Eventually hitting our "eye"
                 - This gives us color information, so we can see the ray traced world around us
     - This works, however is is really show
         - The light that comes from light sources has a very small chance of hitting our eye, so we have to take longer to get more light. Like exposure on a camera
         - Solution
             - To ensure that all of the light hits our eye, we can do things in reverse
-            - Instead of starting from light sources, we can make *rays* that start from our eye, going outward into a *scene*
-            - For every object that *ray* hits along it's path, we save the color
-            - Eventually the ray will hit a light source and we can use the final color of our *ray* to paint a picture
+            - Instead of starting from light sources, we can start from our eye, going outward into an area instead
+            - For every object that our new light ray hits along it's path, we save the color
+            - Eventually the ray will hit a light source and we can use the final color of that ray to paint a picture
     - Overview
         - Light in real life comes from light sources like a lamp or our sun, bounces around getting colored until it hits somebodies' eye, letting us see the world
-        - In ray tracing however, we do things backwards, we send our *rays* from an eye, hitting objects, giving the ray a color, and eventually hitting a light source, letting us paint a picture
+        - In ray tracing however, we do things backwards, we send out rays from an eye, hitting objects, giving the ray a color, and eventually hitting a light source, letting us paint a picture
     - Next video
         - Concepts needed to know before continuing
 
 - Concepts
+    - Things that are needed to know to continue
+    - Come back to this video if needed
+    - The goal of ray tracing
+        - Represent how computers are able render scenes with realistic lighting
+        - It all starts with the eye
+            - The eye acts as an observer looking at a screen
+            - The screen has pixels, and each pixel needs to be colored depending on how light is hitting objects in a scene
+                - A scene being anything that has objects in it
+        - The ray is the next bit
+            - It is used to emulate the path the beam of light takes to reach the eye, and is important to know what objects light hits and where the light hits
+    - Important information
+        - Functions
+            - All a function does is take in information, and use it to output - or return - more information
+                - Think of it like a calculator, the calculator takes in an equation, and gives you the result. The calculator is the function in this case
     - Next Video
-        - Learn how we can "hit" objects and finally return objects
+    - Learn how we can "hit" objects and finally return objects
 
 
 - How to hit an object to return colors
-    - Disclaimer
-        - This is a lot
-        - *maybe make a cheat sheet for all of this to be looked back upon*
-    - Overview needed to know concepts
-        - Vectors
-        - Rays
-            - Origin
-            - Direction
-        - Functions
-        - Colors
-            - RGB
-        - Scene
-    - Wanted final solution
-        - A scene
-            - One purple ball to the left of center
-            - One red ball to the right of center
+    - Final product
+    - A scene
+        - One purple ball to the left of center
+        - One red ball to the right of center
     - How do we get there
-        - As said before, we send rays through every pixel in our imaginary camera
-            - We then test to see what it hits before it reaches a light
-        - For now, let's igore the "bounce until a light is hit" so it can be simplier
-        - On each ray we will do a "ray dash" function
-            - Ray dash functions (this is something that I am calling to generalize these functions to make it easier to understand)
-                - A mathimatical function that returns values that we can use to see if a ray hit an object
-                - Examples
-                    - Ray-Sphere
-                    - Ray-Box
-                    - Ray-Triangle
-                - Ray dash functions return the distance that the ray traveled before it hit an object
-            - If our "ray dash" function returns a positive number we know it hit something
+        - As said before, we send rays out through an eye into the scene
+        - Those rays then bounce off of objects hitting a light, letting us see the scene around us
+        - So how do we know if a ray hit an object
+            - On each ray we will do a "ray dash" function on every object in the scene
+                - Ray dash functions take in an object and a ray
+                - It returns if a object was hit, and what color the object was
         - Once we figure out what rays hit objects and what rays didn't hit objects we can color accordingly
-            - Remember, each pixel was assined one ray 
-            - If a Ray-Sphere function returns a hit, then we color that pixel white
-            - If the Ray-Sphere function returns that we didn't hit anything, color that pixel black
-                - *send the user to the app to look at scene #1 for this, one white ball in the center of the scene*
-        - Currently we only have one sphere in our scene that is only colored white
-        - How can we get 2 balls instead of 1?
-            - When doing our Ray-Sphere function on each ray, we can do it twice
-                - Once for the first sphere, then the second sphere
-            - *send the user to the app to look at scene #2, with the two white balls at their positions*
-        - Final thing: coloring
-            - In the "ray dash" function, it currently returns the distance until the object hits an object
-            - Change it to also return which object it hits 
-            - For this scenario, let's call the first sphere object 1 and object 2
-            - Now, instead of coloring the pixel white if hit
-                - If object 1 is hit, return object 1's color (purple)
-                - If object 2 is hit, return object 2's color (red)
-            - *send the user to look at scene #3, the final one with the wanted balls (1 purple to the left, 1 red to the right)*
+            - If we hit an object, we will color with that object's color
+            - If we don't hit an object, we will color black
+            - *send the user to look at scene #1, the final one with the wanted balls (1 purple to the left, 1 red to the right)*
     - Overview
-        - Concepts
-        - Send rays through each pixel of the screen
-        - "Ray dash" functions to get object hits
+        - Send rays out through an eye into the scene
+        - "Ray dash" functions to get object hits and the color of what object it hit
         - Color objects based on which one was hit
     - Next video
         - Simple "diffuse" lighting and NdotL shading

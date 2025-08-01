@@ -43,11 +43,11 @@ This is the file that I save all of the things that I still have to do
 - [x] Fix BB error with planes
 - [x] Split up into multiple files (and put in own dir)
 - [ ] Shading models
-    - BDRF
-    - Simple Shading (NdotL)
-    - Hit detetect
-    - Hit detetect w/ color
-    - Phong
+    - [x] BDRF
+    - [x] Simple Shading (NdotL)
+    - [x] Hit detetect
+    - [x] Hit detetect w/ color
+    - [ ] Phong
 - [x] Fill up the BDRF class to have a better use in the fragmentMain
 - [x] Make the modelinator have a shadows boolean
 - [x] Make a shadows override box

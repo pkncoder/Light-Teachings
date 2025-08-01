@@ -1,0 +1,3 @@
+Our goal here is to explain how computer applications can render a scene with realistic lighting
+    The eye is the objserver looking at the screne, the screne has pixels, and each pixel will need to be lit with a color depending how the light is hitting all the objects
+the ray represent the path that a beam of light will take to reach the eye
