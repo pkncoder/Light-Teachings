@@ -267,8 +267,7 @@ private:
     // Coloring
     float3 sceneColoring(float2 uv, Modelinator modelinator) {
 
-        // Light position
-        float3 lightPos = float3(0, 0.7, 1.6);
+        Light light = scene.light;
         
         float4 ambient = scene.renderingData.ambient;
 
@@ -287,16 +286,16 @@ private:
 
         if (modelinator.shadows) {
             HitInfo shadowRayHit = sceneSDF({
-                lightPos,
-                normalize(hit.hitPos - lightPos)
+                light.origin.xyz,
+                normalize(hit.hitPos - light.origin.xyz)
             },false);
             
             if (length(shadowRayHit.hitPos - hit.hitPos) > 0.01) {
-                return float3(0) + ambient.xyz * ambient.w;
+                return float3(0) + (ambient.w * light.albedo.xyz);
             }
         }
 
-        float3 color = modelinator.color(ray, hit, lightPos, normal, scene);
+        float3 color = modelinator.color(ray, hit, light.origin.xyz, normal, scene);
         
         return color;
     }

@@ -27,8 +27,9 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
     private let objectMatMemSize = MemoryLayout<ObjectMaterial>.stride
     private let boundingBoxMemSize = MemoryLayout<BoundingBox>.stride
     private let lengthsMemSize = MemoryLayout<SIMD4<Float>>.stride
-    private let sceneMemSize = MemoryLayout<RayTracedScene>.stride
+    private let lightMemSize = MemoryLayout<Light>.stride
     private let rendererDataMemSize = MemoryLayout<RendererData>.stride
+    private let sceneMemSize = MemoryLayout<RayTracedScene>.stride
     
     private let alignedSceneBufferSize = (MemoryLayout<RayTracedScene>.size + 0xFF) & -0x100
     private let alignedUniformsSize = (MemoryLayout<Uniforms>.size + 0xFF) & -0x100
@@ -92,9 +93,8 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         var objectArray: [ObjectWrapper] = self.sceneWrapper.objects
         var materialArray: [MaterialWrapper] = self.sceneWrapper.materials
         var boundingBox: BoundingBox = BoundingBoxBuilder(objects: objectArray).fullBuild() // Build the bounding box
+        var light: LightWrapper = self.sceneWrapper.light
         var rendererData: RendererDataWrapper = self.sceneWrapper.rendererData
-        
-        print("UPDATE: \(rendererData.arrayLengths)")
         
         // Create a buffer for the scene
         let sceneBuffer: MTLBuffer? = device.makeBuffer(length: alignedSceneBufferSize, options: [.storageModeShared])
@@ -112,7 +112,15 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
             from: &boundingBox,
             byteCount: boundingBoxMemSize
         )
-        sceneBuffer?.contents().advanced(by: (objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize)).copyMemory(
+        
+        // Pass in the lights
+        sceneBuffer?.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize).copyMemory(
+            from: &light,
+            byteCount: lightMemSize
+        )
+        
+        // Pass in the renderer data
+        sceneBuffer?.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize + lightMemSize).copyMemory(
             from: &rendererData,
             byteCount: rendererDataMemSize
         )
@@ -169,15 +177,16 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
                 
             // Set the new material at the correct index
                 backSceneBuffer.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: objectMatMemSize)
+            
+            // Light
+            case .Light:
+                backSceneBuffer.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize).copyMemory(from: &sceneWrapper.light, byteCount: lightMemSize)
+
                 
             // Full rebuild
             case .Full:
                 print("Full Case")
                 backSceneBuffer = self.buildSceneBuffer()
-            
-            // TODO: NOT IMPLIMENTED
-            case .Light:
-                break
             
         }
         

@@ -20,6 +20,7 @@ class SceneWrapper: Hashable, Decodable, Encodable {
     // Attrs
     public var objects: [ObjectWrapper]
     public var materials: [MaterialWrapper]
+    public var light: LightWrapper
     public var rendererData: RendererDataWrapper
     
     // Decoder init
@@ -31,6 +32,7 @@ class SceneWrapper: Hashable, Decodable, Encodable {
         // Try to decode all of the objects, materials and lengths
         self.objects = try container.decode([ObjectWrapper].self, forKey: .objects)
         self.materials = try container.decode([MaterialWrapper].self, forKey: .materials)
+        self.light = try container.decode(LightWrapper.self, forKey: .light)
         self.rendererData = try container.decode(RendererDataWrapper.self, forKey: .rendererData)
     }
     
@@ -43,6 +45,7 @@ class SceneWrapper: Hashable, Decodable, Encodable {
         // Try to encode all of the objects, materials and lengths
         try container.encode(objects, forKey: .objects)
         try container.encode(materials, forKey: .materials)
+        try container.encode(light, forKey: .light)
         try container.encode(rendererData, forKey: .rendererData)
     }
     
@@ -50,6 +53,7 @@ class SceneWrapper: Hashable, Decodable, Encodable {
     private enum CodingKeys: CodingKey {
         case objects
         case materials
+        case light
         case rendererData
     }
 }

@@ -7,9 +7,10 @@ class SimpleShading {
     public:
         float3 color(Ray ray, HitInfo hit, float3 lightPos, float3 normal, RayTracedScene scene) {
             ObjectMaterial material = scene.materials[hit.materialIndex - 1];
+            Light light = scene.light;
             
-            float3 L = normalize(lightPos - hit.hitPos.xyz);
+            float3 L = normalize(light.origin.xyz - hit.hitPos.xyz);
             
-            return (float3(max(dot(normal, L), 0.0)) * material.albedo.xyz);
+            return (light.albedo.xyz) * (float3(max(dot(normal, L), 0.0)) * material.albedo.xyz);
         }
 };

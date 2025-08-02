@@ -58,6 +58,10 @@
             "temp2": [0, 0, 0, 0]
         }
     ],
+    "light": {
+        "origin": [0, 0.7, 1.6, 0],
+        "albedo": [1, 1, 1, 1]
+    },
     "rendererData": {
         "arrayLengths": [6, 3, 0, 0],
         "shadingData": [1, 0, 0, 0],

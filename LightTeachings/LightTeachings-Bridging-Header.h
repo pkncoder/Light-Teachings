@@ -33,6 +33,14 @@ struct BoundingBox {
     simd_float4 temp2;
 };
 
+// Light
+struct Light {
+    simd_float4 origin;
+    simd_float4 albedo;
+    simd_float4 temp1;
+    simd_float4 temp2;
+};
+
 // Renderer data
 struct RendererData {
     simd_float4 arrayLengths;
@@ -47,6 +55,7 @@ struct RayTracedScene {
     struct ObjectMaterial materials[10];
 //    struct PointLight lights[10];
     struct BoundingBox topBoundingBox;
+    struct Light light;
     struct RendererData renderingData;
 };
 
