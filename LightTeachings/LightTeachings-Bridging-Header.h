@@ -51,8 +51,8 @@ struct RendererData {
 
 // Scene info
 struct RayTracedScene {
-    struct Object objects[10];
-    struct ObjectMaterial materials[10];
+    struct Object objects[20];
+    struct ObjectMaterial materials[20];
 //    struct PointLight lights[10];
     struct BoundingBox topBoundingBox;
     struct Light light;

@@ -99,28 +99,28 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         // Create a buffer for the scene
         let sceneBuffer: MTLBuffer? = device.makeBuffer(length: alignedSceneBufferSize, options: [.storageModeShared])
         
-        sceneBuffer?.contents().copyMemory(from: &objectArray, byteCount: objectMemSize * 10) // Pass in the object array
+        sceneBuffer?.contents().copyMemory(from: &objectArray, byteCount: objectMemSize * 20) // Pass in the object array
         
         // Pass in the lengths
-        sceneBuffer?.contents().advanced(by: objectMemSize * 10).copyMemory( // Shift the memory so the off is past the object array
+        sceneBuffer?.contents().advanced(by: objectMemSize * 20).copyMemory( // Shift the memory so the off is past the object array
             from: &materialArray,
-            byteCount: objectMatMemSize * 10
+            byteCount: objectMatMemSize * 20
         )
         
         // Pass in the bounding box
-        sceneBuffer?.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10).copyMemory(
+        sceneBuffer?.contents().advanced(by: objectMemSize * 20 + objectMatMemSize * 20).copyMemory(
             from: &boundingBox,
             byteCount: boundingBoxMemSize
         )
         
         // Pass in the lights
-        sceneBuffer?.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize).copyMemory(
+        sceneBuffer?.contents().advanced(by: objectMemSize * 20 + objectMatMemSize * 20 + boundingBoxMemSize).copyMemory(
             from: &light,
             byteCount: lightMemSize
         )
         
         // Pass in the renderer data
-        sceneBuffer?.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize + lightMemSize).copyMemory(
+        sceneBuffer?.contents().advanced(by: objectMemSize * 20 + objectMatMemSize * 20 + boundingBoxMemSize + lightMemSize).copyMemory(
             from: &rendererData,
             byteCount: rendererDataMemSize
         )
@@ -157,7 +157,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
             
             // Renderer data
             case .Scene:
-                backSceneBuffer.contents().advanced(by: (objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize + lightMemSize)).copyMemory(
+                backSceneBuffer.contents().advanced(by: (objectMemSize * 20 + objectMatMemSize * 20 + boundingBoxMemSize + lightMemSize)).copyMemory(
                     from: &sceneWrapper.rendererData,
                     byteCount: rendererDataMemSize
                 )
@@ -170,17 +170,17 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
             
                 // Get the new bounding box and set it too
                 var boundingBox: BoundingBox = BoundingBoxBuilder(objects: sceneWrapper.objects).fullBuild()
-                backSceneBuffer.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10).copyMemory(from: &boundingBox, byteCount: boundingBoxMemSize)
+                backSceneBuffer.contents().advanced(by: objectMemSize * 20 + objectMatMemSize * 20).copyMemory(from: &boundingBox, byteCount: boundingBoxMemSize)
             
             // Material
             case .Material:
                 
             // Set the new material at the correct index
-                backSceneBuffer.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: objectMatMemSize)
+                backSceneBuffer.contents().advanced(by: objectMemSize * 20 + objectMatMemSize * updateData.updateIndex).copyMemory(from: &sceneWrapper.materials[updateData.updateIndex], byteCount: objectMatMemSize)
             
             // Light
             case .Light:
-                backSceneBuffer.contents().advanced(by: objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize).copyMemory(from: &sceneWrapper.light, byteCount: lightMemSize)
+                backSceneBuffer.contents().advanced(by: objectMemSize * 20 + objectMatMemSize * 20 + boundingBoxMemSize).copyMemory(from: &sceneWrapper.light, byteCount: lightMemSize)
 
                 
             // Full rebuild

@@ -1,7 +1,8 @@
 //#include "../LightTeachings-Bridging-Header.h"
-#include <metal_stdlib>
+#include <metal_stdlib> 
 
 #include "./Modelinator.metal"
+//#include "./SRGB.metal"
 
 using namespace metal;
 
@@ -296,7 +297,6 @@ private:
         }
 
         float3 color = modelinator.color(ray, hit, light.origin.xyz, normal, scene);
-        
         return color;
     }
 
