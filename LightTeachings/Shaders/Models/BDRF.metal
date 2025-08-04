@@ -37,6 +37,7 @@ public:
 
         ObjectMaterial material = scene.materials[hit.materialIndex - 1];
         Light light = scene.light;
+        float3 ambient = scene.renderingData.ambient.xyz * scene.renderingData.ambient.w * light.albedo.xyz;
 
         // Cook-Torrance BRDF
         float3  F0 = mix (float3 (0.04), pow(material.albedo.xyz, float3(2.2)), material.materialSettings[1]);
@@ -53,7 +54,7 @@ public:
         float NdotL = max(dot(N, L), 0.0);
 
         float3 color = (light.albedo.xyz * light.albedo.w) * (kD * pow(material.albedo.xyz, float3(2.2)) / M_PI_F + specular) *
-        (NdotL / dot(lightPos - worldPos, lightPos - worldPos)) + 0.05;
+        (NdotL / dot(lightPos - worldPos, lightPos - worldPos)) + ambient + 0.05;
         
         return color;
         

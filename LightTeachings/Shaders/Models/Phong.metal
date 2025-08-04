@@ -22,8 +22,8 @@ class Phong {
             float spec = pow(max(dot(normalize(ray.origin - hit.hitPos), reflectDir), 0.0), 32);
             float3 specular = 1.0 * spec * lightColor;
             
-            float4 ambient = scene.renderingData.ambient;
+            float3 ambient = scene.renderingData.ambient.xyz * scene.renderingData.ambient.w * lightColor;
             
-            return (specular + (diffuse + (ambient.xyz * ambient.w * lightColor)) * material.albedo.xyz);
+            return (specular + diffuse + ambient) * material.albedo.xyz;
         }
 };

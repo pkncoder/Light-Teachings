@@ -72,7 +72,7 @@
     },
     "rendererData": {
         "arrayLengths": [6, 4, 0, 0],
-        "shadingData": [1, 3, 0, 0],
+        "shadingData": [2, 3, 0, 0],
         "ambient": [1, 1, 1, 0.1],
         "temp3": [0, 0, 0, 0]
     }

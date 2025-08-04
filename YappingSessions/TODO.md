@@ -54,7 +54,7 @@ This is the file that I save all of the things that I still have to do
     - 0 = default based on shading model
     - 1 = shadows off
     - 2 = shadows on
-- [ ] Ambient
+- [x] Ambient
 
 ## Background Stuff
 - [ ] Recommenting
@@ -81,6 +81,8 @@ This is the file that I save all of the things that I still have to do
     - I was using object instead of object clone
 - [x] Weird shading error with changing shader model values in renderer settings
     - Didn't advance the bits far enough to account for lights (3/8/25 - d/m/yy)
+- [ ] Phong model is Colored Hit for some reason
+- [ ] Default shadows aren't workingj
 
 ## Big Stuff
 - [ ] Change the way that sdf opperations are done

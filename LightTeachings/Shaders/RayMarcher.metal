@@ -269,7 +269,7 @@ private:
 
         Light light = scene.light;
         
-        float4 ambient = scene.renderingData.ambient;
+        float3 ambient = scene.renderingData.ambient.xyz * scene.renderingData.ambient.w * light.albedo.xyz;
 
         bool objectsHit = !BBoxIntersect(scene.topBoundingBox.boxMin.xyz, scene.topBoundingBox.boxMax.xyz, ray);
 
@@ -291,7 +291,7 @@ private:
             },false);
             
             if (length(shadowRayHit.hitPos - hit.hitPos) > 0.01) {
-                return float3(0) + (ambient.w * light.albedo.xyz);
+                return ambient;
             }
         }
 
