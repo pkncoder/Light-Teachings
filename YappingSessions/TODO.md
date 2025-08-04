@@ -82,7 +82,9 @@ This is the file that I save all of the things that I still have to do
 - [x] Weird shading error with changing shader model values in renderer settings
     - Didn't advance the bits far enough to account for lights (3/8/25 - d/m/yy)
 - [ ] Phong model is Colored Hit for some reason
-- [ ] Default shadows aren't workingj
+    - I think that the shading model is just screwed
+- [x] Default shadows aren't working
+    - I was just wrong objects.json was set to 3 for override
 
 ## Big Stuff
 - [ ] Change the way that sdf opperations are done
