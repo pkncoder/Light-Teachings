@@ -7,21 +7,26 @@ struct RendererEditor: View {
     
     // Renderer Data binding
     @Binding public var rendererData: RendererDataWrapper
+    @State private var rendererDataClone: RendererDataWrapper
+    
+    @State private var skip: Bool = false
     
     // Computed Binding for ColorPicker
     private var ambientColor: Binding<Color> {
         Binding<Color>(
             get: {
-                // Convert SIMD4<Float> to Color
-                return Color(red: CGFloat(rendererSettings.sceneWrapper.rendererData.ambient.x), green: CGFloat(rendererSettings.sceneWrapper.rendererData.ambient.y), blue: CGFloat(rendererSettings.sceneWrapper.rendererData.ambient.z), opacity: CGFloat(1))
+                return Color(red: CGFloat(rendererDataClone.ambient.x), green: CGFloat(rendererDataClone.ambient.y), blue: CGFloat(rendererDataClone.ambient.z), opacity: CGFloat(1))
             },
             set: { newColor in
-                // Convert Color to SIMD4<Float>
-                // Use Color.resolve(in:) to get the color components
-                let resolvedColor = newColor.resolve(in: .init()) // You might need a more appropriate EnvironmentValues here
-                rendererSettings.sceneWrapper.rendererData.ambient = SIMD4<Float>(resolvedColor.red, resolvedColor.green, resolvedColor.blue, rendererSettings.sceneWrapper.rendererData.ambient.w)
+                let resolvedColor = newColor.resolve(in: .init())
+                rendererDataClone.ambient = SIMD4<Float>(resolvedColor.red, resolvedColor.green, resolvedColor.blue, rendererDataClone.ambient.w)
             }
         )
+    }
+    
+    init(rendererData: Binding<RendererDataWrapper>) {
+        self._rendererData = rendererData
+        self.rendererDataClone = rendererData.wrappedValue
     }
     
     var body: some View {
@@ -49,11 +54,27 @@ struct RendererEditor: View {
             }
         }
         .listStyle(InsetListStyle())
-        .onChange(of: rendererData.shadingData) { oldValue, newValue in
-            if rendererSettings.updateData?.updateType == .Full { return }
+        .onChange(of: self.rendererDataClone) { old, new in
+            if skip {
+                skip.toggle()
+                return
+            } else {
+                skip = true
+                rendererData = rendererDataClone
+                rendererSettings.updateData = UpdateData(updateType: .Scene, updateIndex: -1)
+            }
+        }
+        .onChange(of: rendererData) { oldValue, newValue in
             
+            // If the update data is full, just ignore it so it can flush through
+            if skip {
+                skip.toggle()
+                return
+            }
+            
+            skip = true
+            rendererDataClone = rendererData
             rendererSettings.updateData = UpdateData(updateType: .Scene, updateIndex: -1)
-            
         }
     }
 }
