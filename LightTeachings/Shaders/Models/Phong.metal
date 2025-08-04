@@ -9,11 +9,11 @@ class Phong {
             
             ObjectMaterial material = scene.materials[hit.materialIndex - 1];
             Light light = scene.light;
-            float3 lightColor = light.albedo.xyz * light.albedo.w;
+            float3 lightColor = light.albedo.xyz;
             
             float3 lightDir = normalize(light.origin.xyz - hit.hitPos.xyz);
             
-            float3 diffuse = max(dot(normal, lightDir), 0.0) * lightColor;
+            float3 diffuse = max(dot(normal, lightDir), 0.0) * lightColor * material.albedo.xyz;
             
             
 //            vec3 viewDir = normalize(viewPos - FragPos);
@@ -24,6 +24,6 @@ class Phong {
             
             float3 ambient = scene.renderingData.ambient.xyz * scene.renderingData.ambient.w * lightColor;
             
-            return (specular + diffuse + ambient) * material.albedo.xyz;
+            return (specular + diffuse + ambient);
         }
 };

@@ -15,14 +15,11 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
     float aspectRatio = resolution.x / resolution.y; // Calculate the aspect ratio
 
     // Get the UV cordinates and map them to a -1 to 1 space
-    float2 uv = ((frag.position.xy / resolution) * 2 - 1);
+    float2 uv = ((frag.position.xy / resolution) * 2 - 1) * float2(aspectRatio, 1.0);
     uv.y *= -1; // Flip the y cordinate because of how (0, 0) is the top-left corner besides the bottom-left one
 
     // Get the camera distance from the FOV
     float cameraDistance = 1.0f / tan(fieldOfView * 0.5f * 3.14159 / 180.0f); // Get the camer distance from sphere (uses FOV)
-
-    // Apply the aspect ratio to avoid screen stretching
-    uv.y /= aspectRatio;
 
     // Create a ray using the uv and camera distance to get the ray directions
     Ray ray = {
