@@ -96,5 +96,11 @@
 
 - Simple diffuse lighting and basic shading
     - Currently, whenever we hit an object with a ray, we always color it the same amount with no regard to how much light is hitting that spot on the object
-    - What we really need is a way to define how much light is hitting any spot on an object
-    -
+    - If the light source is on the other side of an object, no light should reach the other side realisticly
+    - How could we emulate this with ray tracing?
+        - We need a way to tell how far a light source is pointing away from a surface
+        - The method used for this can be refered to as NdotL shading
+        - The main idea is to find the angle betwween where the light hits an object at any spot and the surface of the object
+            - The steeper the angle the less light reaches that angle
+            - If the angle is >90deg then no light reaches there
+        - *send the user to look at scene #2, with a ball in the center (white) being shaded by a light up & to the left (slightly in front too)* 

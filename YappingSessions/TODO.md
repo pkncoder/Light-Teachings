@@ -79,6 +79,8 @@ This is the file that I save all of the things that I still have to do
     - Always use object clone
 - [x] Deleting objects isn't working either, duplication again
     - I was using object instead of object clone
+- [x] Weird shading error with changing shader model values in renderer settings
+    - Didn't advance the bits far enough to account for lights (3/8/25 - d/m/yy)
 
 ## Big Stuff
 - [ ] Change the way that sdf opperations are done

@@ -157,7 +157,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
             
             // Renderer data
             case .Scene:
-                backSceneBuffer.contents().advanced(by: (objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize)).copyMemory(
+                backSceneBuffer.contents().advanced(by: (objectMemSize * 10 + objectMatMemSize * 10 + boundingBoxMemSize + lightMemSize)).copyMemory(
                     from: &sceneWrapper.rendererData,
                     byteCount: rendererDataMemSize
                 )
