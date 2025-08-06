@@ -95,12 +95,19 @@
 
 
 - Simple diffuse lighting and basic shading
-    - Currently, whenever we hit an object with a ray, we always color it the same amount with no regard to how much light is hitting that spot on the object
-    - If the light source is on the other side of an object, no light should reach the other side realisticly
+    - Currently, whenever we hit an object with a ray, it has the same intensitiy of light without taking in where the light source is
+        - If the light source is on the left side of an object, no light should reach the right side realisticly
+            - *draw this out*
     - How could we emulate this with ray tracing?
-        - We need a way to tell how far a light source is pointing away from a surface
+        - We need a way to tell if a light source is view of a surface
         - The method used for this can be refered to as NdotL shading
-        - The main idea is to find the angle betwween where the light hits an object at any spot and the surface of the object
+        - All we need is the angle the light hits the object at
             - The steeper the angle the less light reaches that angle
             - If the angle is >90deg then no light reaches there
-        - *send the user to look at scene #2, with a ball in the center (white) being shaded by a light up & to the left (slightly in front too)* 
+            - *draw*
+        - *send the user to look at scene #2, with a ball in the center (white) being shaded by a light up & to the left (slightly in front too)*
+        - This is called diffuse lighting
+    - Overview
+        - When light hits an object we perform NdotL shading to find the intensitiy of the light on the object
+    - Next video
+        - Phong shading
