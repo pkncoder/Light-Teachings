@@ -66,6 +66,10 @@
         - Functions
             - All a function does is take in information, and use it to output - or return - more information
                 - Think of it like a calculator, the calculator takes in an equation, and gives you the result. The calculator is the function in this case
+        - Lighting models
+            - A lighting model is different ways of coloring a scene
+        - Vectors
+            - Vectors will be used in this concepts as lines with a direction and intensity we can compare to other vectors
     - Next Video
     - Learn how we can "hit" objects and finally return objects
 
@@ -95,19 +99,41 @@
 
 
 - Simple diffuse lighting and basic shading
-    - Currently, whenever we hit an object with a ray, it has the same intensitiy of light without taking in where the light source is
+    - Currently, whenever we hit an object with a ray, it has the same light intensitiy without taking in where the light source is
         - If the light source is on the left side of an object, no light should reach the right side realisticly
-            - *draw this out*
-    - How could we emulate this with ray tracing?
+            - *draw this out, throw in the word shading*
+    - How could we emulate shading with ray tracing?
         - We need a way to tell if a light source is view of a surface
         - The method used for this can be refered to as NdotL shading
-        - All we need is the angle the light hits the object at
-            - The steeper the angle the less light reaches that angle
-            - If the angle is >90deg then no light reaches there
+        - All we need is the angle between a light ray and an object's normal vector
+            - A normal vector is a perpindicular line off of an object at any point. Imagine you on a sphere pointing straight upwards, that would be the normal vector
             - *draw*
+            - The greater the angle the less light reaches the object
+            - If the angle is >90deg then no light reaches the object
         - *send the user to look at scene #2, with a ball in the center (white) being shaded by a light up & to the left (slightly in front too)*
-        - This is called diffuse lighting
+        - All of this together is called diffuse lighting
     - Overview
         - When light hits an object we perform NdotL shading to find the intensitiy of the light on the object
+        - NdotL shading uses the angle between the light ray and a normal vector of the object
     - Next video
         - Phong shading
+
+
+- Phong shading
+    - Now we have a diffuse lighting model, using NdotL shading which increases realizem with our ray tracer
+    - However, if we look at something like an apple up close to a lamp we notice something
+    - There is a white smudge on the surface of the apple
+    - This is called a specular highlight, and is needed for making even more realistic scenes with ray tracing
+    - How do can we reacreate this?
+        - Previously we just used the angle the light ray hits the surface in comparison to a normal vector
+        - Now we need to find the angle between the angle of a reflected light ray and a view vector
+            - A view vector is a line from our eye to where the object hit at
+        - This is due to the specular reflections being based on where we are looking from
+        - *drawing time, show the reflections and explain the "line between the eye and the light ray"*
+        - The smaller the angle, the greater the specular highlight
+        - Now that we have our specular reflections, we just need to combine it with our diffuse component to create a final shading model, named Phong shading
+        - *send the user to the test scene "objects" with phong shading on*
+    - Overview
+        - Diffuse shading is used to find the intensitiy of light over the whole object, where Specular shading adds a small highlight on glossy objects like apples
+        - To find the specular light we need the angle between a refelcted light ray and a view vector
+        - Combine these two things and we get phong shading!
