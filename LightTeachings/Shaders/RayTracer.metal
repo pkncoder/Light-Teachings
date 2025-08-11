@@ -1,6 +1,7 @@
-#include <metal_stdlib>
-
 #include "./Modelinator.metal"
+
+#include "./SRGB.metal"
+#include "./ToneMapping.metal"
 
 using namespace metal;
 
@@ -297,6 +298,7 @@ private:
         float3 color = modelinator.color(ray, hit, light.origin.xyz, hit.normal, scene);
         
         // TODO: TONE MAPPING & SRGB
+        color = SRGB::LinearToSRGB(ToneMapping::ACESFilm(color));
         
         // Return the final color
         return color;

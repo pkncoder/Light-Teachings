@@ -114,8 +114,8 @@ This is the stuff in the future for ideas to mark down
 
 ## Shader Stuff
 - [ ] Full BVH instead of just a Bounding Box
-- [ ] SRGB
-- [ ] Tone mapping
+- [x] SRGB
+- [x] Tone mapping
 - [ ] Perfect Transparency and Mirrors
     - My Testing shadertoy: https://www.shadertoy.com/view/tXyXRc
 - [ ] Bring back RayMarcher

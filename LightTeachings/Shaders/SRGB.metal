@@ -6,7 +6,7 @@ using namespace metal;
 //https://blog.demofox.org/2020/06/06/casual-shadertoy-path-tracing-2-image-improvement-and-glossy-reflections/
 class SRGB {
 private:
-    float3 LessThan(float3 f, float value)
+    static float3 LessThan(float3 f, float value)
     {
         return float3(
                       (f.x < value) ? 1.0f : 0.0f,
@@ -16,7 +16,7 @@ private:
     
 public:
     // To SRGB
-    float3 LinearToSRGB(float3 rgb)
+    static float3 LinearToSRGB(float3 rgb)
     {
         rgb = clamp(rgb, 0.0f, 1.0f);
         
@@ -28,7 +28,7 @@ public:
     }
     
     // From SRGB
-    float3 SRGBToLinear(float3 rgb)
+    static float3 SRGBToLinear(float3 rgb)
     {
         rgb = clamp(rgb, 0.0f, 1.0f);
         
