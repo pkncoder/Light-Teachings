@@ -7,10 +7,6 @@ struct CylinderEditor: View {
     
     var body: some View {
         
-        Section("Object Description Settings") {
-            ObjectTypeEdit(objectType: $object.objectData[0])
-        }
-        
         Section("Object Proporties and Interations") {
             
             // Performed sdf opperation
@@ -23,8 +19,11 @@ struct CylinderEditor: View {
             // Cylinder Origin
             TripleItemEdit(name: "Origin", value: $object.origin)
             
+            // Cylinder Normal
+            TripleItemEdit(name: "Normal", value: $object.bounds)
+            
             // Height
-            SingleItemEdit(name: "Height", value: $object.bounds[1])
+            SingleItemEdit(name: "Height", value: $object.origin[3])
             
             // Radius
             SingleItemEdit(name: "Radius", value: $object.bounds[3], slidingSensitivity: 25, range: 0...10000)

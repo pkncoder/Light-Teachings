@@ -31,7 +31,7 @@
             "tempData": [0, 0, 0, 0]
         },
         {
-            "origin": [0, 0, 5, -3.0],
+            "origin": [0, 0, 0, -3.0],
             "bounds": [0, 1, 0, 0],
             "objectData": [5, 0, 0, 1],
             "tempData": [0, 0, 0, 0]

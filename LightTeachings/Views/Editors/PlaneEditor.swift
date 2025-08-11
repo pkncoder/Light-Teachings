@@ -11,20 +11,10 @@ struct PlaneEditor: View {
             ObjectTypeEdit(objectType: $object.objectData[0])
         }
         
-        Section("Object Proporties and Interations") {
-            
-            // Performed sdf opperation
-            OpperationEdit(opperation: $object.objectData[1])
-            
-        }
-        
         Section("Position and Scale") {
             
-            // Plane center
-            TripleItemEdit(name: "Center", value: $object.origin)
-                    
             // Height
-            SingleItemEdit(name: "Height", value: $object.origin[3])
+            SingleItemEdit(name: "Plane Height", value: $object.origin[3])
             
             // Plane Normal
             TripleItemEdit(name: "Front Direction", value: $object.bounds, slidingSensitivity: 75)

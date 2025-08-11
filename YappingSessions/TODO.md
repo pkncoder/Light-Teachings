@@ -6,7 +6,7 @@ This is the file that I save all of the things that I still have to do
 ## User Interactions
 - [ ] Better ui for single item edits & triple item edits
     - [x] Sliding
-        - [x] Better sensitivity sliding
+        - [ ] Better sensitivity sliding
     - [ ] Better step sizes?
     - [x] Steppers on either side
     - [x] Lighter BG
@@ -29,9 +29,8 @@ This is the file that I save all of the things that I still have to do
 - [ ] Fix the components for modified objects
 
 ## Shader Stuff
-- [ ] Full Refactoring of said file
-  - [ ] Comments
-  - [ ] Code Placement
+- [x] Full Refactoring of files
+    - Done 11/8/25 - dd/m/yy
 - [x] Add the point lights
 - [x] Bounding Box
 - [x] Use multithreading to decouple renderer and SwiftUI
@@ -96,12 +95,7 @@ This is the file that I save all of the things that I still have to do
     - Light was too bright, no more light strength (4/8/25 - d/m/yy)
 - [x] Default shadows aren't working
     - I was just wrong objects.json was set to 3 for override (3/8/25 - d/m/yy)
-
-## Big Stuff
-- [ ] Change the way that sdf opperations are done
-  - Idea: Use object data slot 3
-    - Indicates an object index that is being opporated on
-    - Indicates what opporation "group" is being opporated on
+- [ ] New cylinders break the bounding box due to normals
 
 
 
@@ -125,3 +119,7 @@ This is the stuff in the future for ideas to mark down
 
 ## Major Stuff / Maybe Possible Ideas
 - [ ] Make a block language to interact with the renderer
+- [ ] Change the way that sdf opperations are done
+    - Idea: Use object data slot 3
+    - Indicates an object index that is being opporated on
+    - Indicates what opporation "group" is being opporated on

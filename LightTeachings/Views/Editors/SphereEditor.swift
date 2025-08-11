@@ -11,13 +11,6 @@ struct SphereEditor: View {
             ObjectTypeEdit(objectType: $object.objectData[0])
         }
         
-        Section("Object Proporties and Interations") {
-            
-            // Performed sdf opperation
-            OpperationEdit(opperation: $object.objectData[1])
-            
-        }
-        
         Section("Position and Scale") {
             
             // Sphere Origin

@@ -110,7 +110,7 @@ private:
         if (abs(denom) > 0.0001f)
         {
             // If it is then get the distance
-            float t = dot((plane.origin.xyz - ray.origin), plane.bounds.xyz) / denom;
+            float t = dot((float3(0.0, plane.origin.w, 0.0) - ray.origin), plane.bounds.xyz) / denom;
             if (t < 0) return hit; // Double check for negative distance
             
             // Modify hit info
