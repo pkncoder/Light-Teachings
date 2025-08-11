@@ -78,7 +78,7 @@ class Renderer: NSObject, CAMetalDisplayLinkDelegate {
         layer.framebufferOnly = true
 
         // Set drawable size (scaled on presentation
-        layer.drawableSize = CGSize(width: 300, height: 300)
+        layer.drawableSize = CGSize(width: 600, height: 600)
 
         // Start the display link
         let displayLink = CAMetalDisplayLink(metalLayer: layer)

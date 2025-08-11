@@ -1,38 +1,40 @@
 #include <metal_stdlib>
 
-#include "./RayMarcher.metal"
+//#include "./RayMarcher.metal"
+#include "./RayTracer.metal"
 
-using namespace metal;
+using namespace metal; // I'm sorry stack overflow but I'm going to use a namespace
 
+// Start fragment function from the renderer
 half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedScene &scene [[buffer(1)]], constant Uniforms &uniforms [[buffer(2)]]) {
 
+    // Screen size / resolution
     ScreenSize screenSize = uniforms.screenSize;
-//    float _ = uniforms.frameNum;
 
-    // Init important constant values
+    // Get the resolution, FOV, and aspect ratio
     float2 resolution = float2(screenSize.width, screenSize.height);
     float fieldOfView = 90;
-    float aspectRatio = resolution.x / resolution.y; // Calculate the aspect ratio
+    float aspectRatio = resolution.x / resolution.y;
 
-    // Get the UV cordinates and map them to a -1 to 1 space
-    float2 uv = ((frag.position.xy / resolution) * 2 - 1) * float2(aspectRatio, 1.0);
-    uv.y *= -1; // Flip the y cordinate because of how (0, 0) is the top-left corner besides the bottom-left one
+    // Get the uv corrdinates
+    float2 uv = ((frag.position.xy / resolution) * 2 - 1) * float2(aspectRatio, -1.0);
 
-    // Get the camera distance from the FOV
+    // Get the camera distance for FOV
     float cameraDistance = 1.0f / tan(fieldOfView * 0.5f * 3.14159 / 180.0f); // Get the camer distance from sphere (uses FOV)
 
-    // Create a ray using the uv and camera distance to get the ray directions
+    // Get the current ray
     Ray ray = {
         float3(0, 2, -6),
         normalize(float3(uv, cameraDistance))
     };
     
-    // Create our modelinator (naming est difficile)
-    Modelinator modelinator = Modelinator(BDRF_Model);
+    // Init a modelinator (with a BRDF_Model as placeholder)
+    Modelinator modelinator = Modelinator(BRDF_Model);
     
+    // Switch the render data's shading model to get the right one and save it to our modelinator
     switch((int)scene.renderingData.shadingInfo[0]) {
         case 1:
-            modelinator = Modelinator(BDRF_Model);
+            modelinator = Modelinator(BRDF_Model);
             break;
         case 2:
             modelinator = Modelinator(Phong_Model);
@@ -47,21 +49,22 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
             modelinator = Modelinator(HitColor_Model);
             break;
         default:
-            modelinator = Modelinator(BDRF_Model);
+            modelinator = Modelinator(BRDF_Model);
             break;
     }
     
-    float shadingOverride = scene.renderingData.shadingInfo[1];
+    // Get the shadowing override
+    float shadowingOverride = scene.renderingData.shadingInfo[1];
     
-    if (shadingOverride > 0.0) {
-        modelinator.setShadowOverride((bool) (shadingOverride - 1.0));
+    // If we need to override anything
+    if (shadowingOverride > 0.0) {
+        modelinator.setShadowOverride((bool) (shadowingOverride - 1.0)); // Set the modelinator shadowing override
     }
 
-    // Create our ray marcher
-    RayMarcher rayMarcher = RayMarcher(ray, scene);
-    float3 color = rayMarcher.getColor(uv, modelinator);
+    // Init our ray tracer and get the color from the coloring function
+    RayTracer rayTracer = RayTracer(ray, scene);
+    float3 color = rayTracer.getColor(uv, modelinator);
 
-
-    // Output the final ray's color
+    // Return the final coloring function (and convert from float3 to half4)
     return half4(half3(color), 1.0);
 }

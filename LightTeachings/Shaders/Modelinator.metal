@@ -9,20 +9,28 @@
 #include "./Enums/ShaderModels.metal"
 
 
-
+// Used to figure out what shader model to use
 class Modelinator {
 
 private:
+    
+    // The final shader model
     ShaderModels shaderModel;
     
 public:
+    
+    // If the model is using shadows or not
     bool shadows;
     
+    // Constructor
     Modelinator(ShaderModels shaderModel) {
+        
+        // Set the shader model
         this->shaderModel = shaderModel;
         
+        // Default shadow values
         switch(shaderModel) {
-            case BDRF_Model:
+            case BRDF_Model:
                 this->shadows = true;
                 break;
             case Phong_Model:
@@ -41,11 +49,13 @@ public:
         
     }
     
-    float3 color(Ray ray, HitInfo hit, float3 lightPos, float3 normal, RayTracedScene scene) {
+    // Coloring function
+    float3 color(Ray ray, HitInfoTrace hit, float3 lightPos, float3 normal, RayTracedScene scene) {
         
+        // Link to the needed shader model's coloring function
         switch(shaderModel) {
-            case BDRF_Model:
-                    return BDRF().color(ray, hit, lightPos, normal, scene);
+            case BRDF_Model:
+                return BRDF().color(ray, hit, lightPos, normal, scene);
             case Phong_Model:
                 return Phong().color(ray, hit, lightPos, normal, scene);
             case SimpleShading_Model:
@@ -57,6 +67,7 @@ public:
         }
     }
     
+    // Set the shadowing boolean as an override
     void setShadowOverride(bool newShadowValue) {
         this->shadows = newShadowValue;
     }

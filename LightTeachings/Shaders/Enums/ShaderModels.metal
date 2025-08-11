@@ -1,7 +1,8 @@
 #include <metal_stdlib>
 
+// Enum for the different shader models
 enum ShaderModels {
-    BDRF_Model,
+    BRDF_Model,
     Phong_Model,
     SimpleShading_Model,
     Hit_Model,

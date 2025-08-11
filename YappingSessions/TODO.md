@@ -26,6 +26,7 @@ This is the file that I save all of the things that I still have to do
 - [x] Material editor
 - [x] Fix the scene tree when updateed
 - [ ] Keep scene tree open & in same state after update (add / remove)
+- [ ] Fix the components for modified objects
 
 ## Shader Stuff
 - [ ] Full Refactoring of said file
@@ -55,6 +56,14 @@ This is the file that I save all of the things that I still have to do
     - 1 = shadows off
     - 2 = shadows on
 - [x] Ambient
+- [ ] FOV in RendererSettings
+- [x] Prob a re-write
+- [x] Fix ambient use
+- [x] Fix roughness
+- [ ] Anti ailiasing
+- [x] Sky coloring
+- [ ] Toggle in Renderer Settings for sky color
+- [ ] Light Strength fixing and decitions
 
 ## Background Stuff
 - [ ] Recommenting
@@ -70,6 +79,7 @@ This is the file that I save all of the things that I still have to do
     - Maybe an update flag in RendererSettings
 - [x] Change number Slider State where needed
     - No idea what I did to need to have this
+- [ ] Make array length variables for objects and mats
 
 ## Errors
 - [x] Error with .Full updates persisting and not being overritten
@@ -104,8 +114,14 @@ This is the stuff in the future for ideas to mark down
 
 ## Shader Stuff
 - [ ] Full BVH instead of just a Bounding Box
+- [ ] SRGB
+- [ ] Tone mapping
+- [ ] Perfect Transparency and Mirrors
+    - My Testing shadertoy: https://www.shadertoy.com/view/tXyXRc
+- [ ] Bring back RayMarcher
+- [ ] Bring back PathTracer
 
 ## Background Stuff
 
-## Major Stuff
+## Major Stuff / Maybe Possible Ideas
 - [ ] Make a block language to interact with the renderer

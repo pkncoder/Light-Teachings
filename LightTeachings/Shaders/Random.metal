@@ -4,12 +4,12 @@ using namespace metal;
 
 class Random {
 
-    uint rng_state;
+    uint seed;
 
     uint PCGHash()
     {
-        rng_state = rng_state * 747796405u + 2891336453u;
-        uint state = rng_state;
+        seed = seed * 747796405u + 2891336453u;
+        uint state = seed;
         uint word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
         return (word >> 22u) ^ word;
     }
@@ -19,11 +19,11 @@ public:
     // Seed must take a different value for each pixel every frame
     void  SetSeed( float2 fragCoord, int frame )
     {
-        rng_state = uint(frame * 30.2345);
-        rng_state = PCGHash();
-        rng_state += uint(fragCoord.x);
-        rng_state = PCGHash();
-        rng_state += uint(fragCoord.y);
+        seed = uint(frame * 30.2345);
+        seed = PCGHash();
+        seed += uint(fragCoord.x);
+        seed = PCGHash();
+        seed += uint(fragCoord.y);
     }
 
     float rnd1(){

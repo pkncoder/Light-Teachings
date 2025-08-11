@@ -81,6 +81,18 @@ struct HitInfo {
     int materialIndex;
 };
 
+// Hit info
+struct HitInfoTrace {
+    boolean hit;
+    float dist;
+    
+    simd_float3 hitPos;
+    simd_float3 normal;
+    
+    int materialIndex;
+};
+
+
 // Uniforms
 struct Uniforms {
     struct ScreenSize screenSize;

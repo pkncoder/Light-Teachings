@@ -9,7 +9,7 @@ class RendererSettings: ObservableObject, Equatable, Identifiable {
     
     // Most recent scene wrapper
     @Published public var sceneWrapper: SceneWrapper
-    @Published public var renderSize: SIMD2<Float> = .init(300, 300)
+    @Published public var renderSize: SIMD2<Float> = .init(600, 600)
     
     // Scene  file info
     @Published public var filename: String = ""
