@@ -1,3 +1,5 @@
+import simd
+
 class BoundingBoxBuilder {
     
     // Object list
@@ -75,12 +77,59 @@ class BoundingBoxBuilder {
     }
     
     func cylinderCase(cylinder: ObjectWrapper) {
-        boxMin.x = min(boxMin.x, cylinder.origin.x - cylinder.bounds[3])
-        boxMin.y = min(boxMin.y, cylinder.origin.y - cylinder.bounds[1])
-        boxMin.z = min(boxMin.z, cylinder.origin.z - cylinder.bounds[3])
+//        boxMin.x = min(boxMin.x, cylinder.origin.x - cylinder.bounds[3])
+//        boxMin.y = min(boxMin.y, cylinder.origin.y - cylinder.bounds[1])
+//        boxMin.z = min(boxMin.z, cylinder.origin.z - cylinder.bounds[3])
+//        
+//        boxMax.x = max(boxMax.x, cylinder.origin.x + cylinder.bounds[3])
+//        boxMax.y = max(boxMax.y, cylinder.origin.y + cylinder.bounds[1])
+//        boxMax.z = max(boxMax.z, cylinder.origin.z + cylinder.bounds[3])
+//        
+//        
+//        
+//        
+        // Saved values
+        let norm: SIMD3<Float> = simd_normalize(SIMD3<Float>(cylinder.bounds.x, cylinder.bounds.y, cylinder.bounds.z))
+        let origin: SIMD3<Float> = SIMD3<Float>(cylinder.origin.x, cylinder.origin.y, cylinder.origin.z)
+        let rad: Float = cylinder.bounds.w
         
-        boxMax.x = max(boxMax.x, cylinder.origin.x + cylinder.bounds[3])
-        boxMax.y = max(boxMax.y, cylinder.origin.y + cylinder.bounds[1])
-        boxMax.z = max(boxMax.z, cylinder.origin.z + cylinder.bounds[3])
+        // Half-height vector along cylinder axis
+        let halfAxis: SIMD3<Float> = norm * cylinder.origin.w
+
+        // Two points at the ends of the cylinder's axis
+        let p1: SIMD3<Float> = origin - halfAxis
+        let p2: SIMD3<Float> = origin + halfAxis
+
+        // Create two orthonormal vectors perpendicular to normal
+        var u: SIMD3<Float> = simd_normalize(abs(norm.x) < 1 ? SIMD3<Float>(0,1,0) : SIMD3<Float>(1,0,0))
+        u = simd_normalize(cross(norm, u))
+        let v: SIMD3<Float> = simd_normalize(cross(norm, u))
+
+        // Expand ends by radius in both perpendicular directions
+        let offsets: [SIMD3<Float>] = [
+            u * rad + v * rad,
+            u * rad - v * rad,
+           -u * rad + v * rad,
+           -u * rad - v * rad
+        ]
+
+        // Initialize AABB to extreme values
+        var thisBoxMin: SIMD3<Float> = SIMD3<Float>(repeating: 1e30)
+        var thisBoxMax: SIMD3<Float> = SIMD3<Float>(repeating: -1e30)
+
+        // Check all 8 extreme points
+        for offset in offsets {
+            let corner1: SIMD3<Float> = p1 + offset
+            let corner2: SIMD3<Float> = p2 + offset
+            thisBoxMin = min(SIMD3<Float>(boxMin.x, boxMin.y, boxMin.z), corner1)
+            thisBoxMax = max(SIMD3<Float>(boxMax.x, boxMax.y, boxMax.z), corner1)
+            thisBoxMin = min(SIMD3<Float>(boxMin.x, boxMin.y, boxMin.z), corner2)
+            thisBoxMax = max(SIMD3<Float>(boxMax.x, boxMax.y, boxMax.z), corner2)
+        }
+        
+        boxMin = min(boxMin, SIMD4<Float>(thisBoxMin.x, thisBoxMin.y, thisBoxMin.z, 0.0))
+        boxMax = max(boxMax, SIMD4<Float>(thisBoxMax.x, thisBoxMax.y, thisBoxMax.z, 0.0))
+        
+        
     }
 }
