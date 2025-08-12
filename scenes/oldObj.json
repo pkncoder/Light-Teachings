@@ -1,0 +1,73 @@
+{
+    "objects": [
+        {
+            "origin": [3, 0, 5, 0],
+            "bounds": [0.0, 0.0, 0.0, 1.0],
+            "objectData": [1, 0, 0, 4],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 0, 5, 0],
+            "bounds": [1, 1, 1, 0],
+            "objectData": [2, 0, 0, 2],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [-3, 3, 5, 0],
+            "bounds": [1.0, 1.0, 1.0, 0.2],
+            "objectData": [2, 0, 0, 4],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [-3, 0, 5, 0],
+            "bounds": [1.0, 1.0, 1.0, 0.1],
+            "objectData": [2, 0, 0, 3],
+            "tempData": [0, 0, 0, 0]
+        },
+        {
+            "origin": [0, 0, 0, -3.0],
+            "bounds": [0, 1, 0, 0],
+            "objectData": [5, 0, 0, 1],
+            "tempData": [0, 0, 0, 0]
+        }
+        
+    ],
+    "materials": [
+        {
+            "albedo": [1, 1, 1, 0],
+            "materialSettings": [1, 0, 0, 0],
+            "temp1": [0, 0, 0, 0],
+            "temp2": [0, 0, 0, 0]
+        },
+        {
+            "albedo": [1, 0, 0, 0],
+            "materialSettings": [0.5, 0, 0, 0],
+            "temp1": [0, 0, 0, 0],
+            "temp2": [0, 0, 0, 0]
+        },
+        {
+            "albedo": [0, 1, 0, 0],
+            "materialSettings": [1, 0, 0, 0],
+            "temp1": [0, 0, 0, 0],
+            "temp2": [0, 0, 0, 0]
+        },
+        {
+            "albedo": [0, 0, 1, 0],
+            "materialSettings": [0.3, 0, 0, 0],
+            "temp1": [0, 0, 0, 0],
+            "temp2": [0, 0, 0, 0]
+        }
+    ],
+    "light": {
+        "origin": [0, 1.7, 1.6, 0],
+        "albedo": [0.5, 0.5, 0.7, 50],
+        "temp1": [0, 0, 0, 0],
+        "temp2": [0, 0, 0, 0]
+    },
+    "rendererData": {
+        "arrayLengths": [5, 4, 1, 0],
+        "shadingData": [2, 0, 0, 0],
+        "ambient": [1, 1, 1, 0.1],
+        "temp3": [0, 0, 0, 0]
+    }
+}

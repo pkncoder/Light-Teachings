@@ -37,8 +37,12 @@ struct LightEditor: View {
     var body: some View {
         
         List {
+            Section("Position") {
+                // Light Origin
+                TripleItemEdit(name: "Origin", value: $lightClone.origin)
+            }
             
-            Section ("Light Coloring") {
+            Section("Light Coloring") {
                 ColorPicker("Color", selection: albedo, supportsOpacity: false)
                 NumberEdit(value: $lightClone.albedo.w, range: 0...300)
             }
