@@ -50,7 +50,7 @@ struct RendererEditor: View {
             
             Section ("Ambient Coloring") {
                 ColorPicker("Ambient Color", selection: ambientColor, supportsOpacity: false)
-                NumberEdit(value: $rendererSettings.sceneWrapper.rendererData.ambient.w, range: 0...1)
+                NumberEdit(value: $rendererDataClone.ambient.w, range: 0...1)
             }
         }
         .listStyle(InsetListStyle())

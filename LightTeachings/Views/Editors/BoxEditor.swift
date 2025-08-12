@@ -9,13 +9,6 @@ struct BoxEditor: View {
         Section("Object Description Settings") {
             ObjectTypeEdit(objectType: $object.objectData[0])
         }
-        
-        Section("Object Proporties") {
-            
-            // Box Type
-            BoxTypeEdit(boxType: $object.objectData[0])
-            
-        }
       
         Section("Position and Scale") {
             

@@ -15,19 +15,13 @@
         {
             "origin": [-3, 3, 5, 0],
             "bounds": [1.0, 1.0, 1.0, 0.2],
-            "objectData": [3, 0, 0, 4],
+            "objectData": [2, 0, 0, 4],
             "tempData": [0, 0, 0, 0]
         },
         {
             "origin": [-3, 0, 5, 0],
             "bounds": [1.0, 1.0, 1.0, 0.1],
-            "objectData": [4, 0, 0, 3],
-            "tempData": [0, 0, 0, 0]
-        },
-        {
-            "origin": [0, 3, 5, 1.0],
-            "bounds": [0, 1.0, 0, 1.0],
-            "objectData": [6, 0, 0, 3],
+            "objectData": [2, 0, 0, 3],
             "tempData": [0, 0, 0, 0]
         },
         {
@@ -71,7 +65,7 @@
         "temp2": [0, 0, 0, 0]
     },
     "rendererData": {
-        "arrayLengths": [6, 4, 0, 0],
+        "arrayLengths": [5, 4, 1, 0],
         "shadingData": [2, 0, 0, 0],
         "ambient": [1, 1, 1, 0.1],
         "temp3": [0, 0, 0, 0]

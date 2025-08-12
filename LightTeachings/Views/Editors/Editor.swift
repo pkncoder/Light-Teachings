@@ -48,6 +48,11 @@ struct Editor: View {
                             MaterialEditor(material: $rendererSettings.sceneWrapper.materials[sceneNodeSelection!.selectionData!.selectedIndex!], materialIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
                         }
                         
+                        // If the selection type is a light
+                        else if sceneNodeSelection?.selectionData?.selectionType == .Light && sceneNodeSelection?.selectionData?.selectedIndex ?? -1 < Int(rendererSettings.sceneWrapper.rendererData.arrayLengths[2]) {
+                            LightEditor(light: $rendererSettings.sceneWrapper.light, lightIndex: sceneNodeSelection!.selectionData!.selectedIndex!)
+                        }
+                        
                         // If the selected type is a title
                         else {
                             Text("You've selected a title.")

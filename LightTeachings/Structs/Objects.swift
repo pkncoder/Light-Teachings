@@ -49,4 +49,9 @@ enum Objects: String, CaseIterable {
     public static var allBoxes: [Self] {
         return [Self.box, Self.roundedBox, Self.borderedBox]
     }
+    
+    // Available object types
+    public static var availableObjects: [Self] {
+        return [Self.sphere, Self.box, Self.plane]
+    }
 }

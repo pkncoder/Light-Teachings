@@ -19,7 +19,7 @@ struct ObjectTypeEdit: View {
             HStack {
                 Text("Current Type: ")
                 Picker(selection: $objectEnum, label: Text("")) {
-                    ForEach(Objects.allCases, id: \.self) { object in
+                    ForEach(Objects.availableObjects, id: \.self) { object in
                         Text(object.rawValue)
                     }
                 }

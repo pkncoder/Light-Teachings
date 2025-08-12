@@ -26,8 +26,8 @@ This is the file that I save all of the things that I still have to do
 - [x] Material editor
 - [x] Fix the scene tree when updateed
 - [ ] Keep scene tree open & in same state after update (add / remove)
-- [ ] Fix the components for modified objects
-- [ ] Light editting
+- [x] Fix the components for modified objects
+- [x] Light editting
 
 ## Shader Stuff
 - [x] Full Refactoring of files
@@ -79,7 +79,7 @@ This is the file that I save all of the things that I still have to do
     - Maybe an update flag in RendererSettings
 - [x] Change number Slider State where needed
     - No idea what I did to need to have this
-- [ ] Make array length variables for objects and mats
+- [ ] Make max array length variables for objects and mats
 
 ## Errors
 - [x] Error with .Full updates persisting and not being overritten

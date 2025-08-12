@@ -55,6 +55,9 @@ class SceneBuilder {
         // Material title
         var materialNode: SceneNode = SceneNode(name: "Materials (\( Int(sceneWrapper.rendererData.arrayLengths[1])))", children: [])
         
+        // Light title
+        var lightNode: SceneNode = SceneNode(name: "Lights (\( Int(sceneWrapper.rendererData.arrayLengths[2])))", children: [])
+        
         
         
         /* MARK: -Filling in data- */
@@ -76,9 +79,14 @@ class SceneBuilder {
             materialNode.children?.append(newNode)
         }
         
+        // Light data
+        let newNode: SceneNode = SceneNode(name: "Light 1", sceneSelectionType: .Light, index: 0)
+        lightNode.children?.append(newNode)
+        
         // Add the final nodes to the top level node
         topLevelNode.children?.append(objectNode)
         topLevelNode.children?.append(materialNode)
+        topLevelNode.children?.append(lightNode)
         
         // Return the top level / root node
         return topLevelNode

@@ -11,7 +11,7 @@ struct ObjectMaterialIndexEdit: View {
             HStack {
                 // Number edit for the material inedx
                 Text("Material Index")
-                NumberEdit(value: $index, step: 1, slidingSensitivity: 15, intSliding: true, range: 1...10)
+                NumberEdit(value: $index, step: 1, slidingSensitivity: 15, intSliding: true, range: 1...20)
             }
         }
     }

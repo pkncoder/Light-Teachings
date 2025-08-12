@@ -33,7 +33,7 @@ struct SceneTree: View {
                         // HStack with a spacer to left-align text
                         HStack {
                             
-                            if node.selectionData?.selectionType != nil && node.selectionData?.selectionType != .Scene {
+                            if node.selectionData?.selectionType != nil && node.selectionData?.selectionType != .Scene && node.selectionData?.selectionType != .Light {
                                 Text("\(node.name) \(node.selectionData!.selectedIndex!)")
                                     .contextMenu {
                                         Button("Delete Item") {
@@ -60,7 +60,7 @@ struct SceneTree: View {
                                     }
                             }
                             
-                            else if node.children?[0].selectionData?.selectionType != nil {
+                            else if node.children?[0].selectionData?.selectionType != nil && node.children![0].selectionData!.selectionType != .Light {
                                 Text("\(node.name)")
                                     .contextMenu {
                                         Button("Add Item") {
@@ -93,7 +93,8 @@ struct SceneTree: View {
                                                         )
                                                     )
                                                 case .Light:
-                                                    rendererSettings.sceneWrapper.rendererData.arrayLengths[2] += 1
+//                                                    rendererSettings.sceneWrapper.rendererData.arrayLengths[2] += 1
+                                                    break
                                                 default:
                                                     print("This node is not defined.")
                                             }

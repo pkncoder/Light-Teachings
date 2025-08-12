@@ -7,11 +7,9 @@ struct CylinderEditor: View {
     
     var body: some View {
         
-        Section("Object Proporties and Interations") {
-            
-            // Performed sdf opperation
-            OpperationEdit(opperation: $object.objectData[1])
-            
+        Section("Object Description Settings") {
+            // Object type
+            ObjectTypeEdit(objectType: $object.objectData[0])
         }
         
         Section("Position and Scale") {

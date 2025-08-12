@@ -101,7 +101,7 @@ class BoundingBoxBuilder {
         let p2: SIMD3<Float> = origin + halfAxis
 
         // Create two orthonormal vectors perpendicular to normal
-        var u: SIMD3<Float> = simd_normalize(abs(norm.x) < 1 ? SIMD3<Float>(0,1,0) : SIMD3<Float>(1,0,0))
+        var u: SIMD3<Float> = simd_normalize((abs(norm.x) < 1 ? SIMD3<Float>(0,1,0) : SIMD3<Float>(1,0,0)) + origin)
         u = simd_normalize(cross(norm, u))
         let v: SIMD3<Float> = simd_normalize(cross(norm, u))
 
