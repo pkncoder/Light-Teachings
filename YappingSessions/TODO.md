@@ -27,6 +27,7 @@ This is the file that I save all of the things that I still have to do
 - [x] Fix the scene tree when updateed
 - [ ] Keep scene tree open & in same state after update (add / remove)
 - [ ] Fix the components for modified objects
+- [ ] Light editting
 
 ## Shader Stuff
 - [x] Full Refactoring of files
@@ -59,7 +60,7 @@ This is the file that I save all of the things that I still have to do
 - [x] Prob a re-write
 - [x] Fix ambient use
 - [x] Fix roughness
-- [ ] Anti ailiasing
+- [ ] Anti ailiasing (w/ renderer settings setting)
 - [x] Sky coloring
 - [ ] Toggle in Renderer Settings for sky color
 - [ ] Light Strength fixing and decitions
@@ -96,6 +97,10 @@ This is the file that I save all of the things that I still have to do
 - [x] Default shadows aren't working
     - I was just wrong objects.json was set to 3 for override (3/8/25 - d/m/yy)
 - [ ] New cylinders break the bounding box due to normals
+- [x] Negative shadows
+    - In relatoin with the below error (solved with)
+- [x] Weird issue with shadows and no plane
+    - Doing too big maths I think and whenever nothing was hit, the shadow ray was thinking it was hitting things (still not sure why) - 11/8/2025 (dd/m/yyyy)
 
 
 

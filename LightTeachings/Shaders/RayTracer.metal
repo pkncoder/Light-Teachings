@@ -67,7 +67,7 @@ private:
         // Inital hit info
         HitInfoTrace hit;
         hit.hit = false;
-        hit.dist = 9999999.0;
+        hit.dist = 99999.0;
     
         float3 m = 1./ray.direction;
         float3 n = m*(ray.origin.xyz - box.origin.xyz);
@@ -162,7 +162,6 @@ private:
         if( y>0.0 && y<baba && t > 0.0 && t < hit.dist ) {
             hit.hit = true;
             hit.dist = t;
-//            hit.hitPos = ray.origin + ray.direction * t;
             hit.normal = (oc+t*ray.direction - ba*y/baba)/ra;
         }
         
@@ -171,7 +170,6 @@ private:
         if(t > 0.0 && t < hit.dist &&  abs(k1+k2*t)<h ) {
             hit.hit = true;
             hit.dist = t;
-//            hit.hitPos = ray.origin + ray.direction * t;
             hit.normal = ba*sign(y)/sqrt(baba);
         }
         
@@ -271,27 +269,29 @@ private:
         // Save the light color and the ambient color
         Light light = scene.light;
         float3 ambient = scene.renderingData.ambient.xyz * scene.renderingData.ambient.w * light.albedo.xyz * scene.materials[hit.materialIndex - 1].albedo.xyz;
-        
+//        return hit.hit;
         // Test to see if shadows are enabled
         if (modelinator.shadows) {
             
-            // If it is create a shadow ray and get the hit info
-            Ray shadowRay = {
-                hit.hitPos + hit.normal * 0.01,
-                -normalize(hit.hitPos.xyz - light.origin.xyz)
-            };
-            HitInfoTrace shadowRayHit = rayScene(shadowRay,false);
-            
-            // Test to see if the shadow ray hit anything and that it is in between the light and the shadow ray's origin
-            if (shadowRayHit.hit && (length(shadowRayHit.hitPos - shadowRay.origin.xyz) < length(shadowRay.origin.xyz - light.origin.xyz))) {
-                return ambient; // Return the ambient color since the hit is in shadow
+            if (hit.hit) {
+                // If it is create a shadow ray and get the hit info
+                Ray shadowRay = {
+                    hit.hitPos + hit.normal * 0.01,
+                    normalize(light.origin.xyz - hit.hitPos)
+                };
+                HitInfoTrace shadowRayHit = rayScene(shadowRay, false);
+                
+                // Test to see if the shadow ray hit anything and that it is in between the light and the shadow ray's origin
+                if (shadowRayHit.hit && (length(shadowRayHit.hitPos - shadowRay.origin.xyz) < length(shadowRay.origin.xyz - light.origin.xyz))) {
+                    return SRGB::LinearToSRGB(ToneMapping::ACESFilm(ambient)); // Return the ambient color since the hit is in shadow
+                }
             }
         }
         
         // TODO: SKY
         // If we don't hit anything return sky color
         if (!hit.hit) {
-            return getSkyColor(ray);
+            return SRGB::LinearToSRGB(ToneMapping::ACESFilm(getSkyColor(ray)));
         }
         
         // Get the color from the modelinator

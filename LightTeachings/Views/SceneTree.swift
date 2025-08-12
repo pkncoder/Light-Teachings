@@ -110,7 +110,7 @@ struct SceneTree: View {
                         }
                     }
                 } else {
-                    Text("Wait")
+                    Button("Press Me!") {}
                 }
                 
                 // Top-align the outline group
