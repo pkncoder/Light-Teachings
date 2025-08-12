@@ -136,9 +136,12 @@ private:
         hit.dist = 99999.0;
         hit.materialIndex = (int)cylinder.objectData[3];
         
+        // Get the normalized normal of the cylinder
+        float3 normal = normalize(cylinder.bounds.xyz);
+        
         // Caps of the cylinders
-        float3 pa = cylinder.origin.xyz + cylinder.bounds.xyz * cylinder.origin.w;
-        float3 pb = cylinder.origin.xyz - cylinder.bounds.xyz * cylinder.origin.w;
+        float3 pa = cylinder.origin.xyz + normal * cylinder.origin.w;
+        float3 pb = cylinder.origin.xyz - normal * cylinder.origin.w;
         float ra = cylinder.bounds.w;
         
         float3  ba = pb - pa;
