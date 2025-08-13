@@ -257,7 +257,7 @@ private:
     
     // Sky coloring
     float3 getSkyColor(Ray ray) {
-        return mix(float3(1.0), float3(0.0, 0.4, 0.8), sin(dot(float3(0.0, 1.0, 0.0), ray.direction) + 0.3));
+        return mix(float3(0.8, 0.4, 0.0), float3(0.1, 0.4, 0.5), sin(dot(float3(0.0, 1.0, 0.0), ray.direction) + 0.5));
     }
     
     // Full SceneColoring
