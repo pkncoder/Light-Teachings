@@ -32,7 +32,7 @@ struct RendererEditor: View {
         self.rendererDataClone = rendererData.wrappedValue
         
         self.skyBool = rendererData.wrappedValue.shadingData.w == Float(0.0) ? false : true
-        self.AAOn = rendererData.wrappedValue.shadingData.x == Float(0.0) ? false : true
+        self.AAOn = rendererData.wrappedValue.shadingData.z == Float(0.0) ? false : true
     }
     
     var body: some View {
@@ -43,10 +43,16 @@ struct RendererEditor: View {
                 
                 // Current Shading model
                 ShadingModelEdit(model: $rendererDataClone.shadingData[0])
-                
+            }
+            
+            Section("Shadows") {
                 // Shadows override
                 ShadowOverrideEdit(shadowSettings: $rendererDataClone.shadingData[1], shadingModel: rendererDataClone.shadingData[0])
-                
+            }
+            
+            Section ("Ambient Coloring") {
+                ColorPicker("Ambient Color", selection: ambientColor, supportsOpacity: false)
+                SingleItemEdit(name: "Ambient Strength", value: $rendererDataClone.ambient.w, range: 0...1)
             }
             
             Section("Camera") {
@@ -65,12 +71,6 @@ struct RendererEditor: View {
                 SingleItemEdit(name: "Width Resolution", value: $rendererSettings.renderSize.x, intSliding: true)
                 SingleItemEdit(name: "Height Resolution", value: $rendererSettings.renderSize.y, intSliding: true)
             }
-            
-            Section ("Ambient Coloring") {
-                ColorPicker("Ambient Color", selection: ambientColor, supportsOpacity: false)
-                SingleItemEdit(name: "Ambient Strength", value: $rendererDataClone.ambient.w, range: 0...1)
-            }
-            
             Section("Fake Sky") {
                 Toggle("Sky On", isOn: $skyBool)
                     .onChange(of: skyBool) { old, new in

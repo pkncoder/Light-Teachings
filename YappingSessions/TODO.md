@@ -56,13 +56,13 @@ This is the file that I save all of the things that I still have to do
     - 1 = shadows off
     - 2 = shadows on
 - [x] Ambient
-- [ ] FOV in RendererSettings
+- [x] FOV in RendererSettings
 - [x] Prob a re-write
 - [x] Fix ambient use
 - [x] Fix roughness
-- [ ] Anti ailiasing (w/ renderer settings setting)
+- [x] Anti ailiasing (w/ renderer settings setting)
 - [x] Sky coloring
-- [ ] Toggle in Renderer Settings for sky color
+- [x] Toggle in Renderer Settings for sky color
 - [ ] Light Strength fixing and decitions
 
 ## Background Stuff
