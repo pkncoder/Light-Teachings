@@ -67,7 +67,7 @@ class SceneBuilder {
             
             // Create a new node && append it
             let object = sceneWrapper.objects[i]
-            let newNode: SceneNode = SceneNode(name: "\(Objects.getObjectFromIndex(object.objectData[0]).rawValue)", sceneSelectionType: .Object, index: i)
+            let newNode: SceneNode = SceneNode(name: "\(Objects.getObjectFromIndex(object.objectData[0]).rawValue) \(i+1)", sceneSelectionType: .Object, index: i)
             objectNode.children?.append(newNode)
         }
         

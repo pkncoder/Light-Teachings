@@ -34,7 +34,7 @@ struct SceneTree: View {
                         HStack {
                             
                             if node.selectionData?.selectionType != nil && node.selectionData?.selectionType != .Scene && node.selectionData?.selectionType != .Light {
-                                Text("\(node.name) \(node.selectionData!.selectedIndex!)")
+                                Text("\(node.name)")
                                     .contextMenu {
                                         Button("Delete Item") {
                                             rendererSettings.updateData = UpdateData(updateType: .Full, updateIndex: node.selectionData!.selectedIndex!)
