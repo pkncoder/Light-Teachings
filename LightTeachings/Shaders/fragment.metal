@@ -2,7 +2,9 @@
 
 //#include "./RayMarcher.metal"
 #include "./RayTracer.metal"
+
 #include "./Random.metal"
+#include "./Rotations.metal"
 
 using namespace metal; // I'm sorry stack overflow but I'm going to use a namespace
 
@@ -38,6 +40,9 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
         rendererData.camera1.xyz,
         normalize(float3(uv, cameraDistance))
     };
+    
+    Rotate rotate = Rotate();
+    ray.direction = rotate.rotate(ray.direction, rendererData.camera2.xyz);
     
     // Init a modelinator (with a BRDF_Model as placeholder)
     Modelinator modelinator = Modelinator(BRDF_Model);

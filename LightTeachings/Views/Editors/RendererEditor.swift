@@ -54,6 +54,9 @@ struct RendererEditor: View {
                 // Ray origin
                 TripleItemEdit(name: "Camera Origin", value: $rendererDataClone.camera1)
                 
+                // Ray direction rotations
+                TripleItemEdit(name: "Camera Rotations", inputOneName: "Roll", inputTwoName: "Pitch", inputThreeName: "Yaw", value: $rendererDataClone.camera2)
+                
                 // Feild of Vision / View
                 SingleItemEdit(name: "FOV", value: $rendererDataClone.camera1.w)
             }
