@@ -10,14 +10,16 @@ struct RendererDataWrapper: Hashable, Identifiable, Decodable, Encodable {
     public var arrayLengths: SIMD4<Float>
     public var shadingData: SIMD4<Float>
     public var ambient: SIMD4<Float>
-    public var camera: SIMD4<Float>
+    public var camera1: SIMD4<Float>
+    public var camera2: SIMD4<Float>
     
     // Coding keys for en/decryption
     private enum CodingKeys: CodingKey {
         case arrayLengths
         case shadingData
         case ambient
-        case camera
+        case camera1
+        case camera2
     }
     
     // To-String method
@@ -27,7 +29,8 @@ struct RendererDataWrapper: Hashable, Identifiable, Decodable, Encodable {
             Lengths: \(arrayLengths.description)
             Shading Data: \(shadingData[0].description)
             Albedo: \(ambient.description)
-            Camera: \(camera.description)
+            Camera1: \(camera1.description)
+            Camera2: \(camera2.description)
             """
     }
 }

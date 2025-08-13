@@ -12,6 +12,7 @@ struct RendererEditor: View {
     @State private var skip: Bool = false
     
     @State private var skyBool: Bool
+    @State private var AAOn: Bool
     
     // Computed Binding for ColorPicker
     private var ambientColor: Binding<Color> {
@@ -31,6 +32,7 @@ struct RendererEditor: View {
         self.rendererDataClone = rendererData.wrappedValue
         
         self.skyBool = rendererData.wrappedValue.shadingData.w == Float(0.0) ? false : true
+        self.AAOn = rendererData.wrappedValue.shadingData.x == Float(0.0) ? false : true
     }
     
     var body: some View {
@@ -50,10 +52,10 @@ struct RendererEditor: View {
             Section("Camera") {
                 
                 // Ray origin
-                TripleItemEdit(name: "Camera Origin", value: $rendererDataClone.camera)
+                TripleItemEdit(name: "Camera Origin", value: $rendererDataClone.camera1)
                 
                 // Feild of Vision / View
-                SingleItemEdit(name: "FOV", value: $rendererDataClone.camera.w)
+                SingleItemEdit(name: "FOV", value: $rendererDataClone.camera1.w)
             }
             
             Section("Render Size") {
@@ -70,6 +72,13 @@ struct RendererEditor: View {
                 Toggle("Sky On", isOn: $skyBool)
                     .onChange(of: skyBool) { old, new in
                         rendererDataClone.shadingData.w = new ? 1 : 0
+                    }
+            }
+            
+            Section("Anti-Aliasing (Jitter)") {
+                Toggle("AA On", isOn: $AAOn)
+                    .onChange(of: AAOn) { old, new in
+                        rendererDataClone.shadingData.z = new ? 1 : 0
                     }
             }
         }

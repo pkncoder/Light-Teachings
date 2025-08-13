@@ -16,7 +16,7 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
 
     // Get the resolution, FOV, and aspect ratio
     float2 resolution = float2(screenSize.width, screenSize.height);
-    float fieldOfView = rendererData.camera[3];
+    float fieldOfView = rendererData.camera1[3];
     float aspectRatio = resolution.x / resolution.y;
     
     float2 jitter = float2(0.0);
@@ -35,7 +35,7 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
 
     // Get the current ray
     Ray ray = {
-        rendererData.camera.xyz,
+        rendererData.camera1.xyz,
         normalize(float3(uv, cameraDistance))
     };
     

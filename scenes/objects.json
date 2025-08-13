@@ -121,8 +121,9 @@
     },
     "rendererData": {
         "ambient": [0.6642269, 0.6642269, 0.6642269, 0.07],
-        "shadingData": [1, 0, 0, 1],
+        "shadingData": [1, 0, 1, 1],
         "arrayLengths": [9, 9, 1, 0],
-        "camera": [0, 2, -6, 90]
+        "camera1": [0, 2, -6, 90],
+        "camera2": [0, 0, 0, 0]
     }
 }
