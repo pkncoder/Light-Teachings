@@ -2,6 +2,7 @@
 
 //#include "./RayMarcher.metal"
 #include "./RayTracer.metal"
+#include "./Random.metal"
 
 using namespace metal; // I'm sorry stack overflow but I'm going to use a namespace
 
@@ -10,21 +11,31 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
 
     // Screen size / resolution
     ScreenSize screenSize = uniforms.screenSize;
+    float time = uniforms.frameNum;
+    RendererData rendererData = scene.renderingData;
 
     // Get the resolution, FOV, and aspect ratio
     float2 resolution = float2(screenSize.width, screenSize.height);
-    float fieldOfView = 90;
+    float fieldOfView = rendererData.camera[3];
     float aspectRatio = resolution.x / resolution.y;
+    
+    float2 jitter = float2(0.0);
+    
+    if (rendererData.shadingInfo[2] == 1.0) {
+        Random rand = Random();
+        rand.setSeed(frag.position.xy, time);
+        jitter = rand.rnd2();
+    }
 
     // Get the uv corrdinates
-    float2 uv = ((frag.position.xy / resolution) * 2 - 1) * float2(aspectRatio, -1.0);
+    float2 uv = (((frag.position.xy + jitter) / resolution) * 2 - 1) * float2(aspectRatio, -1.0);
 
     // Get the camera distance for FOV
     float cameraDistance = 1.0f / tan(fieldOfView * 0.5f * 3.14159 / 180.0f); // Get the camer distance from sphere (uses FOV)
 
     // Get the current ray
     Ray ray = {
-        float3(0, 2, -6),
+        rendererData.camera.xyz,
         normalize(float3(uv, cameraDistance))
     };
     
@@ -54,7 +65,7 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
     }
     
     // Get the shadowing override
-    float shadowingOverride = scene.renderingData.shadingInfo[1];
+    float shadowingOverride = rendererData.shadingInfo[1];
     
     // If we need to override anything
     if (shadowingOverride > 0.0) {

@@ -294,7 +294,7 @@ private:
         // TODO: SKY
         // If we don't hit anything return sky color
         if (!hit.hit) {
-            return SRGB::LinearToSRGB(ToneMapping::ACESFilm(getSkyColor(ray)));
+            return (scene.renderingData.shadingInfo[3] == 1) ? SRGB::LinearToSRGB(ToneMapping::ACESFilm(getSkyColor(ray))) : float3(0.0);
         }
         
         // Get the color from the modelinator

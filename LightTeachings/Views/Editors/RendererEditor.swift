@@ -11,6 +11,8 @@ struct RendererEditor: View {
     
     @State private var skip: Bool = false
     
+    @State private var skyBool: Bool
+    
     // Computed Binding for ColorPicker
     private var ambientColor: Binding<Color> {
         Binding<Color>(
@@ -27,6 +29,8 @@ struct RendererEditor: View {
     init(rendererData: Binding<RendererDataWrapper>) {
         self._rendererData = rendererData
         self.rendererDataClone = rendererData.wrappedValue
+        
+        self.skyBool = rendererData.wrappedValue.shadingData.w == Float(0.0) ? false : true
     }
     
     var body: some View {
@@ -36,21 +40,37 @@ struct RendererEditor: View {
             Section("Shading Model") {
                 
                 // Current Shading model
-                ShadingModelEdit(model: $rendererData.shadingData[0])
+                ShadingModelEdit(model: $rendererDataClone.shadingData[0])
                 
                 // Shadows override
-                ShadowOverrideEdit(shadowSettings: $rendererData.shadingData[1], shadingModel: rendererData.shadingData[0])
+                ShadowOverrideEdit(shadowSettings: $rendererDataClone.shadingData[1], shadingModel: rendererDataClone.shadingData[0])
                 
             }
             
+            Section("Camera") {
+                
+                // Ray origin
+                TripleItemEdit(name: "Camera Origin", value: $rendererDataClone.camera)
+                
+                // Feild of Vision / View
+                SingleItemEdit(name: "FOV", value: $rendererDataClone.camera.w)
+            }
+            
             Section("Render Size") {
-                NumberEdit(value: $rendererSettings.renderSize.x, intSliding: true)
-                NumberEdit(value: $rendererSettings.renderSize.y, intSliding: true)
+                SingleItemEdit(name: "Width Resolution", value: $rendererSettings.renderSize.x, intSliding: true)
+                SingleItemEdit(name: "Height Resolution", value: $rendererSettings.renderSize.y, intSliding: true)
             }
             
             Section ("Ambient Coloring") {
                 ColorPicker("Ambient Color", selection: ambientColor, supportsOpacity: false)
-                NumberEdit(value: $rendererDataClone.ambient.w, range: 0...1)
+                SingleItemEdit(name: "Ambient Strength", value: $rendererDataClone.ambient.w, range: 0...1)
+            }
+            
+            Section("Fake Sky") {
+                Toggle("Sky On", isOn: $skyBool)
+                    .onChange(of: skyBool) { old, new in
+                        rendererDataClone.shadingData.w = new ? 1 : 0
+                    }
             }
         }
         .listStyle(InsetListStyle())

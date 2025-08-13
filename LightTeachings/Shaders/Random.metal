@@ -17,7 +17,7 @@ class Random {
 public:
     // FragCoord and Time To Hash Uint
     // Seed must take a different value for each pixel every frame
-    void  SetSeed( float2 fragCoord, int frame )
+    void  setSeed( float2 fragCoord, int frame )
     {
         seed = uint(frame * 30.2345);
         seed = PCGHash();

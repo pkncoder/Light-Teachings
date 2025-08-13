@@ -46,7 +46,7 @@ struct RendererData {
     simd_float4 arrayLengths;
     simd_float4 shadingInfo;
     simd_float4 ambient;
-    simd_float4 temp3;
+    simd_float4 camera;
 };
 
 // Scene info
