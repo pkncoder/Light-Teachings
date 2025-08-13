@@ -66,8 +66,9 @@
     },
     "rendererData": {
         "arrayLengths": [5, 4, 1, 0],
-        "shadingData": [2, 0, 0, 0],
+        "shadingData": [2, 0, 0, 1],
         "ambient": [1, 1, 1, 0.1],
-        "temp3": [0, 0, 0, 0]
+        "camera1": [0, 2, -6, 90],
+        "camera2": [0, 0, 0, 0]
     }
 }
