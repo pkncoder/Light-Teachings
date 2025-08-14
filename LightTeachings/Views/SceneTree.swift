@@ -88,7 +88,7 @@ struct SceneTree: View {
                                                         MaterialWrapper(
                                                             albedo: SIMD4<Float>(1,1,1,0),
                                                             materialSettings: SIMD4<Float>(repeating: 0),
-                                                            temp1: SIMD4<Float>(repeating: 0),
+                                                            transparency: SIMD4<Float>(repeating: 0),
                                                             temp2: SIMD4<Float>(repeating: 0)
                                                         )
                                                     )

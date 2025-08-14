@@ -25,6 +25,7 @@ private:
         HitInfoTrace hit;
         hit.hit = false;
         hit.dist = 99999.0;
+        hit.isInside = false;
 
         float3 oc = ray.origin - sphere.origin.xyz; // Pos of sphere
         float a = dot(ray.direction, ray.direction); // A of the quadradic formula
@@ -40,6 +41,7 @@ private:
             // If that was negitive, then try the other choice in the quadradic formula
             if(t < 0) {
                 t = (-b + sqrt(discriminant)) / a;
+                hit.isInside = true;
             }
             
             // If the ray is still greater than 0, and long enough that the ray didn't hit the same sphere it started on
@@ -50,7 +52,7 @@ private:
                 hit.dist = t, // distance
                 
                 hit.hitPos = ray.origin + ray.direction * t, // Calculate the final hit position
-                hit.normal = normalize((ray.origin + ray.direction * t) - sphere.origin.xyz), // Get the normal
+                hit.normal = normalize((ray.origin + ray.direction * t) - sphere.origin.xyz) * (hit.isInside ? -1.0 : 1.0), // Get the normal
                 
                 hit.materialIndex = (int)sphere.objectData[3]; // Pass through the sphere's material
             }
@@ -198,15 +200,27 @@ private:
 
 
     
-    HitInfoTrace rayScene(Ray ray, bool planesOnly) {
+    HitInfoTrace rayScene(Ray ray, bool planesOnly, bool lightTest) {
         
         // Save the final hit info
         HitInfoTrace finalHit;
         finalHit.hit = false;
         finalHit.dist = 999999999999.0;
+        finalHit.isInside = false;
+        
+        bool firstPass = false;
+            
+        int recursions = 0;
+        
+        int loop = -1;
+        int skip = -1;
 
         // Loop every object
         for (int objectNum = 0; objectNum < scene.renderingData.arrayLengths[0]; objectNum++) {
+            
+            if (objectNum == skip) {
+                continue;
+            }
             
             // Get said object
             Object currentObject = scene.objects[objectNum];
@@ -243,10 +257,72 @@ private:
                     break;
             }
             
+            ObjectMaterial currentMaterial = scene.materials[currentHit.materialIndex - 1];
+            
+            if ((currentMaterial.transparency[0] == 1.0) && firstPass && !lightTest) {
+            
+                if (recursions > 3) { // REC_MAX
+                    continue;
+                }
+            
+                if (finalHit.isInside || currentObject.objectData[0] == 5) {
+                
+                    if (currentObject.objectData[0] != 5) {
+                        ray = {
+                            currentHit.hitPos - currentHit.normal * 0.01,
+                            refract(ray.direction, currentHit.normal, currentMaterial.transparency[1])
+                        };
+                    } else {
+                        ray = {
+                            currentHit.hitPos - currentHit.normal * 0.01,
+                            refract(ray.direction, currentHit.normal, 1.0 / currentMaterial.transparency[1])
+                        };
+                    }
+                    
+                    finalHit.isInside = false;
+                    
+                    skip = objectNum;
+                    objectNum = -1;
+                    
+                    loop = -1;
+                    
+                    recursions += 1;
+                    
+                } else {
+                    ray = {
+                        currentHit.hitPos - currentHit.normal * 0.01,
+                        refract(ray.direction, currentHit.normal, 1.0 / currentMaterial.transparency[1])
+                    };
+                    finalHit.isInside = true;
+                    
+                    skip = -1;
+                    objectNum -= 1;
+                }
+                
+                
+                
+                ray.direction = normalize(ray.direction);
+                continue;
+            }
+            else if ((currentMaterial.transparency[0] == 1.0) && (currentHit.hit && finalHit.dist > currentHit.dist)) {
+                loop = objectNum;
+            }
+            
+            
+            if ((objectNum + 1 == scene.renderingData.arrayLengths[0]) && (loop != -1)) {
+                firstPass = true;
+            
+                if (((scene.materials[finalHit.materialIndex - 1].transparency[0] == 1) && !lightTest) && recursions <= 3) { // REC_MAX
+                    objectNum = loop - 1;
+                    continue;
+                }
+            }
+            
             // If the current object was a hit AND is the closest to the camera then set it as the final hit
             finalHit = (finalHit.dist < currentHit.dist) ? finalHit : currentHit;
         }
 
+        finalHit.outRay = ray;
         // Return the final found hit
         return finalHit;
     }
@@ -267,14 +343,15 @@ private:
         bool boundingBoxMiss = !rayBBox(scene.topBoundingBox.boxMin.xyz, scene.topBoundingBox.boxMax.xyz, ray);
         
         // Get the scene hit
-        HitInfoTrace hit = rayScene(ray, boundingBoxMiss);
+        HitInfoTrace hit = rayScene(ray, boundingBoxMiss, false);
+//        this->ray = hit.outRay;
         
         // Save the light color and the ambient color
         Light light = scene.light;
         float3 ambient = scene.renderingData.ambient.xyz * scene.renderingData.ambient.w * light.albedo.xyz * scene.materials[hit.materialIndex - 1].albedo.xyz;
 //        return hit.hit;
         // Test to see if shadows are enabled
-        if (modelinator.shadows) {
+        if (modelinator.shadows && !(scene.materials[hit.materialIndex-1].transparency[0] == 1.0)) {
             
             if (hit.hit) {
                 // If it is create a shadow ray and get the hit info
@@ -282,10 +359,11 @@ private:
                     hit.hitPos + hit.normal * 0.01,
                     normalize(light.origin.xyz - hit.hitPos)
                 };
-                HitInfoTrace shadowRayHit = rayScene(shadowRay, false);
+                HitInfoTrace shadowRayHit = rayScene(shadowRay, false, true);
+                shadowRay = shadowRayHit.outRay;
                 
                 // Test to see if the shadow ray hit anything and that it is in between the light and the shadow ray's origin
-                if (shadowRayHit.hit && (length(shadowRayHit.hitPos - shadowRay.origin.xyz) < length(shadowRay.origin.xyz - light.origin.xyz))) {
+                if (shadowRayHit.hit && (length(shadowRayHit.hitPos - shadowRay.origin.xyz) < length(shadowRay.origin.xyz - light.origin.xyz)) && !(scene.materials[shadowRayHit.materialIndex-1].transparency[0] == 1.0)) {
                     return SRGB::LinearToSRGB(ToneMapping::ACESFilm(ambient)); // Return the ambient color since the hit is in shadow
                 }
             }
@@ -293,8 +371,8 @@ private:
         
         // TODO: SKY
         // If we don't hit anything return sky color
-        if (!hit.hit) {
-            return (scene.renderingData.shadingInfo[3] == 1) ? SRGB::LinearToSRGB(ToneMapping::ACESFilm(getSkyColor(ray))) : float3(0.0);
+        if (!hit.hit || (scene.materials[hit.materialIndex-1].transparency[0] == 1.0)) {
+            return (scene.renderingData.shadingInfo[3] == 1) ? SRGB::LinearToSRGB(ToneMapping::ACESFilm(getSkyColor(hit.outRay))) : float3(0.0);
         }
         
         // Get the color from the modelinator

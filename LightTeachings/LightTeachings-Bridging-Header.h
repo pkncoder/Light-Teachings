@@ -15,7 +15,7 @@ struct Object {
 struct ObjectMaterial {
     simd_float4 albedo;
     simd_float4 materialSettings;
-    simd_float4 temp1;
+    simd_float4 transparency;
     simd_float4 temp2;
 };
 
@@ -91,6 +91,9 @@ struct HitInfoTrace {
     simd_float3 normal;
     
     int materialIndex;
+    
+    boolean isInside;
+    struct Ray outRay;
 };
 
 
