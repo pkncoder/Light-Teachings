@@ -24,15 +24,15 @@ struct MaterialEditor: View {
         Binding<Color>(
             get: {
                 // Convert SIMD4<Float> to Color
-                return Color(red: CGFloat(material.albedo.x), green: CGFloat(material.albedo.y), blue: CGFloat(material.albedo.z), opacity: CGFloat(material.albedo.w))
+                return Color(red: CGFloat(materialClone.albedo.x), green: CGFloat(materialClone.albedo.y), blue: CGFloat(materialClone.albedo.z), opacity: CGFloat(material.albedo.w))
             },
             set: { newColor in
                 // Convert Color to SIMD4<Float>
                 // Use Color.resolve(in:) to get the color components
                 let resolvedColor = newColor.resolve(in: .init()) // You might need a more appropriate EnvironmentValues here
-                material.albedo = SIMD4<Float>(resolvedColor.red, resolvedColor.green, resolvedColor.blue, resolvedColor.opacity)
+                materialClone.albedo = SIMD4<Float>(resolvedColor.red, resolvedColor.green, resolvedColor.blue, resolvedColor.opacity)
                 
-                rendererSettings.updateData = UpdateData(updateType: .Material, updateIndex: self.materialIndex)
+//                rendererSettings.updateData = UpdateData(updateType: .Material, updateIndex: self.materialIndex)
             }
         )
     }
@@ -49,12 +49,35 @@ struct MaterialEditor: View {
             Section("Material Settings") {
                 
                 // Material rougness
-                SingleItemEdit(name: "Roughness", value: $material.materialSettings[0], slidingSensitivity: 100, range: 0...1)
+                SingleItemEdit(name: "Roughness", value: $materialClone.materialSettings[0], slidingSensitivity: 100, range: 0...1)
                 
                 // Material mettalic amount
-                SingleItemEdit(name: "Matallic Index", value: $material.materialSettings[1], slidingSensitivity: 100, range: 0...1)
+                SingleItemEdit(name: "Matallic Index", value: $materialClone.materialSettings[1], slidingSensitivity: 100, range: 0...1)
                 
             }
+            
+            Section("Transparency") {
+                
+                // Material rougness
+                SwitchEdit(name: "Transparent", value: $materialClone.transparency[0])
+                
+                // Material mettalic amount
+                SingleItemEdit(name: "IOR", value: $materialClone.transparency[1], slidingSensitivity: 100, range: 0...1)
+                
+            }
+            .disabled(true)
+            .foregroundColor(.secondary)
+            .help("Disabled due to instability.")
+            
+            Section("Reflecticity") {
+                
+                // Material rougness
+                SwitchEdit(name: "Reflective", value: $materialClone.reflecticity[0])
+                
+            }
+            .disabled(true)
+            .foregroundColor(.secondary)
+            .help("Disabled due to instability.")
         }
         .listStyle(InsetListStyle())
         .onChange(of: self.materialClone) { old, new in

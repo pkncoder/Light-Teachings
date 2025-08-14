@@ -11,9 +11,6 @@ struct RendererEditor: View {
     
     @State private var skip: Bool = false
     
-    @State private var skyBool: Bool
-    @State private var AAOn: Bool
-    
     // Computed Binding for ColorPicker
     private var ambientColor: Binding<Color> {
         Binding<Color>(
@@ -30,9 +27,6 @@ struct RendererEditor: View {
     init(rendererData: Binding<RendererDataWrapper>) {
         self._rendererData = rendererData
         self.rendererDataClone = rendererData.wrappedValue
-        
-        self.skyBool = rendererData.wrappedValue.shadingData.w == Float(0.0) ? false : true
-        self.AAOn = rendererData.wrappedValue.shadingData.z == Float(0.0) ? false : true
     }
     
     var body: some View {
@@ -72,17 +66,11 @@ struct RendererEditor: View {
                 SingleItemEdit(name: "Height Resolution", value: $rendererSettings.renderSize.y, intSliding: true)
             }
             Section("Fake Sky") {
-                Toggle("Sky On", isOn: $skyBool)
-                    .onChange(of: skyBool) { old, new in
-                        rendererDataClone.shadingData.w = new ? 1 : 0
-                    }
+                SwitchEdit(name: "Sky On", value: $rendererDataClone.shadingData.w)
             }
             
             Section("Anti-Aliasing (Jitter)") {
-                Toggle("AA On", isOn: $AAOn)
-                    .onChange(of: AAOn) { old, new in
-                        rendererDataClone.shadingData.z = new ? 1 : 0
-                    }
+                SwitchEdit(name: "AA On", value: $rendererDataClone.shadingData.z)
             }
         }
         .listStyle(InsetListStyle())

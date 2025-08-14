@@ -304,22 +304,46 @@ private:
                 ray.direction = normalize(ray.direction);
                 continue;
             }
-            else if ((currentMaterial.transparency[0] == 1.0) && (currentHit.hit && finalHit.dist > currentHit.dist)) {
+            else if (currentMaterial.reflecticity[0] == 1.0 && firstPass && !lightTest) {
+                    
+                if (recursions > 3) { // REC_MAX
+                    continue;
+                }
+                
+                ray = {
+                    currentHit.hitPos + currentHit.normal * 0.01,
+                    normalize(reflect(ray.direction, currentHit.normal))
+                };
+                
+                loop = -1;
+                
+                skip = objectNum;
+                objectNum = -1;
+                
+                recursions += 1;
+                
+                finalHit.hit = true;
+                finalHit.dist = 999999.0;
+                
+                continue;
+            }
+            else if ((currentMaterial.transparency[0] == 1.0 || currentMaterial.reflecticity[0] == 1.0) && (currentHit.hit && finalHit.dist > currentHit.dist)) {
                 loop = objectNum;
             }
             
+            // If the current object was a hit AND is the closest to the camera then set it as the final hit
+            finalHit = (finalHit.dist < currentHit.dist) ? finalHit : currentHit;
             
             if ((objectNum + 1 == scene.renderingData.arrayLengths[0]) && (loop != -1)) {
                 firstPass = true;
             
-                if (((scene.materials[finalHit.materialIndex - 1].transparency[0] == 1) && !lightTest) && recursions <= 3) { // REC_MAX
+                if (((scene.materials[finalHit.materialIndex - 1].transparency[0] == 1 || scene.materials[finalHit.materialIndex - 1].reflecticity[0] == 1) && !lightTest) && recursions <= 3) { // REC_MAX
                     objectNum = loop - 1;
                     continue;
                 }
             }
             
-            // If the current object was a hit AND is the closest to the camera then set it as the final hit
-            finalHit = (finalHit.dist < currentHit.dist) ? finalHit : currentHit;
+            
         }
 
         finalHit.outRay = ray;
@@ -344,23 +368,21 @@ private:
         
         // Get the scene hit
         HitInfoTrace hit = rayScene(ray, boundingBoxMiss, false);
-//        this->ray = hit.outRay;
         
         // Save the light color and the ambient color
         Light light = scene.light;
         float3 ambient = scene.renderingData.ambient.xyz * scene.renderingData.ambient.w * light.albedo.xyz * scene.materials[hit.materialIndex - 1].albedo.xyz;
-//        return hit.hit;
+
         // Test to see if shadows are enabled
-        if (modelinator.shadows && !(scene.materials[hit.materialIndex-1].transparency[0] == 1.0)) {
+        if (modelinator.shadows && !(scene.materials[hit.materialIndex-1].transparency[0] == 1.0 || scene.materials[hit.materialIndex-1].reflecticity[0] == 1.0)) {
             
-            if (hit.hit) {
+            if (hit.hit && hit.dist > 0.0) {
                 // If it is create a shadow ray and get the hit info
                 Ray shadowRay = {
                     hit.hitPos + hit.normal * 0.01,
                     normalize(light.origin.xyz - hit.hitPos)
                 };
                 HitInfoTrace shadowRayHit = rayScene(shadowRay, false, true);
-                shadowRay = shadowRayHit.outRay;
                 
                 // Test to see if the shadow ray hit anything and that it is in between the light and the shadow ray's origin
                 if (shadowRayHit.hit && (length(shadowRayHit.hitPos - shadowRay.origin.xyz) < length(shadowRay.origin.xyz - light.origin.xyz)) && !(scene.materials[shadowRayHit.materialIndex-1].transparency[0] == 1.0)) {
@@ -369,16 +391,15 @@ private:
             }
         }
         
-        // TODO: SKY
         // If we don't hit anything return sky color
-        if (!hit.hit || (scene.materials[hit.materialIndex-1].transparency[0] == 1.0)) {
+        if (!hit.hit || (scene.materials[hit.materialIndex-1].transparency[0] == 1.0) || scene.materials[hit.materialIndex-1].reflecticity[0] == 1.0) {
             return (scene.renderingData.shadingInfo[3] == 1) ? SRGB::LinearToSRGB(ToneMapping::ACESFilm(getSkyColor(hit.outRay))) : float3(0.0);
         }
         
         // Get the color from the modelinator
         float3 color = modelinator.color(ray, hit, light.origin.xyz, hit.normal, scene);
         
-        // TODO: TONE MAPPING & SRGB
+        // Tone mapping and srgb
         color = SRGB::LinearToSRGB(ToneMapping::ACESFilm(color));
         
         // Return the final color

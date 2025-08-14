@@ -62,55 +62,55 @@
             "albedo":[1, 1, 1, 0],
             "materialSettings":[1, 0, 0, 0],
             "transparency":[0, 0, 0, 0],
-            "temp2":[0, 0, 0, 0]
+            "reflecticity":[0, 0, 0, 0]
         },
         {
             "albedo":[1, 0, 0, 0],
             "materialSettings":[1, 0, 0, 0],
             "transparency":[0, 0, 0, 0],
-            "temp2":[0, 0, 0, 0]
+            "reflecticity":[0, 0, 0, 0]
         },
         {
             "albedo":[0, 1, 0, 0],
             "materialSettings":[1, 0, 0, 0],
             "transparency":[0, 0, 0, 0],
-            "temp2":[0, 0, 0, 0]
+            "reflecticity":[0, 0, 0, 0]
         },
         {
             "albedo":[0, 0, 1, 0],
             "materialSettings":[1, 0, 0, 0],
             "transparency":[0, 0, 0, 0],
-            "temp2":[0, 0, 0, 0]
+            "reflecticity":[0, 0, 0, 0]
         },
         {
             "albedo":[0.99942404, 0.9855537, 0, 1],
             "materialSettings":[1, 0, 0, 0],
             "transparency":[0, 0, 0, 0],
-            "temp2":[0, 0, 0, 0]
+            "reflecticity":[0, 0, 0, 0]
         },
         {
             "albedo":[0, 0.9914394, 1, 1],
             "materialSettings":[1, 0, 0, 0],
             "transparency":[0, 0, 0, 0],
-            "temp2":[0, 0, 0, 0]
+            "reflecticity":[0, 0, 0, 0]
         },
         {
             "albedo":[1.0720837, 0.48725247, -0.026160074, 1],
             "materialSettings":[0.2850391, 0, 0, 0],
             "transparency":[0, 0, 0, 0],
-            "temp2":[0, 0, 0, 0]
+            "reflecticity":[0, 0, 0, 0]
         },
         {
             "albedo":[0.69871676, 0.7606891, 1.0173668, 1],
             "materialSettings":[0.2490235, 0, 0, 0],
-            "transparency":[1, 1.1, 0, 0],
-            "temp2":[0, 0, 0, 0]
+            "transparency":[0, 0, 0, 0],
+            "reflecticity":[0, 0, 0, 0]
         },
         {
             "albedo":[1.0697901, 0.4787135, 0.7915646, 1],
             "materialSettings":[0.29105476, 0, 0, 0],
             "transparency":[0, 0, 0, 0],
-            "temp2":[0, 0, 0, 0]
+            "reflecticity":[0, 0, 0, 0]
         }
     ],
     "light": {

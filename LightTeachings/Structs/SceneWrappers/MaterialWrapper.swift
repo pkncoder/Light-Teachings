@@ -10,14 +10,14 @@ struct MaterialWrapper: Hashable, Identifiable, Decodable, Encodable {
     public var albedo: SIMD4<Float>
     public var materialSettings: SIMD4<Float>
     public var transparency: SIMD4<Float>
-    public var temp2: SIMD4<Float>
+    public var reflecticity: SIMD4<Float>
     
     // Coding keys for en/decryption
     private enum CodingKeys: CodingKey {
         case albedo
         case materialSettings
         case transparency
-        case temp2
+        case reflecticity
     }
     
     // To-String method
@@ -28,6 +28,7 @@ struct MaterialWrapper: Hashable, Identifiable, Decodable, Encodable {
             Roughness: \(materialSettings[0].description)
             Metalic: \(materialSettings[1].description)
             Transparency: \(transparency.description)
+            Reflecticity: \(reflecticity.description)
             """
     }
 }

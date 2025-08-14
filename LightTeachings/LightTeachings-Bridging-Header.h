@@ -16,7 +16,7 @@ struct ObjectMaterial {
     simd_float4 albedo;
     simd_float4 materialSettings;
     simd_float4 transparency;
-    simd_float4 temp2;
+    simd_float4 reflecticity;
 };
 
 // Point light
