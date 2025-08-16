@@ -22,7 +22,6 @@ struct PlaneEditor: View {
         }
         
         Section("Material Settings") {
-            // TODO: -Make a material editor here-
             // Material Index
             ObjectMaterialIndexEdit(index: $object.objectData[3])
         }
