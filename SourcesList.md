@@ -2,9 +2,10 @@
 
 https://learnopengl.com/
 
-- Sebastian Leage
+- Sebastian Leage (Third one isn't used but is amazing anyways)
 https://www.youtube.com/watch?v=Qz0KTGYJtUk&pp=ygULcmF5IHRyYWNpbmc%3D
 https://www.youtube.com/watch?v=C1H4zIiCOaI&t=5s&pp=ygULcmF5IHRyYWNpbmc%3D
+https://www.youtube.com/watch?v=wA1KVZ1eOuA
 
 - Josh's Channel
 https://www.youtube.com/watch?v=gsZiJeaMO48&pp=ygULcmF5IHRyYWNpbmc%3D
