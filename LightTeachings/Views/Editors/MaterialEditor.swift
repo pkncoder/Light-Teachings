@@ -62,12 +62,9 @@ struct MaterialEditor: View {
                 SwitchEdit(name: "Transparent", value: $materialClone.transparency[0])
                 
                 // Material mettalic amount
-                SingleItemEdit(name: "IOR", value: $materialClone.transparency[1], slidingSensitivity: 100, range: 0...1)
+                SingleItemEdit(name: "IOR", value: $materialClone.transparency[1], slidingSensitivity: 100, range: 1...10)
                 
             }
-            .disabled(true)
-            .foregroundColor(.secondary)
-            .help("Disabled due to instability.")
             
             Section("Reflecticity") {
                 
@@ -75,9 +72,6 @@ struct MaterialEditor: View {
                 SwitchEdit(name: "Reflective", value: $materialClone.reflecticity[0])
                 
             }
-            .disabled(true)
-            .foregroundColor(.secondary)
-            .help("Disabled due to instability.")
         }
         .listStyle(InsetListStyle())
         .onChange(of: self.materialClone) { old, new in

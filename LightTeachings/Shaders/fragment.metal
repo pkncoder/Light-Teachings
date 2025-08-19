@@ -76,7 +76,7 @@ half4 fragment fragmentMain(VertexPayload frag [[stage_in]], constant RayTracedS
     if (shadowingOverride > 0.0) {
         modelinator.setShadowOverride((bool) (shadowingOverride - 1.0)); // Set the modelinator shadowing override
     }
-
+    
     // Init our ray tracer and get the color from the coloring function
     RayTracer rayTracer = RayTracer(ray, scene);
     float3 color = rayTracer.getColor(uv, modelinator);

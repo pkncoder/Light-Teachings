@@ -24,7 +24,7 @@ private:
         // Initial hit info
         HitInfoTrace hit;
         hit.hit = false;
-        hit.dist = 99999.0;
+        hit.dist = 9999999999.0;
         hit.isInside = false;
 
         float3 oc = ray.origin - sphere.origin.xyz; // Pos of sphere
@@ -45,14 +45,14 @@ private:
             }
             
             // If the ray is still greater than 0, and long enough that the ray didn't hit the same sphere it started on
-            if (t > 0.01) {
+            if (t > 0.0) {
                 // Recreate the hit info
                 hit.hit = true, // did hit
                 
                 hit.dist = t, // distance
                 
                 hit.hitPos = ray.origin + ray.direction * t, // Calculate the final hit position
-                hit.normal = normalize((ray.origin + ray.direction * t) - sphere.origin.xyz) * (hit.isInside ? -1.0 : 1.0), // Get the normal
+                hit.normal = normalize((hit.hitPos) - sphere.origin.xyz) * (hit.isInside ? -1.0 : 1.0), // Get the normal
                 
                 hit.materialIndex = (int)sphere.objectData[3]; // Pass through the sphere's material
             }
@@ -69,7 +69,8 @@ private:
         // Inital hit info
         HitInfoTrace hit;
         hit.hit = false;
-        hit.dist = 99999.0;
+        hit.dist = 9999999999.0;
+        hit.isInside = false;
     
         float3 m = 1./ray.direction;
         float3 n = m*(ray.origin.xyz - box.origin.xyz);
@@ -83,16 +84,16 @@ private:
     
         if( tN > tF || tF < 0.) return hit;
     
-        float t = tN < 0.1 ? tF : tN;
+        float t = tN < 0.0 ? tF : tN;
     
-        if (t < 0.01) {
+        if (t < 0.0) {
             return hit;
         }
     
         hit.hit = true;
         hit.hitPos = ray.origin + ray.direction * t;
         hit.dist = t;
-        hit.normal = -sign(ray.direction)*step(t1.yzx,t1.xyz)*step(t1.zxy,t1.xyz);
+        hit.normal = normalize(-sign(ray.direction)*step(t1.yzx,t1.xyz)*step(t1.zxy,t1.xyz)) * (hit.isInside ? -1.0 : 1.0);
         hit.materialIndex = box.objectData[3];
     
         return hit;
@@ -105,7 +106,8 @@ private:
         // Initial hit info
         HitInfoTrace hit;
         hit.hit = false;
-        hit.dist = 99999.0;
+        hit.dist = 9999999999.0;
+        hit.isInside = false;
         
         // Figure out if the ray is pointing towards the plane enough to hit it
         float denom = dot(plane.bounds.xyz, ray.direction);
@@ -135,8 +137,9 @@ private:
         // Save the inital hit info
         HitInfoTrace hit;
         hit.hit = false;
-        hit.dist = 99999.0;
+        hit.dist = 9999999999.0;
         hit.materialIndex = (int)cylinder.objectData[3];
+        hit.isInside = false;
         
         // Get the normalized normal of the cylinder
         float3 normal = normalize(cylinder.bounds.xyz);
@@ -186,8 +189,8 @@ private:
     
     // Bounding Box
     bool rayBBox(const float3 boxMin, const float3 boxMax, const Ray r) {
-        float3 t1 = (boxMin - ray.origin) / ray.direction;
-        float3 t2 = (boxMax - ray.origin) / ray.direction;
+        float3 t1 = (boxMin - r.origin) / r.direction;
+        float3 t2 = (boxMax - r.origin) / r.direction;
         
         float3 tMin = min(t1, t2);
         float3 tMax = max(t1, t2);
@@ -200,27 +203,25 @@ private:
 
 
     
-    HitInfoTrace rayScene(Ray ray, bool planesOnly, bool lightTest) {
+    HitInfoTrace rayScene(Ray thisRay, bool planesOnly, bool lightTest) {
         
         // Save the final hit info
         HitInfoTrace finalHit;
         finalHit.hit = false;
-        finalHit.dist = 999999999999.0;
+        finalHit.dist = 999999.0;
         finalHit.isInside = false;
         
+        // Save variables for handiling transparent / reflective materials
         bool firstPass = false;
-            
+        int loop = -1;
+        
         int recursions = 0;
         
-        int loop = -1;
-        int skip = -1;
+        // Current hit info
+        HitInfoTrace currentHit;
 
         // Loop every object
         for (int objectNum = 0; objectNum < scene.renderingData.arrayLengths[0]; objectNum++) {
-            
-            if (objectNum == skip) {
-                continue;
-            }
             
             // Get said object
             Object currentObject = scene.objects[objectNum];
@@ -228,103 +229,106 @@ private:
             // If this is planes only then skip the not-planes
             if (planesOnly && currentObject.objectData[0] != 5) continue;
             
-            // Current hit info
-            HitInfoTrace currentHit;
-            
             // Switch each object based on it's type and get the current hit
             switch((int)currentObject.objectData[0]) {
                     
                 case 1: // Sphere
-                    currentHit = raySphere(ray, currentObject);
+                    currentHit = raySphere(thisRay, currentObject);
                     break;
                 case 2:   // Box
-                    currentHit = rayBox(ray, currentObject);
+                    currentHit = rayBox(thisRay, currentObject);
                     break;
                 case 3:   // Rounded Box
-                    currentHit = rayBox(ray, currentObject);
+                    currentHit = rayBox(thisRay, currentObject);
                     break;
                 case 4:   // Outlined Box
-                    currentHit = rayBox(ray, currentObject);
+                    currentHit = rayBox(thisRay, currentObject);
                     break;
                 case 5:   // Plane
-                    currentHit = rayPlane(ray, currentObject);
+                    currentHit = rayPlane(thisRay, currentObject);
                     break;
                 case 6:   // Cylinder
-                    currentHit = rayCylinder(ray, currentObject);
+                    currentHit = rayCylinder(thisRay, currentObject);
                     break;
                 default: // Default
-                    currentHit = raySphere(ray, currentObject);
+                    currentHit = raySphere(thisRay, currentObject);
                     break;
             }
             
-            ObjectMaterial currentMaterial = scene.materials[currentHit.materialIndex - 1];
+            ObjectMaterial currentMaterial = scene.materials[(int)currentHit.materialIndex - 1];
             
             if ((currentMaterial.transparency[0] == 1.0) && firstPass && !lightTest) {
-            
-                if (recursions > 3) { // REC_MAX
+                
+                if (recursions > 5) { // REC_MAX
                     continue;
                 }
             
                 if (finalHit.isInside || currentObject.objectData[0] == 5) {
-                
                     if (currentObject.objectData[0] != 5) {
-                        ray = {
-                            currentHit.hitPos - currentHit.normal * 0.01,
-                            refract(ray.direction, currentHit.normal, currentMaterial.transparency[1])
+                        thisRay = {
+                            currentHit.hitPos - currentHit.normal * 0.001,
+                            refract(thisRay.direction, currentHit.normal, currentMaterial.transparency[1])
                         };
                     } else {
-                        ray = {
-                            currentHit.hitPos - currentHit.normal * 0.01,
-                            refract(ray.direction, currentHit.normal, 1.0 / currentMaterial.transparency[1])
+                        thisRay = {
+                            currentHit.hitPos - currentHit.normal * 0.001,
+                            refract(thisRay.direction, currentHit.normal, 1.0 / currentMaterial.transparency[1])
                         };
                     }
+                    finalHit.isInside = false; // Refraction handeling
                     
-                    finalHit.isInside = false;
-                    
-                    skip = objectNum;
+                    // Set values for looping
+                    loop = -1;
                     objectNum = -1;
                     
-                    loop = -1;
+                    firstPass = false;
                     
+                    // Incraese recurtions
                     recursions += 1;
                     
                 } else {
-                    ray = {
-                        currentHit.hitPos - currentHit.normal * 0.01,
-                        refract(ray.direction, currentHit.normal, 1.0 / currentMaterial.transparency[1])
+                    thisRay = {
+                        currentHit.hitPos - currentHit.normal * 0.001,
+                        refract(thisRay.direction, currentHit.normal, 1.0 / currentMaterial.transparency[1])
                     };
-                    finalHit.isInside = true;
+                    finalHit.isInside = true; // Refraction Handeling
                     
-                    skip = -1;
+                    // Set value for the loop
                     objectNum -= 1;
                 }
                 
+                // Default variables at required spots
+                currentHit.hit = false;
+                finalHit.hit = false;
+                finalHit.dist = 999999.0;
                 
-                
-                ray.direction = normalize(ray.direction);
+                // Normalize the direction
+                thisRay.direction = normalize(thisRay.direction);
                 continue;
             }
             else if (currentMaterial.reflecticity[0] == 1.0 && firstPass && !lightTest) {
                     
-                if (recursions > 3) { // REC_MAX
+                if (recursions > 5) { // REC_MAX
                     continue;
                 }
                 
-                ray = {
-                    currentHit.hitPos + currentHit.normal * 0.01,
-                    normalize(reflect(ray.direction, currentHit.normal))
+                thisRay = {
+                    currentHit.hitPos + currentHit.normal * 0.001,
+                    normalize(reflect(thisRay.direction, currentHit.normal))
                 };
                 
+                // Set values for looping
                 loop = -1;
-                
-                skip = objectNum;
                 objectNum = -1;
                 
-                recursions += 1;
+                firstPass = false;
                 
-                finalHit.hit = true;
+                // Default values at required spots
+                finalHit.hit = false;
                 finalHit.dist = 999999.0;
                 
+                // Increase recursion counter
+                recursions += 1;
                 continue;
             }
             else if ((currentMaterial.transparency[0] == 1.0 || currentMaterial.reflecticity[0] == 1.0) && (currentHit.hit && finalHit.dist > currentHit.dist)) {
@@ -332,12 +336,14 @@ private:
             }
             
             // If the current object was a hit AND is the closest to the camera then set it as the final hit
-            finalHit = (finalHit.dist < currentHit.dist) ? finalHit : currentHit;
+            if (currentHit.hit && finalHit.dist > currentHit.dist) {
+                finalHit = currentHit;
+            }
             
             if ((objectNum + 1 == scene.renderingData.arrayLengths[0]) && (loop != -1)) {
                 firstPass = true;
             
-                if (((scene.materials[finalHit.materialIndex - 1].transparency[0] == 1 || scene.materials[finalHit.materialIndex - 1].reflecticity[0] == 1) && !lightTest) && recursions <= 3) { // REC_MAX
+                if (((scene.materials[finalHit.materialIndex - 1].transparency[0] == 1 || scene.materials[finalHit.materialIndex - 1].reflecticity[0] == 1) && !lightTest) && recursions <= 5) { // REC_MAX
                     objectNum = loop - 1;
                     continue;
                 }
@@ -346,7 +352,7 @@ private:
             
         }
 
-        finalHit.outRay = ray;
+        finalHit.outRay = thisRay;
         // Return the final found hit
         return finalHit;
     }
@@ -368,38 +374,38 @@ private:
         
         // Get the scene hit
         HitInfoTrace hit = rayScene(ray, boundingBoxMiss, false);
+        ray = hit.outRay;
         
         // Save the light color and the ambient color
         Light light = scene.light;
         float3 ambient = scene.renderingData.ambient.xyz * scene.renderingData.ambient.w * light.albedo.xyz * scene.materials[hit.materialIndex - 1].albedo.xyz;
 
         // Test to see if shadows are enabled
-        if (modelinator.shadows && !(scene.materials[hit.materialIndex-1].transparency[0] == 1.0 || scene.materials[hit.materialIndex-1].reflecticity[0] == 1.0)) {
+        if (modelinator.shadows) {
             
-            if (hit.hit && hit.dist > 0.0) {
-                // If it is create a shadow ray and get the hit info
-                Ray shadowRay = {
-                    hit.hitPos + hit.normal * 0.01,
-                    normalize(light.origin.xyz - hit.hitPos)
-                };
-                HitInfoTrace shadowRayHit = rayScene(shadowRay, false, true);
-                
-                // Test to see if the shadow ray hit anything and that it is in between the light and the shadow ray's origin
-                if (shadowRayHit.hit && (length(shadowRayHit.hitPos - shadowRay.origin.xyz) < length(shadowRay.origin.xyz - light.origin.xyz)) && !(scene.materials[shadowRayHit.materialIndex-1].transparency[0] == 1.0)) {
-                    return SRGB::LinearToSRGB(ToneMapping::ACESFilm(ambient)); // Return the ambient color since the hit is in shadow
-                }
+            // If it is create a shadow ray and get the hit info
+            Ray shadowRay = {
+                hit.hitPos + hit.normal * 0.001,
+                normalize(light.origin.xyz - hit.hitPos)
+            };
+            Ray cpy = shadowRay;
+            HitInfoTrace shadowRayHit = rayScene(shadowRay, false, true);
+            shadowRay = shadowRayHit.outRay;
+            // Test to see if the shadow ray hit anything and that it is in between the light and the shadow ray's origin
+            if (hit.hit && shadowRayHit.hit && (length(shadowRayHit.hitPos - cpy.origin.xyz) < length(cpy.origin.xyz - light.origin.xyz)) && !(scene.materials[shadowRayHit.materialIndex-1].transparency[0] == 1.0)) {
+                return SRGB::LinearToSRGB(ToneMapping::ACESFilm(ambient)); // Return the ambient color since the hit is in shadow
             }
         }
         
-        // If we don't hit anything return sky color
-        if (!hit.hit || (scene.materials[hit.materialIndex-1].transparency[0] == 1.0) || scene.materials[hit.materialIndex-1].reflecticity[0] == 1.0) {
-            return (scene.renderingData.shadingInfo[3] == 1) ? SRGB::LinearToSRGB(ToneMapping::ACESFilm(getSkyColor(hit.outRay))) : float3(0.0);
+        float3 color;
+        if (hit.hit && !(scene.materials[hit.materialIndex-1].transparency[0] == 1.0 || scene.materials[hit.materialIndex-1].reflecticity[0] == 1.0)) {
+            // Get the color from the modelinator
+            color = modelinator.color(ray, hit, scene);
+        } else {
+            color = getSkyColor(ray);
         }
         
-        // Get the color from the modelinator
-        float3 color = modelinator.color(ray, hit, light.origin.xyz, hit.normal, scene);
-        
-        // Tone mapping and srgb
+        // Tone mapping and SRGB
         color = SRGB::LinearToSRGB(ToneMapping::ACESFilm(color));
         
         // Return the final color

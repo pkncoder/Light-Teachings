@@ -7,7 +7,7 @@ using namespace metal;
 class HitColor {
     public:
         // Coloring Function
-        float3 color(Ray ray, HitInfoTrace hit, float3 lightPos, float3 normal, RayTracedScene scene) {
+        float3 color(Ray ray, HitInfoTrace hit, RayTracedScene scene) {
             
             // Get the material
             ObjectMaterial material = scene.materials[hit.materialIndex - 1];

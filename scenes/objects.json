@@ -31,18 +31,7 @@
             "objectData":[2, 0, 0, 6],
             "tempData":[0, 0, 0, 0]
         },
-        {
-            "origin":[1.44, 0.4, 3.95, 0],
-            "bounds":[1, 1, 1, 1],
-            "objectData":[1, 0, 0, 9],
-            "tempData":[0, 0, 0, 0]
-        },
-        {
-            "origin":[-1.8, -0.55, 4.69, 0],
-            "bounds":[1, 1, 1, 1],
-            "objectData":[1, 0, 0, 8],
-            "tempData":[0,0,0,0]
-        },
+        
         {
             
             "origin":[1.44, -1.1, 3.96, 0],
@@ -55,6 +44,18 @@
             "bounds":[0.54, 0.16, 0.12, 1],
             "objectData":[2, 0, 0, 7],
             "tempData":[0, 0, 0, 0]
+        },
+        {
+            "origin":[1.44, 0.4, 3.95, 0],
+            "bounds":[1, 1, 1, 1],
+            "objectData":[1, 0, 0, 9],
+            "tempData":[0, 0, 0, 0]
+        },
+        {
+            "origin":[-1.8, -0.55, 4.69, 0],
+            "bounds":[1, 1, 1, 1],
+            "objectData":[1, 0, 0, 8],
+            "tempData":[0,0,0,0]
         }
     ],
     "materials": [
@@ -103,14 +104,14 @@
         {
             "albedo":[0.69871676, 0.7606891, 1.0173668, 1],
             "materialSettings":[0.2490235, 0, 0, 0],
-            "transparency":[0, 0, 0, 0],
+            "transparency":[1, 2.4, 0, 0],
             "reflecticity":[0, 0, 0, 0]
         },
         {
             "albedo":[1.0697901, 0.4787135, 0.7915646, 1],
             "materialSettings":[0.29105476, 0, 0, 0],
             "transparency":[0, 0, 0, 0],
-            "reflecticity":[0, 0, 0, 0]
+            "reflecticity":[1, 0, 0, 0]
         }
     ],
     "light": {

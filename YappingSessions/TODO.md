@@ -102,7 +102,7 @@ This is the file that I save all of the things that I still have to do
 - [x] Weird issue with shadows and no plane
     - Doing too big maths I think and whenever nothing was hit, the shadow ray was thinking it was hitting things (still not sure why) - 11/8/2025 (dd/m/yyyy)
 - [ ] Scene tree doesn't update right
-- [ ] Mirrors and Glass is just wierd now
+- [x] Mirrors and Glass is just wierd now
 
 
 
@@ -117,7 +117,7 @@ This is the stuff in the future for ideas to mark down
 - [ ] Full BVH instead of just a Bounding Box
 - [x] SRGB
 - [x] Tone mapping
-- [ ] Perfect Transparency and Mirrors
+- [x] Perfect Transparency and Mirrors
     - My Testing shadertoy: https://www.shadertoy.com/view/tXyXRc
 - [ ] Bring back RayMarcher
 - [ ] Bring back PathTracer

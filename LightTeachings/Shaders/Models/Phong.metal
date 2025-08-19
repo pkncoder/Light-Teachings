@@ -5,7 +5,7 @@ using namespace metal;
 
 class Phong {
     public:
-        float3 color(Ray ray, HitInfoTrace hit, float3 lightPos, float3 normal, RayTracedScene scene) {
+        float3 color(Ray ray, HitInfoTrace hit, RayTracedScene scene) {
             
             // Get the material, light, and ambient (computed here)
             ObjectMaterial material = scene.materials[hit.materialIndex - 1];
@@ -16,10 +16,10 @@ class Phong {
             float3 lightDir = normalize(light.origin.xyz - hit.hitPos.xyz);
             
             // Diffuse component
-            float3 diffuse = max(dot(normal, lightDir), 0.0) * light.albedo.xyz * material.albedo.xyz;
+            float3 diffuse = max(dot(hit.normal, lightDir), 0.0) * light.albedo.xyz * material.albedo.xyz;
             
             // Reflected light
-            float3 reflectDir = reflect(-lightDir, normal);
+            float3 reflectDir = reflect(-lightDir, hit.normal);
             
             // Specular component
             float spec = pow(max(dot(normalize(ray.origin - hit.hitPos), reflectDir), 0.0), 32);

@@ -35,7 +35,7 @@ class BRDF {
     
 public:
     // Coloring Function
-    float3 color(Ray ray, HitInfoTrace hit, float3 lightPos, float3 normal, RayTracedScene scene) {
+    float3 color(Ray ray, HitInfoTrace hit, RayTracedScene scene) {
         
         // Get the material, light, and ambient color (computed here)
         ObjectMaterial material = scene.materials[hit.materialIndex - 1];
@@ -44,9 +44,9 @@ public:
         
         // Save important vectors
         float3 worldPos = hit.hitPos.xyz;
-        float3 N = normal;
+        float3 N = hit.normal;
         float3 V = -ray.direction;
-        float3 L = normalize(lightPos - worldPos);
+        float3 L = normalize(light.origin.xyz - worldPos);
         float3 H = normalize (V + L);
 
         // Cook-Torrance BRDF
@@ -69,7 +69,7 @@ public:
 
         // Get the final Color
         float3 color = ((light.albedo.xyz * light.albedo.w) * (kD * material.albedo.xyz / M_PI_F + specular)) *
-        (NdotL / dot(lightPos - worldPos, lightPos - worldPos)) + ambient;
+        (NdotL / dot(light.origin.xyz - worldPos, light.origin.xyz - worldPos)) + ambient;
         
         // Return the final color
         return color;

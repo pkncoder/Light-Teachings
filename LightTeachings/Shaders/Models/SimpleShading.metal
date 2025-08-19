@@ -7,7 +7,7 @@ using namespace metal;
 class SimpleShading {
     public:
         // Coloring function
-        float3 color(Ray ray, HitInfoTrace hit, float3 lightPos, float3 normal, RayTracedScene scene) {
+        float3 color(Ray ray, HitInfoTrace hit, RayTracedScene scene) {
             
             // Save the material data, light info, and ambient color (computed here into float3)
             ObjectMaterial material = scene.materials[hit.materialIndex - 1];
@@ -18,7 +18,7 @@ class SimpleShading {
             float3 L = normalize(light.origin.xyz - hit.hitPos.xyz);
             
             // Compute the diffuse color with NdotL shading
-            float3 diffuse = float3(max(dot(normal, L), 0.0)) * light.albedo.xyz * material.albedo.xyz;
+            float3 diffuse = float3(max(dot(hit.normal, L), 0.0)) * light.albedo.xyz * material.albedo.xyz;
             
             // Return the diffuse and ambient color
             return diffuse + ambient;

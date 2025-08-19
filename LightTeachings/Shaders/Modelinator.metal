@@ -50,20 +50,20 @@ public:
     }
     
     // Coloring function
-    float3 color(Ray ray, HitInfoTrace hit, float3 lightPos, float3 normal, RayTracedScene scene) {
+    float3 color(Ray ray, HitInfoTrace hit, RayTracedScene scene) {
         
         // Link to the needed shader model's coloring function
         switch(shaderModel) {
             case BRDF_Model:
-                return BRDF().color(ray, hit, lightPos, normal, scene);
+                return BRDF().color(ray, hit, scene);
             case Phong_Model:
-                return Phong().color(ray, hit, lightPos, normal, scene);
+                return Phong().color(ray, hit, scene);
             case SimpleShading_Model:
-                return SimpleShading().color(ray, hit, lightPos, normal, scene);
+                return SimpleShading().color(ray, hit, scene);
             case Hit_Model:
-                return Hit().color(ray, hit, lightPos, normal, scene);
+                return Hit().color(ray, hit, scene);
             case HitColor_Model:
-                return HitColor().color(ray, hit, lightPos, normal, scene);
+                return HitColor().color(ray, hit, scene);
         }
     }
     
