@@ -130,3 +130,4 @@ This is the stuff in the future for ideas to mark down
     - Idea: Use object data slot 3
     - Indicates an object index that is being opporated on
     - Indicates what opporation "group" is being opporated on
+- ECS (Entity Component System)
