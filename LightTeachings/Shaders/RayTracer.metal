@@ -402,7 +402,8 @@ private:
             // Get the color from the modelinator
             color = modelinator.color(ray, hit, scene);
         } else {
-            color = getSkyColor(ray);
+            
+            color = scene.renderingData.shadingInfo[3] ? getSkyColor(ray) : float3(0.0);
         }
         
         // Tone mapping and SRGB

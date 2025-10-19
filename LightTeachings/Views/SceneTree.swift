@@ -23,7 +23,7 @@ struct SceneTree: View {
             // Have a list containing the outline view to stop strange sizing occourances and to make the stlye better
             List(selection: $sceneNodeSelection) { // Hold a selection variable for the outline group
                 
-                Toggle("Swap", isOn: $rendererSettings.doIt)
+                // Toggle("Swap", isOn: $rendererSettings.doIt)
                 
                 // Outline group holds the children of the scene ndoes and displays their names
                 if let unwrappedSceneNodes = rendererSettings.sceneNodes {

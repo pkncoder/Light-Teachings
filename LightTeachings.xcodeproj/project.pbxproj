@@ -7,12 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F6B6E9462EA544D100F9E84D /* SourcesList.md in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E93F2EA544D100F9E84D /* SourcesList.md */; };
+		F6B6E9472EA544D100F9E84D /* UpdateDataRework.md in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E9442EA544D100F9E84D /* UpdateDataRework.md */; };
+		F6B6E9482EA544D100F9E84D /* LessonPlans.md in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E9402EA544D100F9E84D /* LessonPlans.md */; };
+		F6B6E9492EA544D100F9E84D /* ShaderModelPLanning.md in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E9422EA544D100F9E84D /* ShaderModelPLanning.md */; };
+		F6B6E94A2EA544D100F9E84D /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E9432EA544D100F9E84D /* TODO.md */; };
+		F6B6E94B2EA544D100F9E84D /* OverviewVideo.md in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E9412EA544D100F9E84D /* OverviewVideo.md */; };
 		F6F565EC2DCAB3890054CB89 /* scenes in Resources */ = {isa = PBXBuildFile; fileRef = F67FA3682DC0762000D8723D /* scenes */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F67FA3682DC0762000D8723D /* scenes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scenes; sourceTree = "<group>"; };
 		F68D3E2C2D7D61BD00B3CD7E /* LightTeachings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LightTeachings.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6B6E93F2EA544D100F9E84D /* SourcesList.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = SourcesList.md; sourceTree = "<group>"; };
+		F6B6E9402EA544D100F9E84D /* LessonPlans.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LessonPlans.md; sourceTree = "<group>"; };
+		F6B6E9412EA544D100F9E84D /* OverviewVideo.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = OverviewVideo.md; sourceTree = "<group>"; };
+		F6B6E9422EA544D100F9E84D /* ShaderModelPLanning.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ShaderModelPLanning.md; sourceTree = "<group>"; };
+		F6B6E9432EA544D100F9E84D /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
+		F6B6E9442EA544D100F9E84D /* UpdateDataRework.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = UpdateDataRework.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -55,6 +67,8 @@
 		F68D3E232D7D61BD00B3CD7E = {
 			isa = PBXGroup;
 			children = (
+				F6B6E93F2EA544D100F9E84D /* SourcesList.md */,
+				F6B6E9452EA544D100F9E84D /* YappingSessions */,
 				F68D3E2E2D7D61BD00B3CD7E /* LightTeachings */,
 				F68D3E2D2D7D61BD00B3CD7E /* Products */,
 				F67FA3682DC0762000D8723D /* scenes */,
@@ -68,6 +82,18 @@
 				F68D3E2C2D7D61BD00B3CD7E /* LightTeachings.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F6B6E9452EA544D100F9E84D /* YappingSessions */ = {
+			isa = PBXGroup;
+			children = (
+				F6B6E9402EA544D100F9E84D /* LessonPlans.md */,
+				F6B6E9412EA544D100F9E84D /* OverviewVideo.md */,
+				F6B6E9422EA544D100F9E84D /* ShaderModelPLanning.md */,
+				F6B6E9432EA544D100F9E84D /* TODO.md */,
+				F6B6E9442EA544D100F9E84D /* UpdateDataRework.md */,
+			);
+			path = YappingSessions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,6 +165,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6F565EC2DCAB3890054CB89 /* scenes in Resources */,
+				F6B6E9462EA544D100F9E84D /* SourcesList.md in Resources */,
+				F6B6E9472EA544D100F9E84D /* UpdateDataRework.md in Resources */,
+				F6B6E9482EA544D100F9E84D /* LessonPlans.md in Resources */,
+				F6B6E9492EA544D100F9E84D /* ShaderModelPLanning.md in Resources */,
+				F6B6E94A2EA544D100F9E84D /* TODO.md in Resources */,
+				F6B6E94B2EA544D100F9E84D /* OverviewVideo.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +313,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -313,6 +346,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;

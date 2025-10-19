@@ -49,6 +49,8 @@ struct SimpleRayTracerApp: App {
                 SaveFile() // Save a scene
                     .environmentObject(rendererSettings)
             }
+            
+            YoutubeLinksCommands()
         }
     }
 }
