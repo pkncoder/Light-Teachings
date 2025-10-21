@@ -44,7 +44,7 @@ struct LightEditor: View {
             
             Section("Light Coloring") {
                 ColorPicker("Color", selection: albedo, supportsOpacity: false)
-                NumberEdit(value: $lightClone.albedo.w, range: 0...300)
+                SingleItemEdit(name: "Light Intensity", value: $lightClone.albedo.w, range: 0...300)
             }
         }
         .listStyle(InsetListStyle())
