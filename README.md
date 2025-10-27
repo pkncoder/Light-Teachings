@@ -1,4 +1,4 @@
-<h1 style="text-align: center">Light Teachings</h1>
+<h1 style="align: center">Light Teachings</h1>
 
 Light teachings is an application designed to help users understand the basics of Ray Tracing - a computer graphics technique that simulates light to create realistic light interactions inside of a scene.
 
