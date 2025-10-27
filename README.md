@@ -1,8 +1,8 @@
-# 💡 Light Teachings
+<h1 style="text-align: center">Light Teachings</h1>
 
-**Light Teachings** is an interactive educational macOS app designed to help users understand the fundamentals of **ray tracing** — a computer graphics technique that simulates how light interacts with objects to create realistic images.
+Light teachings is an application designed to help users understand the basics of Ray Tracing - a computer graphics technique that simulates light to create realistic light interactions inside of a scene.
 
-The app includes an intuitive **scene editor** and a **real-time renderer**, allowing users to build or modify 3D scenes and instantly see how changes affect lighting, reflections, and transparency. Paired with a series of five short, beginner-friendly videos I made, Light Teachings provides a clear and visual path for learning ray tracing from the ground up.
+The app includes an intuitive scene editor and a real time renderer, allowing users to build or modify 3D scenes and instantly see how changes affect lighting, reflections, and transparency. Paired with a series of five short, beginner-friendly videos I made, Light Teachings provides a clear and visual path for learning ray tracing from the ground up.
 
 ---
 
@@ -50,3 +50,5 @@ I created Light Teachings after spending over a year studying ray tracing and st
 ## 🏛️ Congressional App Challenge 2025
 
 Light Teachings was developed as part of my submission for the Congressional App Challenge 2025, a nationwide competition encouraging students to learn coding and create impactful apps.
+
+Overview video submission.
