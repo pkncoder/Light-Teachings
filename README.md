@@ -12,10 +12,13 @@ The app includes an intuitive scene editor and a real time renderer, allowing us
 - **Real-Time Renderer** – Watch your lighting and reflection changes instantly update.  
 - **Material Customization** – Experiment with colors, transparency, and reflective surfaces of solid objects.
 - **Lighting Customization** - Change the color, intensity, and position of the light.
+- 
+## Educational Videos
 
-<br>
-<br>
-<br>
+Alongside the app, I created a **five-part YouTube series** that explains the core theory behind ray tracing in an easy-to-follow way. These videos complement the app’s interactive lessons.
+
+📺 **Watch the full series here:**  
+[Ray Tracing Theory Explained — YouTube Playlist](https://www.youtube.com/playlist?list=PLHfBfCN_zWLxamu8B6hRqdhhFYa-0K01a)
 
 ## Gallery
 
@@ -25,22 +28,7 @@ Example layout:
 - App main window  
 - Scene editor interface  
 - Real-time rendering demo  
-
-<br>
-<br>
-<br>
-
-## Educational Videos
-
-Alongside the app, I created a **five-part YouTube series** that explains the core theory behind ray tracing in an easy-to-follow way. These videos complement the app’s interactive lessons.
-
-📺 **Watch the full series here:**  
-[Ray Tracing Theory Explained — YouTube Playlist](https://www.youtube.com/playlist?list=PLHfBfCN_zWLxamu8B6hRqdhhFYa-0K01a)
-
-<br>
-<br>
-<br>
-
+  
 ## 🏛️ Congressional App Challenge 2025
 
 Light Teachings was developed as part of my submission for the Congressional App Challenge 2025, a nationwide competition encouraging students to learn coding and create impactful apps.
