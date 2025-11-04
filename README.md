@@ -12,7 +12,7 @@ The app includes an intuitive scene editor and a real time renderer, allowing us
 - **Real-Time Renderer** – Watch your lighting and reflection changes instantly update.  
 - **Material Customization** – Experiment with colors, transparency, and reflective surfaces of solid objects.
 - **Lighting Customization** - Change the color, intensity, and position of the light.
-- 
+
 ## Educational Videos
 
 Alongside the app, I created a **five-part YouTube series** that explains the core theory behind ray tracing in an easy-to-follow way. These videos complement the app’s interactive lessons.
@@ -22,12 +22,16 @@ Alongside the app, I created a **five-part YouTube series** that explains the co
 
 ## Gallery
 
-*(Screenshots or GIFs of the app in action will go here)*  
-Example layout:
-
-- App main window  
-- Scene editor interface  
-- Real-time rendering demo  
+### App window
+![](/Assets/AppInterface.png)
+### Real Time Renderer
+![](/Assets/RealTimeRenderer.png)
+### Object Editor Example (Box)
+![](/Assets/ObjectEditor.png)
+### Material Editor
+![](/Assets/MaterialEditor.png)
+### Light Editor
+![](/Assets/LightEditor.png)
   
 ## 🏛️ Congressional App Challenge 2025
 
