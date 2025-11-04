@@ -37,4 +37,5 @@ Alongside the app, I created a **five-part YouTube series** that explains the co
 
 Light Teachings was developed as part of my submission for the Congressional App Challenge 2025, a nationwide competition encouraging students to learn coding and create impactful apps.
 
-Overview video submission.
+### Overview video submission.
+[![Overview video on youtube](https://img.youtube.com/vi/MmOsopj8NXY/0.jpg)](https://www.youtube.com/watch?v=MmOsopj8NXY&t=2s)
