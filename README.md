@@ -26,20 +26,21 @@ Light Teachings was developed as part of my submission for the Congressional App
 ### Educational Videos
 Along with the application, I created 5 Youtube videos, explaining what Ray Tracing is in a simple and understandable way.
 
+Here is the youtube playlist of the videos: [Ray Tracing Theory Explained — YouTube Playlist](https://www.youtube.com/playlist?list=PLHfBfCN_zWLxamu8B6hRqdhhFYa-0K01a)
+
 ### Gallery
 <details>
 <summary>Screenshots of App</summary>
-  
+
 ### App window
 <img width="70%" src="/Assets/AppInterface.png"></img>
 ### Real Time Renderer
 <img width="70%" src="/Assets/RealTimeRenderer.png"></img>
-<div>
-  
+
 | Object Editor | Material Editor | Light Editor |
 | --- | --- | --- |
 | <p align="center"><img src="/Assets/ObjectEditor.png"></img></p> | <p align="center"><img src="/Assets/MaterialEditor.png"></img></p> | <p align="center"><img src="/Assets/LightEditor.png"></img></p>
-  
+
 </details>
 
 ## License
