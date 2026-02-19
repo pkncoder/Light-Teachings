@@ -1,5 +1,6 @@
 <h1 align="center">💡 Light Teachings 🍎</h1>
 <p align="center">A MacOS Swift/Metal Application - Made by Kia Preston (pkncoder)</p>
+<p align="center"><img width="60%" src="/Assets/AppInterface.png"></img></p>
 
 ## 📚 Overview
 Light teachings is an application designed to help users understand the basics of Ray Tracing - a computer graphics technique that simulates light to create realistic light interactions inside of a scene.
@@ -19,7 +20,10 @@ Currently not set up for other people to install, as it was a project for the Co
 Use the scene editor to change elements in the render. Change your point of view to better understand different perspectives, and how light is moving through the scene.
 
 ## 📖 Congressional App Challenge
-Light Teachings was developed as part of my submission for the Congressional App Challenge 2025, a nationwide competition encouraging students to learn coding and create impactful apps.
+Light Teachings was developed as part of my submission for the [Congressional App Challenge 2025](https://www.congressionalappchallenge.us/), a nationwide competition encouraging students to learn coding and create impactful apps.
+
+2025 Light Teachings Winners Page: [Ohio District 9 - Rep. Marcy Kaptur Winner](https://www.congressionalappchallenge.us/25-OH09/)  
+Rep. Marcy Kaptur's Post on X: [Rep. Marcy Kaptur visits Perkins High School](https://x.com/RepMarcyKaptur/status/2012688030331470176)  
 
 ### 🎥 Submission Video
 [![Overview video on youtube](https://img.youtube.com/vi/MmOsopj8NXY/0.jpg)](https://www.youtube.com/watch?v=MmOsopj8NXY&t=2s)
