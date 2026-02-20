@@ -45,9 +45,9 @@ Here is the youtube playlist of the videos: [Ray Tracing Theory Explained — Yo
 <summary>Screenshots of App</summary>
 
 ### App window
-<img width="70%" src="/Assets/AppInterface.png"></img>
+<img width="50%" src="/Assets/AppInterface.png"></img>
 ### Real Time Renderer
-<img width="70%" src="/Assets/RealTimeRenderer.png"></img>
+<img width="50%" src="/Assets/RealTimeRenderer.png"></img>
 
 | Object Editor | Material Editor | Light Editor |
 | --- | --- | --- |
