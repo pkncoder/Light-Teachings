@@ -60,7 +60,7 @@ Some of the Resources I used in creating Light Teachings:
 - Demofox: [Casual Shadertoy Path Tracing Part 1](https://blog.demofox.org/2020/05/25/casual-shadertoy-path-tracing-1-basic-camera-diffuse-emissive/)
 - Sebastian Leage: [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk&pp=ygULcmF5IHRyYWNpbmc%3D)
 - Learn OpenGL: [learnopengl.com](https://learnopengl.com/)
-For a full list of resources used, see [Resources.md](Resources.md)
+For a full list of resources used, see [RESOURCES.md](RESOURCES.md)
 
 ## 🔗 A Thanks is Needed
 Thank you to these people:
