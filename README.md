@@ -2,12 +2,12 @@
 <p align="center">A MacOS Swift/Metal Application - Made by Kia Preston (pkncoder)</p>
 <p align="center"><img width="60%" src="/Assets/AppInterface.png"></img></p>
 
-## ☀️ Overview
+## ⭐️ Overview
 Light teachings is an application designed to help users understand the basics of Ray Tracing - a computer graphics technique that simulates light to create realistic light interactions inside of a scene.
 
 The app includes an intuitive scene editor and a real time renderer, allowing users to build or modify 3D scenes and instantly see how changes affect lighting, reflections, and transparency. Paired with a series of five short, beginner-friendly videos I made, Light Teachings provides a clear and visual path for learning ray tracing from the ground up.
 
-## ⭐️ Features ⭐️
+## ✨ Features
 -   **Scene Editor** – Build or modify your own 3D scenes with simple controls.
 -   **Real-Time Renderer** – Watch your lighting and reflection changes instantly update.
 -   **Material Customization** – Experiment with colors, transparency, and reflective surfaces of solid objects.
