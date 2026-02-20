@@ -66,7 +66,7 @@ For a full list of resources used, see [Resources.md](Resources.md)
 Thank you to these people:
 - Mr. Leffler - My Computer Science teacher that provided encouragement and support through writing this application.
 - Rep. Marcy Kaptur - For giving me the opportunity to compete in the 2025 Congressional App Challange.
-- Acerola - The inspiration to try and help out newcomers in Computer Graphics, and getting me started in my own journey.
+- [@Acerola](https://www.youtube.com/@Acerola_t) - The inspiration to try and help out newcomers in Computer Graphics, and getting me started in my own journey.
 
 ## ✒️ License
 This project is protected under the [MIT](https://github.com/pkncoder/Light-Teachings/blob/main/LICENSE) License.
