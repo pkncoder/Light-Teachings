@@ -19,6 +19,13 @@ Currently not set up for other people to install, as it was a project for the Co
 ## ⚙️ Usage
 Use the scene editor to change elements in the render. Change your point of view to better understand different perspectives, and how light is moving through the scene.
 
+## 💻 Technologies Used
+- IDE - XCode
+- Language - Swift
+- UI/UX Library - SwiftUI
+- Rendering Library - MetalKit
+- Rendering Method - Ray Tracing
+
 ## 📖 Congressional App Challenge
 Light Teachings was developed as part of my submission for the [Congressional App Challenge 2025](https://www.congressionalappchallenge.us/), a nationwide competition encouraging students to learn coding and create impactful apps.
 
