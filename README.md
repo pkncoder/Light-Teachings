@@ -2,7 +2,7 @@
 <p align="center">A MacOS Swift/Metal Application - Made by Kia Preston (pkncoder)</p>
 <p align="center"><img width="60%" src="/Assets/AppInterface.png"></img></p>
 
-## 📚 Overview
+## ☀️ Overview
 Light teachings is an application designed to help users understand the basics of Ray Tracing - a computer graphics technique that simulates light to create realistic light interactions inside of a scene.
 
 The app includes an intuitive scene editor and a real time renderer, allowing users to build or modify 3D scenes and instantly see how changes affect lighting, reflections, and transparency. Paired with a series of five short, beginner-friendly videos I made, Light Teachings provides a clear and visual path for learning ray tracing from the ground up.
@@ -54,6 +54,13 @@ Here is the youtube playlist of the videos: [Ray Tracing Theory Explained — Yo
 | <p align="center"><img src="/Assets/ObjectEditor.png"></img></p> | <p align="center"><img src="/Assets/MaterialEditor.png"></img></p> | <p align="center"><img src="/Assets/LightEditor.png"></img></p>
 
 </details>
+
+## 📚 Resources Used
+Some of the Resources I used in creating Light Teachings:
+- Demofox: [Casual Shadertoy Path Tracing Part 1](https://blog.demofox.org/2020/05/25/casual-shadertoy-path-tracing-1-basic-camera-diffuse-emissive/)
+- Sebastian Leage: [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk&pp=ygULcmF5IHRyYWNpbmc%3D)
+- Learn OpenGL: [learnopengl.com](https://learnopengl.com/)
+For a full list of resources used, see [Resources.md](Resources.md)
 
 ## 🔗 A Thanks is Needed
 Thank you to these people:
