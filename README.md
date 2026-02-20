@@ -20,11 +20,11 @@ Currently not set up for other people to install, as it was a project for the Co
 Use the scene editor to change elements in the render. Change your point of view to better understand different perspectives, and how light is moving through the scene.
 
 ## 💻 Technologies Used
-- IDE - XCode
-- Language - Swift
-- UI/UX Library - SwiftUI
-- Rendering Library - MetalKit
-- Rendering Method - Ray Tracing
+- **IDE** - XCode
+- **Language** - Swift
+- **UI/UX Library** - SwiftUI
+- **Rendering Library** - MetalKit
+- **Rendering Method** - Ray Tracing
 
 ## 📖 Congressional App Challenge
 Light Teachings was developed as part of my submission for the [Congressional App Challenge 2025](https://www.congressionalappchallenge.us/), a nationwide competition encouraging students to learn coding and create impactful apps.
@@ -57,16 +57,17 @@ Here is the youtube playlist of the videos: [Ray Tracing Theory Explained — Yo
 
 ## 📚 Resources Used
 Some of the Resources I used in creating Light Teachings:
-- Demofox: [Casual Shadertoy Path Tracing Part 1](https://blog.demofox.org/2020/05/25/casual-shadertoy-path-tracing-1-basic-camera-diffuse-emissive/)
-- Sebastian Leage: [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk&pp=ygULcmF5IHRyYWNpbmc%3D)
-- Learn OpenGL: [learnopengl.com](https://learnopengl.com/)
+- **Demofox**: [Casual Shadertoy Path Tracing Part 1](https://blog.demofox.org/2020/05/25/casual-shadertoy-path-tracing-1-basic-camera-diffuse-emissive/)
+- **Sebastian Leage**: [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk&pp=ygULcmF5IHRyYWNpbmc%3D)
+- **Learn OpenGL**: [learnopengl.com](https://learnopengl.com/)
+  
 For a full list of resources used, see [RESOURCES.md](RESOURCES.md)
 
 ## 🔗 A Thanks is Needed
 Thank you to these people:
-- Mr. Leffler - My Computer Science teacher that provided encouragement and support through writing this application.
-- Rep. Marcy Kaptur - For giving me the opportunity to compete in the 2025 Congressional App Challange.
-- [@Acerola](https://www.youtube.com/@Acerola_t) - The inspiration to try and help out newcomers in Computer Graphics, and getting me started in my own journey.
+- **Mr. Leffler** - My Computer Science teacher that provided encouragement and support through writing this application.
+- **Rep. Marcy Kaptur** - For giving me the opportunity to compete in the 2025 Congressional App Challange.
+- [**@Acerola**](https://www.youtube.com/@Acerola_t) - The inspiration to try and help out newcomers in Computer Graphics, and getting me started in my own journey.
 
 ## ✒️ License
 This project is protected under the [MIT](https://github.com/pkncoder/Light-Teachings/blob/main/LICENSE) License.
